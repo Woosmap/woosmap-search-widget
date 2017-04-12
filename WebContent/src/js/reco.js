@@ -623,7 +623,7 @@
             }
         });            
             
-        self.container.on('click','.pac-item', function(event){
+        self.container.bind('click','.pac-item', function(event){
             var place_id = window.jQuery(this).attr('data-place-id');
             var place_name = window.jQuery(this).find('.pac-item-query').text();
             self.container.find('input').val(place_name);

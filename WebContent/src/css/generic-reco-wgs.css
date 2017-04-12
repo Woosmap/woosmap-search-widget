@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'genericreco';
-  src: url('../fonts/genericreco.eot');
-  src: url('../fonts/genericreco.eot') format('embedded-opentype'),
-       url('../fonts/genericreco.woff') format('woff'),
-       url('../fonts/genericreco.ttf') format('truetype'),
-       url('../fonts/genericreco.svg#genericreco') format('svg');
+  src: url('../fonts/NorautoIcon.eot');
+  src: url('../fonts/NorautoIcon.eot') format('embedded-opentype'),
+       url('../fonts/NorautoIcon.woff') format('woff'),
+       url('../fonts/NorautoIcon.ttf') format('truetype'),
+       url('../fonts/NorautoIcon.svg#genericreco') format('svg');
   font-weight: normal;
   font-style: normal;
 }
