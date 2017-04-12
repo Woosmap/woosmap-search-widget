@@ -96,10 +96,11 @@
 
 .gr-wgs-homestore-mainBlock-yourStore-change {
     display: block;
+    margin-bottom: 1px;
 }
 
 .gr-wgs-homestore-mainBlock-yourStore-icon.icon::before {
-    left: -34px !important;
+    left: -35px !important;
     top: 0 !important;
 }
 

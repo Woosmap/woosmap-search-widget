@@ -37,6 +37,7 @@
                 autocompletePlaceholder: 'Spécifiez une adresse',
                 allStores: 'Tous nos magasins',
                 changeStore: 'Changez de store',
+                findStore: 'Choisir mon store',
                 geolocationNotice: 'La géolocalisation n\'est pas activée sur votre navigateur. Veuillez changez vos préférences.',
                 closeBtn: 'Fermer'
             }
@@ -829,6 +830,17 @@
                     'Trouvez votre <br/>' +
                     '<strong>centre Norauto</strong>' +
                 '</div>' +
+            '</div>';
+        
+        var template =
+            '<div class="gr-wgs-homestore-mainBlockTitle gr-wgs-homestore-mainBlock-findStore">' +
+                '<span class="gr-wgs-homestore-mainBlock-yourStore-icon icon icon-garageN"></span>' + 
+                '<span class="gr-wgs-homestore-mainBlock-yourStore-change" title="' + wgs.genericreco.L10n.changeStore + '">' + //onclick="document.getElementById('gr-wgs-homestore-panel').style.display='block'"
+                    wgs.genericreco.L10n.changeStore +
+                '</span>' +
+                '<span class="gr-wgs-homestore-mainBlock-yourStore-name" title=' + wgs.genericreco.L10n.findStore +'>' +
+                    wgs.genericreco.L10n.findStore + 
+                '</span>' +
             '</div>';
         
         this.headerContainer
