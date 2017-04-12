@@ -1,0 +1,447 @@
+
+(function($){
+$.extend(KOR.namespace('KOR.extStrings.strings'), {
+
+"fieldFailureMessagePostalCodeBE":
+
+""
+, 
+"fieldFailureMessageNorautoCardFr":
+
+"Merci de renseigner un numéro de Carte Norauto correct (sans espace et sans caractères spéciaux)."
+, 
+"fieldFailureMessageCharactersRange":
+
+"This field must be between {{}} and {{}} caractères."
+, 
+"fieldFailureMessageBadPassword":
+
+"Votre mot de passe doit contenir au moins {{}} caractères et comporter au moins une lettre majuscule, une lettre minuscule et un chiffre."
+, 
+"fieldFailureMessageStreet":
+
+"Format sur 40 caractères maximum, sans virgule ou caractères spéciaux."
+, 
+"fieldFailureMessageDefault":
+
+"La quantité ne peut pas être vide."
+, 
+"fieldFailureMessageCharactersExact":
+
+"Ce champ doit être exactement de {{}} caractères."
+, 
+"fieldFailureMessageRequiredRadioButton":
+
+"Ce champ est obligatoire."
+, 
+"fieldFailureMessageAssemblyPrestaPneu":
+
+"Merci de selectionner un type de prestation de montage."
+, 
+"fieldFailureMessageQuantityRange":
+
+"Ce champ doit être entre }} et {{."
+, 
+"fieldFailureMessageCenterInput":
+
+"Merci de choisir un Centre Norauto."
+, 
+"fieldFailureMessageNumbersExact":
+
+"Ce champ doit être exacement de {{}} nombres."
+, 
+"fieldFailureMessageRequired":
+
+"Ce champ est obligatoire."
+, 
+"fieldFailureMessagePassword":
+
+""
+, 
+"fieldFailureMessageRegistrationDpt":
+
+"Merci de renseigner un département pour votre plaque d\'immatriculation."
+, 
+"fieldFailureMessageCarManufactureYear":
+
+"L\'\'année de fabrication est invalide, aucun des caractères spéciaux."
+, 
+"fieldFailureMessageNumbersMin":
+
+"Ce champ a une taille minimum requise de {{}} nombres."
+, 
+"fieldFailureMessageRegistrationNumberOLD":
+
+"Merci de renseigner le numéro de votre plaque au format suivant : 1234-ABC-12"
+, 
+"fieldFailureMessageCharactersMin":
+
+"Ce champ doit avoir un minimum de  {{}} caractères."
+, 
+"fieldFailureMessageCityInput":
+
+"La population n\'\'est pas valide, ne pas inclure les caractères spéciaux."
+, 
+"fieldFailureMessageTwoChoicesDoubleCalendar":
+
+"Merci de renseigner les deux choix de rendez-vous pour valider."
+, 
+"fieldFailureMessageCharactersMax":
+
+"Ce champ doit avoir un maximum de {{}} caractères."
+, 
+"fieldFailureMessageGlazingLocation":
+
+"Merci de sélectionner un ou plusieurs emplacements de réparation/remplacement de vitrage sur votre véhicule."
+, 
+"fieldFailureMessageClimatisationPresta":
+
+"Merci de selectionner au minimum une climatisation ou un habitacle bien-être et santé."
+, 
+"fieldFailureMessageDni":
+
+"Code incorrect."
+, 
+"fieldFailureMessageCarEngineCode":
+
+"Le code du moteur n\'\'est pas valide, pas de caractères spéciaux."
+, 
+"fieldFailureMessagePhoneBE":
+
+""
+, 
+"fieldFailureMessageCarRegistrationPlate":
+
+"Vérifiez la conformité du numéro de plaque d\'\'immatriculation saisi avec celui indiqué sur votre carte grise."
+, 
+"fieldFailureMessageFirstName":
+
+"Le champ prénom n\'est pas valide (minimum 2 caractères et sans caractères spéciaux)."
+, 
+"fieldFailureMessageNorautoCard":
+
+"Numéro de carte non valide."
+, 
+"fieldFailureMessageDiagnosticPresta":
+
+"Merci de selectionner au minimum un diagnostic."
+, 
+"fieldFailureMessagePrice":
+
+"Ce champ doit être prix valide."
+, 
+"fieldFailureMessageFlashCheckoutTACError":
+
+""
+, 
+"fieldFailureMessageCreditCard":
+
+"Ce champ doit être une carte de crédit valide."
+, 
+"fieldFailureMessageMissingPassword":
+
+""
+, 
+"fieldFailureMessageCharacters":
+
+"Ce champ doit contenir que des caractères."
+, 
+"fieldFailureMessageEmail":
+
+"Veuillez saisir une adresse mail valide."
+, 
+"fieldFailureMessageWords":
+
+"Ce champ doit contenir uniquement des mots."
+, 
+"fieldFailureMessageCarMark":
+
+"La marque n\'\'est pas valide, pas de caractères spéciaux."
+, 
+"fieldFailureMessageQuantityExact":
+
+"Ce champ doit être exactement {{}}."
+, 
+"fieldFailureMessageFiscalCode":
+
+"Fiscal code error"
+, 
+"fieldFailureMessageZipcode.AT":
+
+"Please enter a valid 4-digit ZIP Code."
+, 
+"fieldFailureMessagePostalCode":
+
+"Merci de renseigner un code postal valide sur 5 caractères."
+, 
+"fieldFailureMessageRegistrationNumberSIV":
+
+"Merci de renseigner le numéro de votre plaque au format suivant : AB-123-AB"
+, 
+"fieldFailureMessageSameChoicesDoubleCalendar":
+
+"Merci de renseigner deux rendez-vous à des dates différentes."
+, 
+"fieldFailureMessageLettersMin":
+
+"Ce champ requit un minimum de {{}} lettres."
+, 
+"fieldFailureMessageZipcode.CA":
+
+"Please enter a valid Canadian ZIP Code (including the whitespace)."
+, 
+"fieldFailureMessageCellPhone":
+
+"Le numéro de téléphone portable n\'est pas valide"
+, 
+"fieldFailureMessageZipcode.GB":
+
+"Please enter a valid UK ZIP Code (including the whitespace)."
+, 
+"fieldFailureMessageCarModel":
+
+"Le modèle n\'\'est pas valable, pas de caractères spéciaux."
+, 
+"fieldFailureMessageZipcode.CH":
+
+"Please enter a valid 4-digit ZIP Code."
+, 
+"fieldFailureMessageQuantityMin":
+
+"Ce champ peut avoir une valeur minimum de {{}}."
+, 
+"fieldFailureMessageDateRequired":
+
+"Une date valide est requise."
+, 
+"fieldFailureMessageGlobal":
+
+"Veuillez corriger le(s) erreur(s) ci-dessous."
+, 
+"fieldFailureMessageLetters":
+
+"Ce champ ne doit contenir que des lettres."
+, 
+"fieldFailureMessageAtLeastOneBox":
+
+"Merci de sélectionner au moins une des options"
+, 
+"fieldFailureMessageQuantityMax":
+
+"Ce champ peut avoir une valeur maximum de {{}}."
+, 
+"fieldFailureMessageQuantity":
+
+"Veuillez saisir une quantité valide."
+, 
+"fieldFailureMessagePneumaticLocation":
+
+"Merci de renseigner l\'emplacement de vos pneumatiques."
+, 
+"fieldFailureMessageFileSelect":
+
+"Merci de sélectionner une image avec une taille maximale de 1000 kB."
+, 
+"fieldFailureMessageInvalid":
+
+"Ce champ doit être valide."
+, 
+"fieldFailureMessageNumbersRange":
+
+"Ce champ doit être }} et {{ nombres."
+, 
+"fieldFailureMessageLettersExact":
+
+"Ce champ doit contenir exactement {{}} lettres."
+, 
+"fieldFailureMessageMatchValue":
+
+"Ce champ doit correspondre."
+, 
+"fieldFailureMessageLastName":
+
+"Merci de ne pas renseigner de caractères spéciaux dans ce champ."
+, 
+"fieldFailureMessageNumbers":
+
+"Ce champ ne doit contenir que des nombres."
+, 
+"fieldFailureMessageTyreSelector":
+
+"Merci de renseigner tous les champs obligatoires des dimensions de votre pneumatique."
+, 
+"fieldFailureMessageDoubleCalendar":
+
+"Merci de selectionner votre rendez-vous."
+, 
+"fieldFailureMessageLettersRange":
+
+"Ce champ doit contenir entre }} et {{ caractères."
+, 
+"fieldFailureMessagePhone":
+
+"Merci de renseigner un numéro de téléphone valide sur 10 caractères."
+, 
+"fieldFailureMessageZipcode.DE":
+
+"Please enter a valid 5-digit ZIP Code."
+, 
+"fieldFailureMessageNumbersMax":
+
+"Ce champ doit avoir un maximum de {{}} nombres."
+, 
+"fieldFailureMessageCenterDropDown":
+
+"Merci de choisir un Centre Norauto."
+, 
+"fieldFailureMessageMatchEmail":
+
+"Les emails saisis ne sont pas identiques. Merci de renseigner deux emails identiques."
+, 
+"fieldFailureMessageMissingCurrentPassword":
+
+""
+, 
+"fieldFailureMessageCarSelector":
+
+"Merci de renseigner votre véhicule."
+, 
+"fieldFailureMessageMatchPassword":
+
+"Les mots de passe saisis ne sont pas identiques. Merci de renseigner deux mots de passe identiques."
+, 
+"fieldFailureMessageLettersMax":
+
+"Ce champ accepte un maximum de {{}} lettres."
+, 
+"fieldFailureMessageZipcode":
+
+"Veuillez saisir un code postal valide."
+, 
+"fieldFailureMessageFreinagePresta":
+
+"Merci de selectionner un type de remplacement."
+, 
+"fieldFailureMessagePrivacyRequired":
+
+"PrivacyRequired"
+, 
+"fieldFailureMessageOrderNumero":
+
+"Le numéro de commande n\'\'est pas correct."
+
+})
+KOR.templates = KOR.templates || {};
+$.extend(KOR.templates, {
+productAltImagesTemplate: '\
+{% if(this.images && this.images.length>1) { %}\
+<ul class="ws-alternate-views">\
+{% this.images.uEach(function(image){ %}\
+<li class="ws-alternate-view">\
+<a href="javascript:void(false)"><img class="photo ws-alternate" {% if (image.height){%}height="{{image.height}}"{%}%} {% if (image.width){%}width="{{image.width}}"{%}%} data-view-value="{{image.view}}" data-type="{{image.size}}" src="{{image.src}}" /></a>\
+</li>\
+{% }) %}\
+</ul>\
+{% } %}',
+productMainImageMovieTemplate: '\
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" {% if (this.image.imageTypeHeight){%}height="{{this.image.imageTypeHeight}}"{%}%} {% if (this.image.imageTypeWidth){%}width="{{this.image.imageTypeWidth}}"{%}%} data-type="{{this.image.size}}">\
+<param name="movie" value="{{this.image.src}}" />\
+<!--[if !IE]>-->\
+<object type="application/x-shockwave-flash" data="{{this.image.src}}" {% if (this.image.imageTypeHeight){%}height="{{this.image.imageTypeHeight}}"{%}%} {% if (this.image.imageTypeWidth){%}width="{{this.image.imageTypeWidth}}"{%}%}>\
+<!--<![endif]-->\
+<param name="flashVars" value="{{this.image.src}}" />\
+<!-- alt content -->\
+<img \
+src="{{this.image.src}}" data-test="true" {% if (this.image.view){%}data-view-value="{{this.image.view}}"{%}%} {% if (this.image.view){%}data-type="{{this.image.size}}" {%}%} {% if (this.image.imageTypeHeight){%}height="{{this.image.imageTypeHeight}}"{%}%} {% if (this.image.imageTypeWidth){%}width="{{this.image.imageTypeWidth}}"{%}%}\
+/>\
+<!--[if !IE]>-->\
+</object>\
+<!--<![endif]-->\
+</object>',
+productMainImageTemplate: '\
+<img \
+src="{{this.image.src}}" data-test="true" {% if (this.image.view){%}data-view-value="{{this.image.view}}"{%}%} {% if (this.image.view){%}data-type="{{this.image.size}}" {%}%} {% if (this.image.imageTypeHeight){%}height="{{this.image.imageTypeHeight}}"{%}%} {% if (this.image.imageTypeWidth){%}width="{{this.image.imageTypeWidth}}"{%}%}\
+/>',
+productListPriceTemplate: '\
+<span>\
+{% if(this.list) { %}\
+{% if(this.sale) { %}<span class="kor-product-list-price-text">Régulièrement</span> {% } %}\
+<span class="kor-product-list-price-value price\
+{% if (!this.sale) { %} kor-product-final-price{% } %}">\
+{% if(this.list.min && this.list.max) { %}\
+{{this.list.min}} - {{this.list.max}}\
+{% } else if (this.list.regular) { %}\
+{{this.list.regular}}\
+{% } %}\
+</span>\
+{% } %}\
+</span>',
+productSalePriceTemplate: '\
+<span>{% if(this.sale) { %}\
+Sale {% if(this.sale.min && this.sale.max) { %}\
+{{this.sale.min}} - {{this.sale.max}}\
+{% } else if (this.sale.regular) { %}\
+{{this.sale.regular}}\
+{% } %}\
+{% } %}</span>',
+productEnhancedImageLinkTemplate: '\
+{% if(this.image) { %}\
+<a class="kor-enhanced-image-link" href="{{this.image.src}}">Image améliorée</a>\
+{% } %}',
+validationErrorTemplate: '<div class="{{this.errorClass}}" role="alertdialog">\
+<div class="kor-field-error-message-contents">\
+<ul class="kor-field-error-list">\
+<li class="kor-field-error-list-item">{{this.errorMessage}}</li>\
+</ul>\
+</div>\
+</div>',
+flashErrorTemplate: '<div class="kor-form-error-message">\
+<div class="kor-form-error-message-contents" role="alert">\
+<ul class="kor-form-error-list">\
+<li class="kor-form-error-list-item">{{ this.errorList[0] }}</li>\
+</ul>\
+</div>\
+</div>',
+modalTemplate: '<div data-comp-type="{{this.NAME}}" data-comp-id="{{this.uId}}" class="{{this.modalClass}}"></div>',
+overlayTemplate: '<div data-comp-type="{{this.NAME}}" data-comp-id="{{this.uId}}" class="{{this.overlayClass}} kor-{{this.NAME}}">{{this.html}}</div>',
+overlayImageTemplate: '<img src="{{this.url}}" />',
+menuOverlayTemplate: '\
+<div data-comp-type="{{this.NAME}}" data-comp-id="{{this.uId}}" class="{{this.overlayClass}}">\
+<div class="{{this.overlayHeaderClass}}">\
+<div class="{{this.closeClass}}">Fermer</div>\
+</div>\
+<div class="{{this.overlayContentClass}}">{{this.html}}</div>\
+</div>',
+arrowTipOverlayTemplate: '\
+<div data-comp-type="{{this.NAME}}" data-comp-id="{{this.uId}}" class="{{this.overlayClass}} kor-{{this.NAME}}">\
+<div class="kor-arrow-overlay-content">{{this.html}}</div>\
+<div class="{{this.arrowClass}}"></div>\
+</div>',
+dialogOverlayTemplate: '<div data-comp-type="{{this.NAME}}" data-comp-id="{{this.uId}}" class="{{this.overlayClass}}">\
+<div class="{{this.overlayHeaderClass}}">\
+<div class="kor-header-contents">\
+<div class="{{this.closeClass}} kor-control">Fermer</div>\
+</div>\
+</div>\
+<div class="{{this.overlayContentClass}}">\
+<div class="kor-content-contents">\
+{{this.html}}\
+</div>\
+</div>\
+</div>',
+dialogOverlayTemplateWithIframe: '<div data-comp-type="{{this.NAME}}" data-comp-id="{{this.uId}}" class="{{this.overlayClass}}">\
+<div class="{{this.overlayHeaderClass}}">\
+<div class="kor-header-contents">\
+<div class="{{this.closeClass}} kor-control">Fermer</div>\
+</div>\
+</div>\
+<div class="{{this.overlayContentClass}}">\
+<div class="kor-content-contents">\
+<iframe width="{{this.iframeWidth}}" height="{{this.iframeHeight}}" src={{this.iframeURL}}></iframe>\
+</div>\
+</div>\
+</div>',
+minicartOverlayTemplate: '<div data-comp-type="{{this.NAME}}" data-comp-id="{{this.uId}}" class="kor-minicart {{this.overlayClass}} kor-{{this.NAME}}">{{this.html}}</div>'
+});
+$.extend(KOR.templates, {});
+})(jQuery);

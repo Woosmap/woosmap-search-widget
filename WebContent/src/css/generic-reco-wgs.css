@@ -28,13 +28,8 @@
 
 .gr-wgs-homestore-mainBlock {
     position: relative;
-    font-size: 18px;
-    height:40px;
-    line-height:40px;
-    font-family: 'Open Sans Condensed', sans-serif;
+    font-size: 14px;
     color:#002b6f;
-    text-align:right;
-/*    min-width:144px;*/
 }
 /*
 .gr-wgs-homestore-mainBlock:before {
@@ -60,7 +55,6 @@
 }
 .gr-wgs-homestore-mainBlockTitle {
     vertical-align: top;
-    width:calc(100% - 45px);
 }
 .gr-wgs-homestore-mainBlockTitle > div {
     text-align:left;
@@ -89,7 +83,7 @@
     cursor: pointer;
 }
 .gr-wgs-homestore-mainBlock-yourStore div:first-child:hover {
-    color: #e31319;
+    color: #002b6f;
 }
 .gr-wgs-homestore-mainBlock-yourStore div:last-child {
     font-size:smaller;
@@ -100,6 +94,21 @@
     color:#002b6f;
 }
 
+.gr-wgs-homestore-mainBlock-yourStore-change {
+    display: block;
+}
+
+.gr-wgs-homestore-mainBlock-yourStore-icon.icon::before {
+    left: -34px !important;
+    top: 0 !important;
+}
+
+.gr-wgs-homestore-mainBlock-yourStore-name {
+    display: block;
+    color: #666;
+    font-size: 11px;
+}
+
 /* ----------------- */
 /* panneau dynamique */
 /* ----------------- */
@@ -107,17 +116,16 @@
 #gr-wgs-homestore-panel {
     /*display: none;*/
     position:absolute;
-    top:55px;
+    top:50px;
     left:50%;
     width:300px;
-    margin-left:-150px;
+    margin-left:-140px;
     margin-top: -10000px;
     background-color:white;
     box-shadow: 0 20px 50px 10px rgba(0,0,0,0.05);
     opacity:0;
     z-index:2;
     color:#666;
-    font-family:'Open Sans', sans-serif;
     border: 1px solid #ddd;
     padding:15px 15px 12px;
     transition:opacity .5s ease, top .4s ease;
@@ -130,8 +138,7 @@
     margin-top:0;
 }
 #gr-wgs-homestore-panel:before,
-#gr-wgs-homestore-panel:after {
-    content:'';
+#gr-wgs-homestore-panel:after {    
     position:absolute;
     width:0;
     height:0;
@@ -179,7 +186,7 @@ form.gr-wgs-homestore-panel-searchBlock-form{
 }
 
 .gr-wgs-homestore-panel-searchBlock-warning{
-    color: #E31319;
+    color: #002b6f;
     margin-bottom: 10px;   
 }
 .gr-wgs-homestore-panel-searchBlock-btn {
@@ -248,7 +255,7 @@ input.gr-wgs-homestore-panel-address-btn {
     cursor:pointer;
 }
 .gr-wgs-homestore-panel-resultBlock-listItem:hover {
-    color:#e31319;
+    color:#002b6f;
 }
 .gr-wgs-homestore-panel-resultBlock-listItem span {
     display:inline-block;

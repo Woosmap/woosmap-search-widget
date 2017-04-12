@@ -321,6 +321,7 @@ console.log("========================================================");
 <!-- <script id="tc_script__1" src="NORAUTO-INDEX_COPIE_files/mt660016670.js" async=""></script><script async="" src="NORAUTO-INDEX_COPIE_files/hotjar-388119.js"></script><script type="text/javascript" src="NORAUTO-INDEX_COPIE_files/track.js" id="adikteev_tracker"></script><script type="text/javascript" src="NORAUTO-INDEX_COPIE_files/null_home.js"></script><script type="text/javascript" src="NORAUTO-INDEX_COPIE_files/a.js"></script><script async="" src="NORAUTO-INDEX_COPIE_files/modules-a7c86602637fe604d4fd53552332bfc5.js"></script><style type="text/css">iframe#_hjRemoteVarsFrame {display: none !important; width: 1px !important; height: 1px !important; opacity: 0 !important; pointer-events: none !important;}</style><script src="NORAUTO-INDEX_COPIE_files/satellite-586ccaa164746d11fd002b0f.js"></script><script src="NORAUTO-INDEX_COPIE_files/a" async=""></script><script id="tc_script__1" src="NORAUTO-INDEX_COPIE_files/ams.js" async="" defer="defer"></script>  -->
 
 
+<!-- WOOSMAP RECOMMENDATION -->
 <script src="//recommendation-js.woosmap.com/recommendation.js"></script>
 <script src="src/js/reco.js"></script>
 <script>
@@ -338,11 +339,11 @@ console.log("========================================================");
        translations: {
            fr: {
                searchAroundMeBtn: 'Autour de moi',
-               searchAroundMeTitle: 'Recherchez le centre à proximité',
+               searchAroundMeTitle: 'Rechercher le centre à proximité',
                selectAroundMeTitle: 'Choisissez le centre à proximité :',
                autocompletePlaceholder: 'Spécifiez une adresse',
                allStores: 'Tous nos centres',
-               changeStore: 'Choisir mon centre',
+               changeStore: 'Mon centre',
                geolocationNotice: 'La géolocalisation n\'est pas activée sur votre navigateur. Veuillez changez vos préférences.',
                closeBtn: 'Fermer'
            }
@@ -350,6 +351,7 @@ console.log("========================================================");
    };
    new wgs.genericreco.RecommendationPlugin('#reco-container',groptions);        
 </script>
+<!-- WOOSMAP RECOMMENDATION -->
 
 
 </head>
@@ -408,14 +410,14 @@ console.log("========================================================");
 <!-- Center box -->
 
 <div class="my-center">
-<a id="center-header-link" class="js_m-l box-action" data_modal_anchor="abs" data_modal_function="ModalBox.fn.UpdateAction()" href="https://www.norauto.fr/INTERSHOP/web/WFS/NI-NOFR-Site/fr_FR/-/EUR/ViewMountingCenter-PopupHeader">
-<span class="icon icon-garageN"></span>
-<span class="box-title">Mon centre</span>
-<span id="SelectedDivisionDisplayName">
-
-Choisir mon centre
-
-</span>
+<a id="reco-container" href="javascript:void(0)">
+  <span class="icon icon-garageN"></span>
+  <span class="box-title">Mon centre</span>
+  <span class="box-action" id="SelectedDivisionDisplayName">
+  
+  Choisir mon centre
+  
+  </span>
 </a>
 </div><!-- Car selector -->
 <div class="my-car js_sidebar_wrapper" id="Car" onclick="checkCookieCarBox();">

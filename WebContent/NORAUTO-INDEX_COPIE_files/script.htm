@@ -1,0 +1,99 @@
+(function () {
+    Together = {
+        timing: [
+            {launch: 1491991247187, begin: new Date().getTime()}
+        ],
+        domain: 't.togetheer.com',
+        idTogether : '3fa28813-e97c-48a7-872c-f7341792903c',
+        idTogetherDefault : 'unknow',
+        idCookie : '11d1d2c0-1f5e-11e7-a5cf-595e30050566',
+        cId : 'false',
+        cSubTotal : '[cSubTotal]',
+        cTotal : 'false',
+        cCodePromo : 'false',
+        commandeId : '[commandeId]',
+        cBZipCode : 'false',
+        cBCountry : 'false',
+        cSZipCode : 'false',
+        cSCountry : 'false',
+        ArrayProduit: [],
+        //Services activés
+        YuzuEnabled: true,
+
+        //Chargement de page, init de l'objet Together
+        initLoad: function (onload) {
+          Together.init();
+        },
+
+        init: function () {
+            //si page classique
+            if ( Together.YuzuEnabled ) {
+                Together.YuzuHit();
+            }
+            //Pour Yuzu en page de cmd: appel fait par le endPush et le PushProduct côté navigateur client
+        },
+
+        YuzuHit: function () {
+            (function (w,d,n,u) {
+                w[n]=w[n]||function(){(w[n].q=w[n].q||[]).push(arguments)};
+                var a=d.createElement("script");
+                a.type="text/javascript",a.async=1,a.src=u;
+                var b=d.getElementsByTagName("script")[0];
+                b.parentNode.insertBefore(a,b)
+            })(window,document,'yuzu','//static.yuzu-together.com/yuzu.js');
+
+            //Id together envoyé à Yuzu uniquement si déterminé
+            if( Together.idTogether !== Together.idTogetherDefault ){
+                yuzu('tid',Together.idTogether);
+            }
+            yuzu('cid',Together.idCookie);// Id cookie
+        },
+
+        //Appelé dans le navigateur client pour chaque produit, popule l'objet
+        //together et appel notre API
+        pushProduct : function(arrayProduct) {
+            Together.ArrayProduit.push(arrayProduct);
+            //appel côté serveur, cré un produit en base à l'aide d'une image pixel
+            var urlPath = ((location.protocol === 'https:')?'https:':'http:') + '//' + Together.domain + '/addProduct?idc=' + Together.commandeId + '&idp=' + arrayProduct.idProduit + '&qty=' + arrayProduct.qty;
+            var img = document.createElement('img');
+            img.src = urlPath;
+            img.style.display = 'none';
+            document.body.appendChild(img);
+        },
+
+        //Appelé dans le navigateur client (TAG étape 2) après ajout de tous les produits
+        endPush : function() {
+            if ( Together.YuzuEnabled ) {
+                if (typeof yuzu == "undefined") {
+                       (function (w,d,n,u) {
+                           w[n]=w[n]||function(){(w[n].q=w[n].q||[]).push(arguments)};
+                           var a=d.createElement("script");
+                           a.type="text/javascript",a.async=1,a.src=u;
+                           var b=d.getElementsByTagName("script")[0];
+                           b.parentNode.insertBefore(a,b)
+                       })(window,document,'yuzu','//static.yuzu-together.com/yuzu.js');
+                }
+
+                //Id together envoyé à Yuzu uniquement si déterminé
+                if( Together.idTogether !== Together.idTogetherDefault ){
+                    yuzu('tid',Together.idTogether);
+                }
+                yuzu('cid',Together.idCookie);// Id cookie
+
+                yuzu('order.id', Together.cId);
+                yuzu('order.subtotal', Together.cSubTotal);
+                yuzu('order.total', Together.cTotal);
+                yuzu('order.coupon', Together.cCodePromo);
+                yuzu('customer.billing.zipcode', Together.cBZipCode);
+                yuzu('customer.billing.country', Together.cBCountry);
+                yuzu('customer.shipping.zipcode', Together.cSZipCode);
+                yuzu('customer.shipping.country', Together.cSCountry);
+                Together.ArrayProduit.forEach(function(element,index,array) {
+                    yuzu('cart.addItem', {'id': element.idProduit, 'qty': element.qty});
+                });
+                yuzu('send', 'order');
+            }
+        }
+    };
+    Together.initLoad(false);
+}());

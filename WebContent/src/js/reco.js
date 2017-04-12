@@ -32,7 +32,7 @@
         translations: {
             fr: {
                 searchAroundMeBtn: 'Autour de moi',
-                searchAroundMeTitle: 'recherchez le magasin à proximité afin de retirer vos achats',
+                searchAroundMeTitle: 'rechercher le magasin à proximité afin de retirer vos achats',
                 selectAroundMeTitle: 'choisissez le magasin à proximité afin de retirer vos achats :',
                 autocompletePlaceholder: 'Spécifiez une adresse',
                 allStores: 'Tous nos magasins',
@@ -741,7 +741,7 @@
                     '</div>' +
                     '<div class="gr-wgs-homestore-panel-footerBlock">' +
                         '<div class="gr-wgs-homestore-panel-footerBlock-allStores">' + wgs.genericreco.L10n.allStores + '</div>' +
-                        '<div class="gr-wgs-homestore-panel-footerBlock-closePanel" ">' + wgs.genericreco.L10n.closeBtn + '</div>' +
+                        '<div class="gr-wgs-homestore-panel-footerBlock-closePanel">' + wgs.genericreco.L10n.closeBtn + '</div>' +
                     '</div>';
                 '</div>' +
             '</div>';        
@@ -784,17 +784,17 @@
      * @param {Store} max number of drives to retrieve
      **/
     wgs.genericreco.UI.prototype.buildHTMLInitialReco = function(store){
-
+        
         var template =
-            '<img src="src/img/icon-store.png" alt="Votre magasin"/>' +
             '<div class="gr-wgs-homestore-mainBlockTitle gr-wgs-homestore-mainBlock-yourStore">' +
-                '<div class="gr-wgs-homestore-mainBlock-yourStore-name" title=' + store.properties.name +'>' +
-                    '<strong>' + store.properties.name + '</strong>' + 
-                '</div>' +
-                '<div class="gr-wgs-homestore-mainBlock-yourStore-change" title="' + wgs.genericreco.L10n.changeStore + '">' + //onclick="document.getElementById('gr-wgs-homestore-panel').style.display='block'"
+                '<span class="gr-wgs-homestore-mainBlock-yourStore-icon icon icon-garageN"></span>' + 
+                '<span class="gr-wgs-homestore-mainBlock-yourStore-change" title="' + wgs.genericreco.L10n.changeStore + '">' + //onclick="document.getElementById('gr-wgs-homestore-panel').style.display='block'"
                     wgs.genericreco.L10n.changeStore +
-                '</div>' +
-            '</div>'; 
+                '</span>' +
+                '<span class="gr-wgs-homestore-mainBlock-yourStore-name" title=' + store.properties.name +'>' +
+                    store.properties.name +  
+                '</span>' +
+            '</div>';
         
         this.headerContainer
             .empty()
@@ -813,21 +813,21 @@
             });
         });
         
-        this.headerContainer.find('.gr-wgs-homestore-mainBlock-yourStore-change').click(function(){
+        this.headerContainer.find('.gr-wgs-homestore-mainBlock-yourStore-change, .gr-wgs-homestore-mainBlock-yourStore-icon').click(function(){
             self.showSearchPanel();
         });                   
     };
     /** 
-     * Build the HTML of the "Trouver mon JouéClub" in the header
+     * Build the HTML of the "Trouver mon magasin" in the header
      **/     
     wgs.genericreco.UI.prototype.buildHTMLFindMyDrive = function(){
         
         var template =             
-            '<img src="src/img/icon-store.png" alt="Votre magasin"/>' +
-            '<div class="gr-wgs-homestore-mainBlockTitle gr-wgs-homestore-mainBlock-findStore" title="Trouvez votre Joué Club Drive">' + //onclick="document.getElementById('gr-wgs-homestore-panel').style.display='block' 
+            '<img src="src/img/icon-store.png" alt="centre Norauto"/>' +
+            '<div class="gr-wgs-homestore-mainBlockTitle gr-wgs-homestore-mainBlock-findStore" title="Trouvez votre centre Norauto">' + //onclick="document.getElementById('gr-wgs-homestore-panel').style.display='block' 
                 '<div>' +
                     'Trouvez votre <br/>' +
-                    '<strong>JouéClub Drive</strong>' +
+                    '<strong>centre Norauto</strong>' +
                 '</div>' +
             '</div>';
         
@@ -835,8 +835,6 @@
             .empty()
             .html(template)
             .show();
-    
-        console.log(template)
         
         var self = this;
         this.headerContainer.find('.gr-wgs-homestore-mainBlock-findStore').click(function(){          
@@ -932,7 +930,10 @@
     
     wgs.genericreco.UI.prototype.openStore = function(store){
         if(store.properties.contact && store.properties.contact.website) {
-            window.open(store.properties.contact.website, wgs.genericreco.options.urls.store.target || '_self');
+            window.open(store.properties.contact.website, store.properties.contact.website || '_self');
+        } else {
+            var self = this;
+            self.showSearchPanel();
         }
     };
     
