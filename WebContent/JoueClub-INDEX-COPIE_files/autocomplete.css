@@ -1,0 +1,105 @@
+﻿/***********************************/
+/*** AutoComplete flyout         ***/
+/***********************************/
+
+.AutoCompleteExtender_CompletionList 
+{
+    list-style:none;
+    width: 310px!important;
+    overflow: visible;
+    margin: 0px; 
+    background-color: #ffffff;
+    border: 2px solid #ccc;
+    z-index: 1010;
+    clear: both;
+}
+
+/*AutoComplete flyout */
+.AutoCompleteExtender_CompletionListItem 
+{ 
+    width: 300px!important;
+   /* list-style-image: url(/img/uncheck.gif);*/
+    padding: .2em 0 .2em .5em;
+    font-weight: bold;
+    background-color: #ffffff;
+    color: #666;
+    cursor: default; 
+}
+
+/* AutoComplete highlighted item */
+.AutoCompleteExtender_HighlightedItem
+{
+    width: 300px!important;
+   /* list-style-image: url(/img/check.gif);*/
+    padding: .2em 0 .2em .5em;
+    font-weight: bold;
+    background-color: #f2f2f2;
+    color: #000;
+}
+
+
+
+.JCForm_CompletionList 
+{
+    width: 310px;
+    overflow: visible;
+    margin: 0px; 
+    background-color: #ffffff;
+    border: 2px solid #ccc;
+    z-index: 1010;
+    clear: both;
+}
+
+/*AutoComplete flyout */
+.JCForm_CompletionListItem 
+{ 
+    width: 300px;
+    padding: .2em 0 .2em .5em;
+    font-weight: bold;
+    background-color: #ffffff;
+    color: #666;
+}
+
+/* AutoComplete highlighted item */
+JCForm_CompletionListHighlightedItem
+{
+    width: 300px;
+    padding: .2em 0 .2em .5em;
+    font-weight: bold;
+    background-color: #f2f2f2;
+    color: #000;
+}
+
+.AutoExtender
+{
+    font-family: Verdana, Helvetica, sans-serif;
+    font-size: .8em;
+    font-weight: normal;
+    border: solid 1px #006699;
+    line-height: 20px;
+    padding: 10px;
+    background-color: White;
+    margin-left:10px;
+    height: 200px;
+    overflow: auto;
+}
+.AutoExtenderList
+{
+    border-bottom: dotted 1px #006699;
+    cursor: pointer;
+    color: Maroon;
+}
+.AutoExtenderHighlight
+{
+    color: White;
+    background-color: #006699;
+    cursor: pointer;
+}
+#divwidth
+{
+    width: 100px !important;    
+}
+#divwidth div
+{
+width: 100px !important;   
+}
