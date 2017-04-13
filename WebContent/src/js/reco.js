@@ -4,7 +4,7 @@
     wgs.genericreco = {};
     
     wgs.genericreco.CONSTANT = {
-        debug: true
+        debug: false
     }
     
     wgs.genericreco.options = {
@@ -23,10 +23,20 @@
             }
         },
         usePlaces: true,
+        autocompletePlaces: {
+            bounds: {
+                west: -4.87293470,
+                north: 51.089062,
+                south: 42.19809198,
+                east: 8.332631
+            },
+            types: ['geocode']
+        },
         woosmap: {
             reco: {
                 query : ''
-            }
+            },
+            limit: 10
         },
         lang: 'fr',
         translations: {
@@ -133,7 +143,7 @@
                   self.reco.getUserPosition(function(resp){
                       stores.updateStoresWithGoogle(resp, function(){
                           var drives = stores.sortWithGoogle();
-                          drives.splice(3,drives.length);
+                          drives.splice(wgs.genericreco.options.woosmap.limit,drives.length);
                           self.plugin.ui.buildHTMLRecommendationResults(drives);
                       });
                   });
@@ -152,7 +162,7 @@
                 self.reco.getUserPosition(function(resp){
                     stores.updateStoresWithGoogle(resp, function(){
                         var drives = stores.sortWithGoogle();
-                        drives.splice(3,drives.length);
+                        drives.splice(wgs.genericreco.options.woosmap.limit,drives.length);
                         self.plugin.ui.buildHTMLRecommendationResults(drives);
                     });
                 });
@@ -604,17 +614,16 @@
             }
             // other keys : undisplay the list
             else{
-                if(event.currentTarget.value.length > 3 ){     
+                if(event.currentTarget.value.length > 3 ){
                     var request = {
-                        /*bounds: {
-                            west: -4.87293470,
-                            north: 51.089062,
-                            south: 42.19809198,
-                            east: 8.332631
-                        },*/
-                        input: self.container.find('input').val(),
-                        types: ['geocode']
+                        input: self.container.find('input').val()
                     };
+                    
+                    if(wgs.genericreco.options.autocompletePlaces.bounds)
+                        request.bounds = wgs.genericreco.options.autocompletePlaces.bounds;
+                    if(wgs.genericreco.options.autocompletePlaces.types)
+                        request.types = wgs.genericreco.options.autocompletePlaces.types;
+                        
                     self.getPredictions(request, function(results){
                         self.buildHTMLPredictions(results);
                     }, function(error){
@@ -751,7 +760,9 @@
         this.container
             .empty()
             .html(template);
-
+        
+        this.windowContainer = window.jQuery(window);
+        this.mainContainer = window.jQuery('.gr-wgs-homestore-container');
         this.headerContainer = window.jQuery('.gr-wgs-homestore-mainBlock');
         this.panelContainer = window.jQuery('#gr-wgs-homestore-panel');
         this.panelContainerSearch = window.jQuery('.gr-wgs-homestore-panel-searchBlock');
@@ -779,6 +790,7 @@
             self.hideSearchPanel();
         });
         
+        this.onClickOutsideContainer();
     };
     
     /** 
@@ -858,8 +870,22 @@
     /**
      * 
      */
+    wgs.genericreco.UI.prototype.onClickOutsideContainer = function(){
+        var self = this;
+        self.windowContainer.click(function() {
+            if(self.isVisibleSearchPanel()) {
+                self.hideSearchPanel();
+            }
+        });
+        self.mainContainer.click(function(event){
+            event.stopPropagation();
+        });  
+    };
+    /**
+     * 
+     */
     wgs.genericreco.UI.prototype.isVisibleSearchPanel = function(){
-       return this.panelContainer.hasClass('gr-wgs-homestore-panel-open');
+        return this.panelContainer.hasClass('gr-wgs-homestore-panel-open');
     };
     /** 
      * 
