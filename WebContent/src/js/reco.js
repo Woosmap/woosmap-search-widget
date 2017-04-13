@@ -606,12 +606,12 @@
             else{
                 if(event.currentTarget.value.length > 3 ){     
                     var request = {
-                        bounds: {
+                        /*bounds: {
                             west: -4.87293470,
                             north: 51.089062,
                             south: 42.19809198,
                             east: 8.332631
-                        },
+                        },*/
                         input: self.container.find('input').val(),
                         types: ['geocode']
                     };
@@ -790,10 +790,10 @@
         var template =
             '<div class="gr-wgs-homestore-mainBlockTitle gr-wgs-homestore-mainBlock-yourStore">' +
                 '<span class="gr-wgs-homestore-mainBlock-yourStore-icon icon icon-garageN"></span>' + 
-                '<span class="gr-wgs-homestore-mainBlock-yourStore-change" title="' + wgs.genericreco.L10n.changeStore + '">' + //onclick="document.getElementById('gr-wgs-homestore-panel').style.display='block'"
+                '<span class="gr-wgs-homestore-mainBlock-yourStore-change">' + //onclick="document.getElementById('gr-wgs-homestore-panel').style.display='block'"
                     wgs.genericreco.L10n.changeStore +
                 '</span>' +
-                '<span class="gr-wgs-homestore-mainBlock-yourStore-name" title=' + store.properties.name +'>' +
+                '<span class="gr-wgs-homestore-mainBlock-yourStore-name">' +
                     store.properties.name +  
                 '</span>' +
             '</div>';
@@ -816,7 +816,7 @@
         });
         
         this.headerContainer.find('.gr-wgs-homestore-mainBlock-yourStore-change, .gr-wgs-homestore-mainBlock-yourStore-icon').click(function(){
-            self.showSearchPanel();
+            self.toggleSearchPanel();
         });                   
     };
     /** 
@@ -827,10 +827,10 @@
         var template =
             '<div class="gr-wgs-homestore-mainBlockTitle gr-wgs-homestore-mainBlock-findStore">' +
                 '<span class="gr-wgs-homestore-mainBlock-yourStore-icon icon icon-garageN"></span>' + 
-                '<span class="gr-wgs-homestore-mainBlock-yourStore-change" title="' + wgs.genericreco.L10n.changeStore + '">' + //onclick="document.getElementById('gr-wgs-homestore-panel').style.display='block'"
+                '<span class="gr-wgs-homestore-mainBlock-yourStore-change">' + //onclick="document.getElementById('gr-wgs-homestore-panel').style.display='block'"
                     wgs.genericreco.L10n.changeStore +
                 '</span>' +
-                '<span class="gr-wgs-homestore-mainBlock-yourStore-name" title=' + wgs.genericreco.L10n.findStore +'>' +
+                '<span class="gr-wgs-homestore-mainBlock-yourStore-name">' +
                     wgs.genericreco.L10n.findStore + 
                 '</span>' +
             '</div>';
@@ -855,6 +855,12 @@
         
     };  
     
+    /**
+     * 
+     */
+    wgs.genericreco.UI.prototype.isVisibleSearchPanel = function(){
+       return this.panelContainer.hasClass('gr-wgs-homestore-panel-open');
+    };
     /** 
      * 
      **/     
@@ -865,9 +871,21 @@
      * 
      **/     
     wgs.genericreco.UI.prototype.hideSearchPanel = function(){
-        this.panelContainer.removeClass('gr-wgs-homestore-panel-open');;
+        this.panelContainer.removeClass('gr-wgs-homestore-panel-open');
     };
-    
+    /**
+     * 
+     */
+    wgs.genericreco.UI.prototype.toggleSearchPanel = function(){
+        if(this.isVisibleSearchPanel()) {
+            this.hideSearchPanel();
+        } else {
+            this.showSearchPanel();
+        }
+    };
+    /**
+     * 
+     */
     wgs.genericreco.UI.prototype.showResultsBlock = function(){
         this.panelContainerResultsBlock.show();
 //        this.panelContainerFooter.show();
@@ -936,8 +954,7 @@
         if(store.properties.contact && store.properties.contact.website) {
             window.open(store.properties.contact.website, store.properties.contact.website || '_self');
         } else {
-            var self = this;
-            self.showSearchPanel();
+            this.toggleSearchPanel();
         }
     };
     

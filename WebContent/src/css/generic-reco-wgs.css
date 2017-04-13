@@ -179,7 +179,6 @@ form.gr-wgs-homestore-panel-searchBlock-form{
 }
 .gr-wgs-homestore-panel-searchBlock-btn {
     margin-bottom: 12px;
-    border: 2px solid #002b6f;
     color:#002b6f;
     width:100%;
 }
@@ -190,16 +189,25 @@ form.gr-wgs-homestore-panel-searchBlock-form{
     cursor:pointer;
     padding:10px;
     font-size:18px;
+    border-radius: 6px;
+    background-color: #002b6f;
+    color:white;
 }
 .gr-wgs-homestore-panel-address-wrapper {
     position:relative;
 }
 .gr-wgs-homestore-panel-address-wrapper label{
-    margin-bottom: 0; 
+    margin-bottom: 0;
+    color: #002b6f;
 }
 input.gr-wgs-homestore-panel-address-btn {
-    padding: 5px 25px 5px 5px;
+    padding: 10px 25px 10px 5px;
     font-size:14px;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+}
+input.gr-wgs-homestore-panel-address-btn::placeholder {
+  color: #888
 }
 .gr-wgs-homestore-panel-address-predictions{
     margin-bottom: 20px;
@@ -209,8 +217,10 @@ input.gr-wgs-homestore-panel-address-btn {
 .gr-wgs-homestore-panel-address-reset {
     background-image: url('../img/close.png');
     background-repeat: no-repeat;
+    background-size: 12px 12px;
+    background-position: center center;
     position:absolute;
-    bottom:18px;
+    bottom:21px;
     right:5px;
     width: 20px;
     height: 20px;
