@@ -464,7 +464,7 @@
         });
         
         // handle click event on a geocoding result in the list
-        self.containerResultsList.on('click','.pac-item', function(event){
+        self.containerResultsList.delegate('.pac-item','click', function(event){
             var lat = window.jQuery(this).attr('data-lat');
             var lng = window.jQuery(this).attr('data-lng');
             var name = window.jQuery(this).find('.pac-item-query').text();
@@ -622,9 +622,10 @@
                     });
                 }                      
             }
-        });            
-            
-        self.container.bind('click','.pac-item', function(event){
+        });
+        
+        self.container.delegate('.pac-item','click', function(event){
+            console.log(this);
             var place_id = window.jQuery(this).attr('data-place-id');
             var place_name = window.jQuery(this).find('.pac-item-query').text();
             self.container.find('input').val(place_name);
@@ -823,15 +824,6 @@
      **/     
     wgs.genericreco.UI.prototype.buildHTMLFindMyDrive = function(){
         
-        var template =             
-            '<img src="src/img/icon-store.png" alt="centre Norauto"/>' +
-            '<div class="gr-wgs-homestore-mainBlockTitle gr-wgs-homestore-mainBlock-findStore" title="Trouvez votre centre Norauto">' + //onclick="document.getElementById('gr-wgs-homestore-panel').style.display='block' 
-                '<div>' +
-                    'Trouvez votre <br/>' +
-                    '<strong>centre Norauto</strong>' +
-                '</div>' +
-            '</div>';
-        
         var template =
             '<div class="gr-wgs-homestore-mainBlockTitle gr-wgs-homestore-mainBlock-findStore">' +
                 '<span class="gr-wgs-homestore-mainBlock-yourStore-icon icon icon-garageN"></span>' + 
@@ -909,7 +901,7 @@
         var buildHTMLStore = function(store){
             var distance = store.properties.distanceWithGoogle / 1000;
             var temp = '<li class="gr-wgs-homestore-panel-resultBlock-listItem" data-id=' + store.properties.store_id + '>' +
-                '<span class="gr-wgs-homestore-panel-resultBlock-listItem-icon"></span>' +
+                '<span class="gr-wgs-homestore-panel-resultBlock-listItem-icon icon-garagN"></span>' +
                 '<span class="gr-wgs-homestore-panel-resultBlock-listItem-infos">' +
                     '<div>' +
                         '<div class="gr-wgs-homestore-panel-resultBlock-listItem-title">' + store.properties.name +'</div>' +

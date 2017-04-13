@@ -31,21 +31,10 @@
     font-size: 14px;
     color:#002b6f;
 }
-/*
-.gr-wgs-homestore-mainBlock:before {
-    content:'s';
-    font-family:genericreco;
-    font-size:40px;
-}
-*/
+
 .gr-wgs-homestore-mainBlock > img {
-/*
-    position:relative;
-    margin-top:-1em;
-*/
     height:25px;
-    margin-right:5px;
-    
+    margin-right:5px;    
 }
 @media (min-width:768px) {
     .gr-wgs-homestore-mainBlock > img {
@@ -172,9 +161,7 @@
     #gr-wgs-homestore-panel:after {
         right:21px;
     }
-/*     .gr-wgs-homestore-container { */
-/*         min-width:120px; */
-/*     } */
+
 }
 @media (max-width:479px) {
     #gr-wgs-homestore-panel {
@@ -211,7 +198,7 @@ form.gr-wgs-homestore-panel-searchBlock-form{
     margin-bottom: 0; 
 }
 input.gr-wgs-homestore-panel-address-btn {
-    padding: 5px 20px 5px 5px;
+    padding: 5px 25px 5px 5px;
     font-size:14px;
 }
 .gr-wgs-homestore-panel-address-predictions{
@@ -220,16 +207,15 @@ input.gr-wgs-homestore-panel-address-btn {
     width: 100%;
 }
 .gr-wgs-homestore-panel-address-reset {
+    background-image: url('../img/close.png');
+    background-repeat: no-repeat;
     position:absolute;
     bottom:18px;
-    right:6px;
+    right:5px;
+    width: 20px;
+    height: 20px;
 }
-.gr-wgs-homestore-panel-address-reset:before {
-    content: 'x';
-    cursor:pointer;
-    font-family: 'genericreco';
-    -webkit-font-smoothing: antialiased;
-}
+
 .gr-wgs-homestore-panel-aroundMe-btn:hover,
 .gr-wgs-homestore-panel-aroundMe-btn:active {
     background-color: #002b6f;
@@ -263,9 +249,9 @@ input.gr-wgs-homestore-panel-address-btn {
 /*    vertical-align: middle;*/
 }
 .gr-wgs-homestore-panel-resultBlock-listItem span.gr-wgs-homestore-panel-resultBlock-listItem-icon:before {
-    content:'s';
+    content:"\E004";
     font-family:genericreco;
-    font-size:40px;
+    font-size:24px;
 }
 .gr-wgs-homestore-panel-resultBlock-listItem span.gr-wgs-homestore-panel-resultBlock-listItem-infos {
     line-height:normal;
@@ -281,7 +267,7 @@ input.gr-wgs-homestore-panel-address-btn {
 }
 .gr-wgs-homestore-panel-resultBlock-listItem-choose,
 .gr-wgs-homestore-panel-resultBlock-listItem-distance {
-    font-size:smaller;
+    font-size:12px;
 }
 .gr-wgs-homestore-panel-footerBlock {
     height:21px;
@@ -295,17 +281,14 @@ input.gr-wgs-homestore-panel-address-btn {
     cursor:pointer;
 }
 .gr-wgs-homestore-panel-footerBlock-closePanel {
+    background-image: url('../img/close.png');
+    background-repeat: no-repeat;
+    background-position: left center;
+    background-size: 9px 9px;
+    padding-left: 15px;
     float:right;
     cursor:pointer;
 }
-.gr-wgs-homestore-panel-footerBlock-closePanel:before {
-    content: 'x';
-    font-family: 'genericreco';
-    margin-right:5px;
-    -webkit-font-smoothing: antialiased;
-}
-
-
 
 .pac-container{
     background-color:#fff;
