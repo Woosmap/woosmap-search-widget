@@ -3,16 +3,22 @@
     window.wgs = window.wgs || {};
     wgs.genericreco = {};
     
+    /**
+     * CONSTANTS
+     */
     wgs.genericreco.CONSTANT = {
         debug: false
     }
     
+    /**
+     * default options
+     */
     wgs.genericreco.options = {
         container: '',
-        woosmapKey: '',
+        woosmapKey: 'avtvte-decathlon-woos',
         google: {
             key: '',
-            clientId: '',
+            clientId: 'gme-webgeoservicessa',
             channel: ''
         },
         urls:{
@@ -20,7 +26,7 @@
                 target: '_self'
             },
             stores: {
-                href: '',
+                href: 'https://centres.norauto.fr/',
                 target: '_self'
             }
         },
@@ -45,27 +51,38 @@
         translations: {
             fr: {
                 searchAroundMeBtn: 'Autour de moi',
-                searchAroundMeTitle: 'rechercher le magasin à proximité afin de retirer vos achats',
-                selectAroundMeTitle: 'choisissez le magasin à proximité afin de retirer vos achats :',
+                searchAroundMeTitle: 'Rechercher le centre à proximité',
+                selectAroundMeTitle: 'Choisissez le centre à proximité :',
                 autocompletePlaceholder: 'Spécifiez une adresse',
-                allStores: 'Tous nos magasins',
-                changeStore: 'Changez de store',
-                findStore: 'Choisir mon store',
+                allStores: 'Tous nos centres',
+                changeStore: 'Centre à proximité',
+                findStore: 'Choisir mon centre',
                 geolocationNotice: 'La géolocalisation n\'est pas activée sur votre navigateur. Veuillez changez vos préférences.',
                 closeBtn: 'Fermer'
             }
         }
     };
     
+    /**
+     * Translations
+     */
     wgs.genericreco.L10n = {};
     
+    /**
+     * RecommendationPlugin
+     * @param container
+     * @param options
+     */
     wgs.genericreco.RecommendationPlugin = RecommendationPlugin;
     function RecommendationPlugin(container, options){
         
         this.manager;
         this.ui;
         
+        if(!options) options = {};
+        
         var lang = options.lang || wgs.genericreco.options.lang
+        
         if(lang) {
             if(options.translations && options.translations.hasOwnProperty(lang)) {
                 wgs.genericreco.L10n = $.extend(wgs.genericreco.options.translations[lang],options.translations[lang]);
@@ -73,7 +90,9 @@
                 wgs.genericreco.L10n = wgs.genericreco.options.translations[lang];
             }
         }
+        
         wgs.genericreco.options = $.extend(wgs.genericreco.options,options);
+        
         wgs.genericreco.options.container = container;
         
         var places = wgs.genericreco.options.usePlaces == undefined?true:wgs.genericreco.options.usePlaces;
@@ -109,6 +128,10 @@
         };
     };
     
+    /**
+     * Manager
+     * @param plugin
+     */
     wgs.genericreco.Manager = Manager;
     function Manager(plugin){
         
@@ -272,9 +295,9 @@
     };    
     
 
-    /* 
-     * 
-     * 
+    /**
+     * WoosmapReco
+     * @param options
      */
     wgs.genericreco.WoosmapReco = WoosmapReco;
     function WoosmapReco(options){
@@ -318,10 +341,10 @@
         
         this.queue.push([event, [params]]);        
     };
-    /* 
-     * 
-     * 
-     */    
+    /**
+     * Stores
+     * @param stores
+     */
     wgs.genericreco.Stores = Stores;
     function Stores(stores){
         this.drives = [];
@@ -333,11 +356,11 @@
         return this.stores;
     };
     
-    /** 
-     * 
-     * 
-     * 
-     **/  
+    /**
+     * updateStoresWithGoogle
+     * @param coords
+     * @param callback
+     */
     wgs.genericreco.Stores.prototype.updateStoresWithGoogle = function(coords, callback){
         
         var matrice = new google.maps.DistanceMatrixService();
@@ -378,11 +401,11 @@
             }
         });    
     };
-    /** 
-     * 
-     * 
-     * 
-     **/    
+    /**
+     * sortWithGoogle
+     * @param coords
+     * @returns
+     */
     wgs.genericreco.Stores.prototype.sortWithGoogle = function(coords){
     
         this.stores.sort(function(a,b){
