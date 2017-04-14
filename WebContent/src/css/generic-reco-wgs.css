@@ -112,7 +112,7 @@
     margin-left:-140px;
     margin-top: -10000px;
     background-color:white;
-    box-shadow: 0 20px 50px 10px rgba(0,0,0,0.05);
+    box-shadow: 1px 1px 12px #555;
     opacity:0;
     z-index:2;
     color:#666;
@@ -230,6 +230,13 @@ input.gr-wgs-homestore-panel-address-btn::placeholder {
 .gr-wgs-homestore-panel-aroundMe-btn:active {
     background-color: #002b6f;
     color:white;
+}
+.gr-wgs-homestore-panel-loaderBlock {
+    background-image: url('../img/loader.gif');
+    background-repeat: no-repeat;
+    background-position: top center;
+    height: 20px;
+    display: none;
 }
 .gr-wgs-homestore-panel-resultBlock {
     border-top: 1px solid #ddd;

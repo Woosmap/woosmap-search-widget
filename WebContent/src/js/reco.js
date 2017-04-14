@@ -8,6 +8,7 @@
     }
     
     wgs.genericreco.options = {
+        container: '',
         woosmapKey: '',
         google: {
             clientId: '',
@@ -24,6 +25,7 @@
         },
         usePlaces: true,
         autocompletePlaces: {
+            minLength: 2,
             bounds: {
                 west: -4.87293470,
                 north: 51.089062,
@@ -63,6 +65,7 @@
         this.ui;
         
         wgs.genericreco.options = $.extend(wgs.genericreco.options,options);
+        wgs.genericreco.options.container = container;
         wgs.genericreco.L10n = wgs.genericreco.options.translations[wgs.genericreco.options.lang];
         
         var places = wgs.genericreco.options.usePlaces == undefined?true:wgs.genericreco.options.usePlaces;
@@ -106,36 +109,48 @@
         
         var self = this;
         
-        var initialRecommendation = function(){
-            self.reco.getUserRecommendation(function(response){
-                if(wgs.genericreco.CONSTANT.debug) {
-                    console.log('RESPONSE FROM getUserRecommendation :');
-                    console.log(response);
-                }
-                if(response && response.features && response.features.length > 0){
-                    var stores = new wgs.genericreco.Stores(response.features);
-                    var drives = stores.getStores();
-                    drives.splice(1,drives.length);
-                    self.plugin.ui.buildHTMLInitialReco(drives[0]);
-                }
-                else{
-                    self.plugin.ui.buildHTMLFindMyDrive();
-                }
-            });
-        };
+        
         
         var initialize = function(){
             
-            self.reco = new wgs.genericreco.WoosmapReco({limit: 10});
+            self.reco = new wgs.genericreco.WoosmapReco({limit: wgs.genericreco.options.woosmap.limit});
             self.reco.setProjectKey(wgs.genericreco.options.woosmapKey);
             
-            initialRecommendation();
+            self.initialRecommendation();
         };
         initialize();
     };
     
+    /**
+     * initialRecommendation
+     */
+    wgs.genericreco.Manager.prototype.initialRecommendation = function(){
+        var self = this;
+        self.reco.getUserRecommendation(function(response){
+            if(wgs.genericreco.CONSTANT.debug) {
+                console.log(response);
+            }
+            if(response && response.features && response.features.length > 0){
+                var stores = new wgs.genericreco.Stores(response.features);
+                var drives = stores.getStores();
+                drives.splice(1,drives.length);
+                self.plugin.ui.buildHTMLInitialReco(drives[0]);
+            }
+            else{
+                self.plugin.ui.buildHTMLFindMyDrive();
+            }
+        });
+    };
+    
+    /**
+     * HTML5Recommendation
+     * @param lat
+     * @param lng
+     */
     wgs.genericreco.Manager.prototype.HTML5Recommendation = function(lat, lng){
         var self = this;
+        
+        self.plugin.ui.showLoader();
         
         self.reco.sendUserHtml5Position(lat, lng, function(){
             self.reco.getUserRecommendation(function(resp){
@@ -144,17 +159,26 @@
                       stores.updateStoresWithGoogle(resp, function(){
                           var drives = stores.sortWithGoogle();
                           drives.splice(wgs.genericreco.options.woosmap.limit,drives.length);
+                          self.plugin.ui.hideLoader();
                           self.plugin.ui.buildHTMLRecommendationResults(drives);
                       });
                   });
             });
         }, function(){
+            self.plugin.ui.hideLoader();
             console.log('Error recommendation');
         });
     };
- 
+    
+    /**
+     * SearchedRecommendation
+     * @param lat
+     * @param lng
+     */
     wgs.genericreco.Manager.prototype.SearchedRecommendation = function(lat, lng){
         var self = this;
+        
+        self.plugin.ui.showLoader();
         
         self.reco.sendUserSearchedPosition(lat, lng, function(){
             self.reco.getUserRecommendation(function(resp){
@@ -163,18 +187,21 @@
                     stores.updateStoresWithGoogle(resp, function(){
                         var drives = stores.sortWithGoogle();
                         drives.splice(wgs.genericreco.options.woosmap.limit,drives.length);
+                        self.plugin.ui.hideLoader();
                         self.plugin.ui.buildHTMLRecommendationResults(drives);
                     });
                 });
             });
         }, function(){
+            self.plugin.ui.hideLoader();
             console.log('Error recommendation');
         });
     };
     
-    /* 
-     * 
-     * 
+    /**
+     * ScriptsLoader
+     * @param googleClientId
+     * @param googleChannel
      */
     wgs.genericreco.ScriptsLoader = ScriptsLoader;
     function ScriptsLoader(googleClientId, googleChannel){
@@ -316,7 +343,12 @@
             origins: origins,
             travelMode: google.maps.TravelMode.DRIVING
         };
-        console.log(request)
+        
+        if(wgs.genericreco.CONSTANT.debug) {
+            console.log('PLACES AUTOCOMPLETE REQUEST :');
+            console.log(request);
+        }
+        
         var self = this;
         matrice.getDistanceMatrix(request, function(response, status){
             if(status == google.maps.DistanceMatrixStatus.OK){
@@ -614,7 +646,7 @@
             }
             // other keys : undisplay the list
             else{
-                if(event.currentTarget.value.length > 3 ){
+                if(event.currentTarget.value.length >= wgs.genericreco.options.autocompletePlaces.minLength ){
                     var request = {
                         input: self.container.find('input').val()
                     };
@@ -634,7 +666,6 @@
         });
         
         self.container.delegate('.pac-item','click', function(event){
-            console.log(this);
             var place_id = window.jQuery(this).attr('data-place-id');
             var place_name = window.jQuery(this).find('.pac-item-query').text();
             self.container.find('input').val(place_name);
@@ -746,6 +777,7 @@
                     '<div class="gr-wgs-homestore-panel-searchBlock">'+
                         '<div class="gr-wgs-homestore-panel-searchBlock-warning">' + wgs.genericreco.L10n.geolocationNotice + '</div>'+
                     '</div>' +
+                    '<div class="gr-wgs-homestore-panel-loaderBlock"></div>' +
                     '<div class="gr-wgs-homestore-panel-resultBlock">' +
                         '<div class="gr-wgs-homestore-panel-resultBlock-title">' + wgs.genericreco.L10n.selectAroundMeTitle + '</div>' +
                         '<ul class="gr-wgs-homestore-panel-resultBlock-listBlock"></ul>' +
@@ -769,7 +801,7 @@
         this.panelContainerSearchWarning = window.jQuery('.gr-wgs-homestore-panel-searchBlock-warning');
         this.panelContainerResultsBlock = window.jQuery('.gr-wgs-homestore-panel-resultBlock');
         this.panelContainerResultsList = window.jQuery('.gr-wgs-homestore-panel-resultBlock-listBlock');
-        this.panelContainerFooter = window.jQuery('.gr-wgs-homestore-panel-footerBlock');        
+        this.panelContainerFooter = window.jQuery('.gr-wgs-homestore-panel-footerBlock');       
         
         new wgs.genericreco.HTML5Location(this.panelContainerSearch, this.plugin);
         if(usePlaces){
@@ -825,6 +857,7 @@
             }, function(){
                 self.openStore(store);
             });
+            self.toggleSearchPanel();
         });
         
         this.headerContainer.find('.gr-wgs-homestore-mainBlock-yourStore-change, .gr-wgs-homestore-mainBlock-yourStore-icon').click(function(){
@@ -872,8 +905,8 @@
      */
     wgs.genericreco.UI.prototype.onClickOutsideContainer = function(){
         var self = this;
-        self.windowContainer.click(function() {
-            if(self.isVisibleSearchPanel()) {
+        self.windowContainer.click(function(event) {
+            if(self.isVisibleSearchPanel() && window.jQuery(event.target).attr('id') !== wgs.genericreco.options.container.replace('#','')) {
                 self.hideSearchPanel();
             }
         });
@@ -914,11 +947,9 @@
      */
     wgs.genericreco.UI.prototype.showResultsBlock = function(){
         this.panelContainerResultsBlock.show();
-//        this.panelContainerFooter.show();
     };    
     wgs.genericreco.UI.prototype.hideResultsBlock = function(){
         this.panelContainerResultsBlock.hide();
-//        this.panelContainerFooter.hide();
     };
     
     wgs.genericreco.UI.prototype.slideDownWarningHTML5 = function(text){
@@ -926,7 +957,7 @@
         this.panelContainerSearchWarning.text(text).slideDown(500,function(){
             window.setTimeout(function(){
                 self.slideUpWarningHTML5();
-            },5000);                
+            },5000);
         });
     };
   
@@ -940,7 +971,7 @@
      * Build the HTML of the results of a location search
      **/     
     wgs.genericreco.UI.prototype.buildHTMLRecommendationResults = function(stores){
-        var self = this;        
+        var self = this;
         
         var buildHTMLStore = function(store){
             var distance = store.properties.distanceWithGoogle / 1000;
@@ -962,9 +993,13 @@
                 var lat = coord[1];
                 var lng = coord[0];
                 self.plugin.manager.reco.sendUserConsultedPOI(lat, lng, store.properties.store_id, function(){
-                    self.openStore(store);
+                    self.plugin.ui.resetStoreSearch();
+                    self.hideSearchPanel();
+                    self.plugin.manager.initialRecommendation();
                 }, function(){
-                    self.openStore(store);
+                    self.plugin.ui.resetStoreSearch();
+                    self.hideSearchPanel();
+                    console.log('Error recommendation');
                 });
             });
         };
@@ -976,16 +1011,27 @@
         this.showResultsBlock();
     };
     
+    wgs.genericreco.UI.prototype.resetStoreSearch = function() {
+        var self = this;
+        window.jQuery('.gr-wgs-homestore-panel-address-reset').trigger('click');
+    };
+    
     wgs.genericreco.UI.prototype.openStore = function(store){
         if(store.properties.contact && store.properties.contact.website) {
             window.open(store.properties.contact.website, store.properties.contact.website || '_self');
-        } else {
-            this.toggleSearchPanel();
         }
     };
     
     wgs.genericreco.UI.prototype.openAllStores = function(){
         window.open(wgs.genericreco.options.urls.stores.href, wgs.genericreco.options.urls.stores.target || '_self');
+    };
+    
+    wgs.genericreco.UI.prototype.showLoader = function(){
+        this.panelContainer.find('.gr-wgs-homestore-panel-loaderBlock').show();
+    };
+    
+    wgs.genericreco.UI.prototype.hideLoader = function(){
+        this.panelContainer.find('.gr-wgs-homestore-panel-loaderBlock').hide();
     };
     
 })();
