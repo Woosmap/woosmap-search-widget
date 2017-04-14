@@ -60,6 +60,7 @@
 }
 .gr-wgs-homestore-mainBlock-yourStore {
     display:inline-block;  
+    width: 160px;
 }
 .gr-wgs-homestore-mainBlock-yourStore > div {
 /*    max-width:120px;*/
@@ -97,6 +98,8 @@
     display: block;
     color: #666;
     font-size: 11px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* ----------------- */
