@@ -11,6 +11,7 @@
         container: '',
         woosmapKey: '',
         google: {
+            key: '',
             clientId: '',
             channel: ''
         },
@@ -64,9 +65,16 @@
         this.manager;
         this.ui;
         
+        var lang = options.lang || wgs.genericreco.options.lang
+        if(lang) {
+            if(options.translations && options.translations.hasOwnProperty(lang)) {
+                wgs.genericreco.L10n = $.extend(wgs.genericreco.options.translations[lang],options.translations[lang]);
+            } else {
+                wgs.genericreco.L10n = wgs.genericreco.options.translations[lang];
+            }
+        }
         wgs.genericreco.options = $.extend(wgs.genericreco.options,options);
         wgs.genericreco.options.container = container;
-        wgs.genericreco.L10n = wgs.genericreco.options.translations[wgs.genericreco.options.lang];
         
         var places = wgs.genericreco.options.usePlaces == undefined?true:wgs.genericreco.options.usePlaces;
         
@@ -77,7 +85,7 @@
         }
         
         // load of the required scripts
-        this.scriptsLoader = new wgs.genericreco.ScriptsLoader(wgs.genericreco.options.google.clientId, wgs.genericreco.options.google.channel);        
+        this.scriptsLoader = new wgs.genericreco.ScriptsLoader(wgs.genericreco.options.google.clientId, wgs.genericreco.options.google.channel, wgs.genericreco.options.google.key);        
         
         var self = this;
         if(!(window.jQuery)){
@@ -204,10 +212,11 @@
      * @param googleChannel
      */
     wgs.genericreco.ScriptsLoader = ScriptsLoader;
-    function ScriptsLoader(googleClientId, googleChannel){
+    function ScriptsLoader(googleClientId, googleChannel, googleKey){
 
         this.googleClientId = googleClientId;
         this.googleChannel = googleChannel;
+        this.googleKey = googleKey;
     };
 
     /** 
@@ -231,8 +240,9 @@
         script.async = false;
         script.type = 'text/javascript';
         script.src = '//maps.googleapis.com/maps/api/js?' + 
-            '&client=' + this.googleClientId +
-            '&channel=' + this.googleChannel +
+            (this.googleClientId ? '&client=' + this.googleClientId : '') +
+            (this.googleChannel ? '&channel=' + this.googleChannel : '') +
+            (this.googleKey ? '&key=' + this.googleKey : '') +
             '&libraries=places' +
             '&callback=' + callback;        
         document.documentElement.firstChild.appendChild(script);    
