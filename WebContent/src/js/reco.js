@@ -234,6 +234,36 @@
     };
     
     /**
+     * SearchedStores
+     * @param lat
+     * @param lng
+     */
+    wgs.genericreco.Manager.prototype.SearchedStores = function(lat, lng){
+        var self = this;
+        
+        self.plugin.ui.showLoader();
+        
+        self.reco.sendUserSearchedPosition(lat, lng, function(){
+            self.reco.searchStores(lat, lng, function(resp){
+                var stores = new wgs.genericreco.Stores(resp.features);
+                stores.updateStoresWithGoogle({latitude: lat, longitude: lng}, function(){
+                    var drives = stores.sortWithGoogle();
+                    drives.splice(wgs.genericreco.options.woosmap.limit,drives.length);
+                    self.plugin.ui.hideLoader();
+                    self.plugin.ui.buildHTMLRecommendationResults(drives);
+                },function(){
+                    self.plugin.ui.hideLoader();
+                });
+            },function(){
+                self.plugin.ui.hideLoader();
+            });
+        }, function(){
+            self.plugin.ui.hideLoader();
+            console.log('Error recommendation');
+        });
+    };
+    
+    /**
      * ScriptsLoader
      * @param googleClientId
      * @param googleChannel
@@ -313,6 +343,10 @@
     wgs.genericreco.WoosmapReco.prototype.setProjectKey = function(key){
         this.queue.push(['setProjectKey', [key]]);
     };    
+    
+    wgs.genericreco.WoosmapReco.prototype.searchStores = function(lat,lng,callback){
+        this.queue.push(['searchStores', [{successCallback: callback, lat: lat, lng: lng, storesByPage: this.limit, query: wgs.genericreco.options.woosmap.reco.query}]]);
+    };
     
     wgs.genericreco.WoosmapReco.prototype.getUserRecommendation = function(callback){
         this.queue.push(['getUserRecommendation', [{successCallback: callback, limit: this.limit, query: wgs.genericreco.options.woosmap.reco.query}]]);
@@ -554,7 +588,7 @@
             var name = window.jQuery(this).find('.pac-item-query').text();
             self.container.find('input').val(name);
             
-            self.askForRecommendation(lat, lng);            
+            self.askForStores(lat, lng);            
             self.containerResultsList.hide();
         });
         
@@ -599,6 +633,10 @@
         this.plugin.manager.SearchedRecommendation(lat, lng);
     };
     
+    wgs.genericreco.GeocodingLocation.prototype.askForStores = function(lat, lng){
+        this.plugin.manager.SearchedStores(lat, lng);
+    };
+    
     wgs.genericreco.GeocodingLocation.prototype.geocode = function(address){
         var request = {
             address: address,
@@ -614,7 +652,7 @@
                 if(results.length == 1){
                     self.container.find('.gr-wgs-homestore-panel-searchBlock-btn').val(results[0].formatted_address);
                     var coor = results[0].geometry.location;
-                    self.askForRecommendation(coor.lat(), coor.lng());
+                    self.askForStores(coor.lat(), coor.lng());
                 }
                 else{
                     self.buildHTMLResults(results);
@@ -788,7 +826,7 @@
             if(status == google.maps.places.PlacesServiceStatus.OK){
                 var lat = result.geometry.location.lat();
                 var lng = result.geometry.location.lng();
-                self.plugin.manager.SearchedRecommendation(lat, lng);
+                self.plugin.manager.SearchedStores(lat, lng);
             }                
             else if(status == google.maps.places.PlacesServiceStatus.UNKNOWN_ERROR || status == google.maps.places.PlacesServiceStatus.OVER_QUERY_LIMIT){
                 window.setTimeout(function(){
