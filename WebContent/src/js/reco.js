@@ -15,11 +15,11 @@
      */
     wgs.genericreco.options = {
         container: '',
-        woosmapKey: 'avtvte-decathlon-woos',
+        woosmapKey: 'woos-27e715eb-6454-3019-95c1-e90a418939a9',
         google: {
             key: '',
             clientId: 'gme-webgeoservicessa',
-            channel: ''
+            channel: 'norauto-fr-homepage-woosreco'
         },
         urls:{
             store: {
