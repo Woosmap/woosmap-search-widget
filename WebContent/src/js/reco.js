@@ -192,6 +192,8 @@
                           drives.splice(wgs.genericreco.options.woosmap.limit,drives.length);
                           self.plugin.ui.hideLoader();
                           self.plugin.ui.buildHTMLRecommendationResults(drives);
+                      }, function(){
+                          self.plugin.ui.hideLoader();
                       });
                   });
             });
@@ -220,6 +222,8 @@
                         drives.splice(wgs.genericreco.options.woosmap.limit,drives.length);
                         self.plugin.ui.hideLoader();
                         self.plugin.ui.buildHTMLRecommendationResults(drives);
+                    },function(){
+                        self.plugin.ui.hideLoader();
                     });
                 });
             });
@@ -361,7 +365,7 @@
      * @param coords
      * @param callback
      */
-    wgs.genericreco.Stores.prototype.updateStoresWithGoogle = function(coords, callback){
+    wgs.genericreco.Stores.prototype.updateStoresWithGoogle = function(coords, callback, errorCallback){
         
         var matrice = new google.maps.DistanceMatrixService();
         var origins = [new google.maps.LatLng(coords.latitude, coords.longitude)];
@@ -393,10 +397,11 @@
             }
             else if(status == google.maps.DistanceMatrixStatus.UNKNOWN_ERROR){
                 window.setTimeout(function(){
-                    self.updateStoresWithGoogle(coords, callback);
+                    self.updateStoresWithGoogle(coords, callback, errorCallback);
                 }, 1500);  
             }
             else{
+                errorCallback();
                 console.log(status);
             }
         });    
