@@ -332,6 +332,10 @@
         this.sendPosition('sendUserConsultedPOI',lat, lng, success, error, id);
     };
     
+    wgs.genericreco.WoosmapReco.prototype.sendUserFavoritedPOI = function(lat, lng, id, success, error){
+        this.sendPosition('sendUserFavoritedPOI',lat, lng, success, error, id);
+    };
+    
     wgs.genericreco.WoosmapReco.prototype.sendPosition = function(event, lat, lng, success, error, id){
         var params = {
             lat: lat, 
@@ -891,9 +895,9 @@
             var lat = coord[1];
             var lng = coord[0];
             self.plugin.manager.reco.sendUserConsultedPOI(lat, lng, store.properties.store_id, function(){
-                self.openStore(store);
+                //self.openStore(store);
             }, function(){
-                self.openStore(store);
+                //self.openStore(store);
             });
             self.toggleSearchPanel();
         });
@@ -1030,10 +1034,11 @@
                 var coord = store.geometry.coordinates;
                 var lat = coord[1];
                 var lng = coord[0];
-                self.plugin.manager.reco.sendUserConsultedPOI(lat, lng, store.properties.store_id, function(){
+                self.plugin.manager.reco.sendUserFavoritedPOI(lat, lng, store.properties.store_id, function(){
                     self.plugin.ui.resetStoreSearch();
                     self.hideSearchPanel();
-                    self.plugin.manager.initialRecommendation();
+                    //self.plugin.manager.initialRecommendation();
+                    self.plugin.ui.buildHTMLInitialReco(store);
                 }, function(){
                     self.plugin.ui.resetStoreSearch();
                     self.hideSearchPanel();
