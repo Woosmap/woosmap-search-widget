@@ -18,7 +18,7 @@
         woosmapKey: 'woos-27e715eb-6454-3019-95c1-e90a418939a9',
         google: {
             key: '',
-            clientId: 'gme-webgeoservicessa',
+            clientId: 'gme-srssocietederecherches',
             channel: 'norauto-fr-homepage-woosreco'
         },
         urls:{
@@ -81,7 +81,7 @@
         
         if(!options) options = {};
         
-        var lang = options.lang || wgs.genericreco.options.lang
+        var lang = (options.lang && typeof(options.lang) === 'string') ? options.lang : wgs.genericreco.options.lang;
         
         if(lang) {
             if(options.translations && options.translations.hasOwnProperty(lang)) {
@@ -274,17 +274,6 @@
         this.googleClientId = googleClientId;
         this.googleChannel = googleChannel;
         this.googleKey = googleKey;
-    };
-
-    /** 
-     * Loads the woosmap Recommendation API
-     **/
-    wgs.genericreco.ScriptsLoader.prototype.loadWoosmapReco = function(){
-        
-        var recoScript = document.createElement('script');
-        recoScript.async = true;
-        recoScript.src = '//recommendation-js.woosmap.com/recommendation.js';
-        document.documentElement.firstChild.appendChild(recoScript);        
     };
     
     /** 
