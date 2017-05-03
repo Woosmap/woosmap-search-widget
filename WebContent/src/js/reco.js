@@ -57,6 +57,7 @@
                 allStores: 'Tous nos centres',
                 changeStore: 'Centre à proximité',
                 findStore: 'Choisir mon centre',
+                selectStore: 'Choisir',
                 geolocationNotice: 'La géolocalisation n\'est pas activée sur votre navigateur. Veuillez changez vos préférences.',
                 closeBtn: 'Fermer'
             }
@@ -670,7 +671,7 @@
             '<div class="gr-wgs-homestore-panel-address-wrapper">' +
                 '<label>' + wgs.genericreco.L10n.searchAroundMeTitle + '</label>' +
                 '<form class="gr-wgs-homestore-panel-searchBlock-form">' +
-                    '<input class="gr-wgs-homestore-panel-searchBlock-btn gr-wgs-homestore-panel-address-btn" type="text" placeholder="Spécifiez une adresse"/>' +
+                    '<input class="gr-wgs-homestore-panel-searchBlock-btn gr-wgs-homestore-panel-address-btn" type="text" placeholder="' + wgs.genericreco.L10n.autocompletePlaceholder + '"/>' +
                 '</form>' +
                 '<div class="gr-wgs-homestore-panel-address-reset"></div>' +                
             '</div>' +
@@ -1049,7 +1050,7 @@
                 '<span class="gr-wgs-homestore-panel-resultBlock-listItem-infos">' +
                     '<div>' +
                         '<div class="gr-wgs-homestore-panel-resultBlock-listItem-title">' + store.properties.name +'</div>' +
-                        '<div class="gr-wgs-homestore-panel-resultBlock-listItem-choose" style="float:right">Choisir</div>' +
+                        '<div class="gr-wgs-homestore-panel-resultBlock-listItem-choose" style="float:right">' + wgs.genericreco.L10n.selectStore + '</div>' +
                         '<div class="gr-wgs-homestore-panel-resultBlock-listItem-distance">(' + distance.toFixed(1) +'km)</div>' +
                     '</div>' +
                 '</span>' +
