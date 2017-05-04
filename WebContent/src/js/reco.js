@@ -103,6 +103,43 @@
             return extended;
         };
         
+        /**
+         * check mandatories options
+         */
+        var checkOptions = function(options){
+            console.log(options)
+            if(typeof options.container === 'undefined')
+                throw new Error("the html container is undefined");
+            else if(typeof options.container !== 'string')
+                throw new Error("the html container must be a string");
+            else if(options.container.replace(' ','') === '')
+                throw new Error("the html container is empty");
+            
+            if(typeof options.woosmapKey === 'undefined')
+                throw new Error("woosmapKey is undefined");
+            else if(typeof options.woosmapKey !== 'string')
+                throw new Error("woosmapKey must be a string");
+            else if(options.woosmapKey.replace(' ','') === '')
+                throw new Error("woosmapKey is empty");
+            
+            if(typeof options.google === 'undefined')
+                throw new Error("google options is not defined");
+            else if(typeof options.google !== 'object')
+                throw new Error("google options must be an object");
+            else {
+                if(typeof options.google.clientId === 'undefined')
+                    throw new Error("google clientId is undefined");
+                else if(typeof options.google.clientId !== 'string')
+                    throw new Error("google clientId must be a string");
+                else if(options.google.clientId.replace(' ','') === '')
+                    throw new Error("google clientId is empty");
+                else if(typeof options.google.channel !== 'undefined') {
+                    if(typeof options.google.channel !== 'string')
+                        throw new Error("google client channel must be a string");
+                }
+            }
+        };
+        
         if(!options) options = {};
         
         var lang = (options.lang && typeof(options.lang) === 'string') ? options.lang : wgs.genericreco.options.lang;
@@ -116,7 +153,6 @@
         }
         
         wgs.genericreco.options = extend(wgs.genericreco.options,options);
-        
         wgs.genericreco.options.container = container;
         
         var places = wgs.genericreco.options.usePlaces == undefined?true:wgs.genericreco.options.usePlaces;
@@ -126,6 +162,8 @@
             console.log(wgs.genericreco.L10n);
             console.log(places);
         }
+        
+        checkOptions(wgs.genericreco.options);
         
         // load of the required scripts
         this.scriptsLoader = new wgs.genericreco.ScriptsLoader(wgs.genericreco.options.google.clientId, wgs.genericreco.options.google.channel, wgs.genericreco.options.google.key);        
