@@ -15,11 +15,11 @@
      */
     wgs.genericreco.options = {
         container: '',
-        woosmapKey: 'woos-27e715eb-6454-3019-95c1-e90a418939a9',
+        woosmapKey: '',
         google: {
             key: '',
-            clientId: 'gme-srssocietederecherches',
-            channel: 'norauto-fr-homepage-woosreco'
+            clientId: '',
+            channel: ''
         },
         urls:{
             store: {
@@ -80,19 +80,42 @@
         this.manager;
         this.ui;
         
+        /**
+         * Merge defaults with user options
+         * @private
+         * @param {Object} defaults Default settings
+         * @param {Object} options User options
+         * @returns {Object} Merged values of defaults and options
+         */
+        var extend = function ( defaults, options ) {
+            var extended = {};
+            var prop;
+            for (prop in defaults) {
+                if (Object.prototype.hasOwnProperty.call(defaults, prop)) {
+                    extended[prop] = defaults[prop];
+                }
+            }
+            for (prop in options) {
+                if (Object.prototype.hasOwnProperty.call(options, prop)) {
+                    extended[prop] = options[prop];
+                }
+            }
+            return extended;
+        };
+        
         if(!options) options = {};
         
         var lang = (options.lang && typeof(options.lang) === 'string') ? options.lang : wgs.genericreco.options.lang;
         
         if(lang) {
             if(options.translations && options.translations.hasOwnProperty(lang)) {
-                wgs.genericreco.L10n = $.extend(wgs.genericreco.options.translations[lang],options.translations[lang]);
+                wgs.genericreco.L10n = extend(wgs.genericreco.options.translations[lang],options.translations[lang]);
             } else {
                 wgs.genericreco.L10n = wgs.genericreco.options.translations[lang];
             }
         }
         
-        wgs.genericreco.options = $.extend(wgs.genericreco.options,options);
+        wgs.genericreco.options = extend(wgs.genericreco.options,options);
         
         wgs.genericreco.options.container = container;
         
