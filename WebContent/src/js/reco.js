@@ -107,7 +107,6 @@
          * check mandatories options
          */
         var checkOptions = function(options){
-            console.log(options)
             if(typeof options.container === 'undefined')
                 throw new Error("the html container is undefined");
             else if(typeof options.container !== 'string')
