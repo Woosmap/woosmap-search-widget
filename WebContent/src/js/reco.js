@@ -26,7 +26,7 @@
                 target: '_self'
             },
             stores: {
-                href: 'https://centres.norauto.fr/',
+                href: '',
                 target: '_self'
             }
         },
@@ -107,6 +107,9 @@
          * check mandatories options
          */
         var checkOptions = function(options){
+            /**
+             * check html container 
+             */
             if(typeof options.container === 'undefined')
                 throw new Error("the html container is undefined");
             else if(typeof options.container !== 'string')
@@ -114,6 +117,9 @@
             else if(options.container.replace(' ','') === '')
                 throw new Error("the html container is empty");
             
+            /**
+             * check woosmap public key
+             */
             if(typeof options.woosmapKey === 'undefined')
                 throw new Error("woosmapKey is undefined");
             else if(typeof options.woosmapKey !== 'string')
@@ -121,6 +127,9 @@
             else if(options.woosmapKey.replace(' ','') === '')
                 throw new Error("woosmapKey is empty");
             
+            /**
+             * check google client id & channel
+             */
             if(typeof options.google === 'undefined')
                 throw new Error("google options is not defined");
             else if(typeof options.google !== 'object')
@@ -137,6 +146,10 @@
                         throw new Error("google client channel must be a string");
                 }
             }
+            
+            /**
+             * 
+             */
         };
         
         if(!options) options = {};
@@ -229,7 +242,7 @@
                 self.plugin.ui.buildHTMLInitialReco(drives[0]);
             }
             else{
-                self.plugin.ui.buildHTMLFindMyDrive();
+                self.plugin.ui.buildHTMLFindMyStore();
             }
         });
     };
@@ -390,36 +403,89 @@
         this.queue = rRequestQueue = [];
     };
     
+    /**
+     * setProjectKey
+     * @param key
+     */
     wgs.genericreco.WoosmapReco.prototype.setProjectKey = function(key){
         this.queue.push(['setProjectKey', [key]]);
     };    
     
+    /**
+     * searchStores
+     * @param lat
+     * @param lng
+     * @param callback
+     */
     wgs.genericreco.WoosmapReco.prototype.searchStores = function(lat,lng,callback){
         this.queue.push(['searchStores', [{successCallback: callback, lat: lat, lng: lng, storesByPage: this.limit, query: wgs.genericreco.options.woosmap.reco.query}]]);
     };
     
+    /**
+     * getUserRecommendation
+     * @param callback
+     */
     wgs.genericreco.WoosmapReco.prototype.getUserRecommendation = function(callback){
         this.queue.push(['getUserRecommendation', [{successCallback: callback, limit: this.limit, query: wgs.genericreco.options.woosmap.reco.query}]]);
     };
+    /**
+     * getUserPosition
+     * @param callback
+     */
     wgs.genericreco.WoosmapReco.prototype.getUserPosition = function(callback){
         this.queue.push(['getUserPosition', [{successCallback: callback}]]);
-    };    
+    };
+    /**
+     * sendUserHtml5Position
+     * @param lat
+     * @param lng
+     * @param success
+     * @param error
+     */
     wgs.genericreco.WoosmapReco.prototype.sendUserHtml5Position = function(lat, lng, success, error){
         this.sendPosition('sendUserHtml5Position',lat, lng, success, error);
     };    
-
+    /**
+     * sendUserSearchedPosition
+     * @param lat
+     * @param lng
+     * @param success
+     * @param error
+     */
     wgs.genericreco.WoosmapReco.prototype.sendUserSearchedPosition = function(lat, lng, success, error){
         this.sendPosition('sendUserSearchedPosition',lat, lng, success, error);
     };
- 
+    /**
+     * sendUserConsultedPOI
+     * @param lat
+     * @param lng
+     * @param id
+     * @param success
+     * @param error
+     */
     wgs.genericreco.WoosmapReco.prototype.sendUserConsultedPOI = function(lat, lng, id, success, error){
         this.sendPosition('sendUserConsultedPOI',lat, lng, success, error, id);
     };
-    
+    /**
+     * sendUserFavoritedPOI
+     * @param lat
+     * @param lng
+     * @param id
+     * @param success
+     * @param error
+     */
     wgs.genericreco.WoosmapReco.prototype.sendUserFavoritedPOI = function(lat, lng, id, success, error){
         this.sendPosition('sendUserFavoritedPOI',lat, lng, success, error, id);
     };
-    
+    /**
+     * sendPosition
+     * @param event
+     * @param lat
+     * @param lng
+     * @param success
+     * @param error
+     * @param id
+     */
     wgs.genericreco.WoosmapReco.prototype.sendPosition = function(event, lat, lng, success, error, id){
         var params = {
             lat: lat, 
@@ -443,7 +509,10 @@
         this.stores = stores;
         
     };
-    
+    /**
+     * getStores
+     * @returns stores
+     */
     wgs.genericreco.Stores.prototype.getStores = function(){
         return this.stores;
     };
@@ -513,10 +582,11 @@
     };
     
     
-    /* 
-     * 
-     * 
-     */    
+    /**
+     * HTML5Location
+     * @param container
+     * @param plugin
+     */
     wgs.genericreco.HTML5Location = HTML5Location;
     function HTML5Location(container, plugin){
         
@@ -563,10 +633,11 @@
         initialize();
     };
     
-    /* 
-     * 
-     * 
-     */   
+    /**
+     * GeocodingLocation
+     * @param container
+     * @param plugin
+     */
     wgs.genericreco.GeocodingLocation = GeocodingLocation;
     function GeocodingLocation(container, plugin){
         
@@ -576,7 +647,9 @@
         
         this.buildHTML();   
     };    
-    
+    /**
+     * buildHTML
+     */
     wgs.genericreco.GeocodingLocation.prototype.buildHTML = function(){
         var template = 
             '<div class="gr-wgs-homestore-panel-address-wrapper">' +
@@ -656,7 +729,10 @@
             return false;
         });
     };
-    
+    /**
+     * buildHTMLResults
+     * @param results
+     */
     wgs.genericreco.GeocodingLocation.prototype.buildHTMLResults = function(results){
         
         var self = this;
@@ -678,15 +754,26 @@
             buildResult(results[i]);
         }
     };    
-    
+    /**
+     * askForRecommendation
+     * @param lat
+     * @param lng
+     */
     wgs.genericreco.GeocodingLocation.prototype.askForRecommendation = function(lat, lng){
         this.plugin.manager.SearchedRecommendation(lat, lng);
     };
-    
+    /**
+     * askForStores
+     * @param lat
+     * @param lng
+     */
     wgs.genericreco.GeocodingLocation.prototype.askForStores = function(lat, lng){
         this.plugin.manager.SearchedStores(lat, lng);
     };
-    
+    /**
+     * geocode
+     * @param address
+     */
     wgs.genericreco.GeocodingLocation.prototype.geocode = function(address){
         var request = {
             address: address,
@@ -713,7 +800,11 @@
             }
         });
     };
-        
+    /**
+     * PlacesLocation
+     * @param container
+     * @param plugin
+     */
     wgs.genericreco.PlacesLocation = PlacesLocation;
     function PlacesLocation(container, plugin){
         
@@ -724,7 +815,7 @@
         this.buildHTML();        
     };
     /**
-     * 
+     * buildHTML
      */
     wgs.genericreco.PlacesLocation.prototype.buildHTML = function(){
         var template = 
@@ -818,7 +909,8 @@
     };
     
     /**
-     * 
+     * buildHTMLPredictions
+     * @param predictions
      */
     wgs.genericreco.PlacesLocation.prototype.buildHTMLPredictions = function(predictions){
         
@@ -842,7 +934,8 @@
     };
     
     /**
-     * 
+     * getPredictions
+     * @param request
      */
     wgs.genericreco.PlacesLocation.prototype.getPredictions = function(request){
         var self = this;
@@ -863,7 +956,8 @@
         });        
     };
     /**
-     * 
+     * getDetails
+     * @param place_id
      */
     wgs.genericreco.PlacesLocation.prototype.getDetails = function(place_id){
         
@@ -890,8 +984,11 @@
     };
     
     /**
-     * 
-     */   
+     * UI
+     * @param container
+     * @param usePlaces
+     * @param plugin
+     */
     wgs.genericreco.UI = UI;
     function UI(container, usePlaces, plugin){
         
@@ -913,7 +1010,7 @@
                         '<ul class="gr-wgs-homestore-panel-resultBlock-listBlock"></ul>' +
                     '</div>' +
                     '<div class="gr-wgs-homestore-panel-footerBlock">' +
-                        '<div class="gr-wgs-homestore-panel-footerBlock-allStores">' + wgs.genericreco.L10n.allStores + '</div>' +
+                        '<div class="gr-wgs-homestore-panel-footerBlock-allStores">' + (wgs.genericreco.options.urls.stores.href.replace(' ','') !== '' ? wgs.genericreco.L10n.allStores : '' )+ '</div>' +
                         '<div class="gr-wgs-homestore-panel-footerBlock-closePanel">' + wgs.genericreco.L10n.closeBtn + '</div>' +
                     '</div>';
                 '</div>' +
@@ -956,8 +1053,9 @@
     };
     
     /** 
-     * Build the HTML of the drive recommendation in the header
-     * @param {Store} max number of drives to retrieve
+     * buildHTMLInitialReco
+     * Build the HTML of the store recommendation in the header
+     * @param {Store} max number of stores to retrieve
      **/
     wgs.genericreco.UI.prototype.buildHTMLInitialReco = function(store){
         
@@ -995,9 +1093,10 @@
         });                   
     };
     /** 
+     * buildHTMLFindMyStore
      * Build the HTML of the "Trouver mon magasin" in the header
      **/     
-    wgs.genericreco.UI.prototype.buildHTMLFindMyDrive = function(){
+    wgs.genericreco.UI.prototype.buildHTMLFindMyStore = function(){
         
         var template =
             '<div class="gr-wgs-homestore-mainBlockTitle gr-wgs-homestore-mainBlock-findStore">' +
@@ -1031,7 +1130,7 @@
     };  
     
     /**
-     * 
+     * onClickOutsideContainer
      */
     wgs.genericreco.UI.prototype.onClickOutsideContainer = function(){
         var self = this;
@@ -1045,25 +1144,26 @@
         });  
     };
     /**
-     * 
+     * isVisibleSearchPanel
+     * @return boolean
      */
     wgs.genericreco.UI.prototype.isVisibleSearchPanel = function(){
         return this.panelContainer.hasClass('gr-wgs-homestore-panel-open');
     };
     /** 
-     * 
+     * showSearchPanel
      **/     
     wgs.genericreco.UI.prototype.showSearchPanel = function(){
         this.panelContainer.addClass('gr-wgs-homestore-panel-open');
     };    
     /** 
-     * 
+     * hideSearchPanel
      **/     
     wgs.genericreco.UI.prototype.hideSearchPanel = function(){
         this.panelContainer.removeClass('gr-wgs-homestore-panel-open');
     };
     /**
-     * 
+     * toggleSearchPanel
      */
     wgs.genericreco.UI.prototype.toggleSearchPanel = function(){
         if(this.isVisibleSearchPanel()) {
@@ -1073,15 +1173,21 @@
         }
     };
     /**
-     * 
+     * showResultsBlock
      */
     wgs.genericreco.UI.prototype.showResultsBlock = function(){
         this.panelContainerResultsBlock.show();
-    };    
+    };
+    /**
+     * hideResultsBlock
+     */
     wgs.genericreco.UI.prototype.hideResultsBlock = function(){
         this.panelContainerResultsBlock.hide();
     };
-    
+    /**
+     * slideDownWarningHTML5
+     * @param text
+     */
     wgs.genericreco.UI.prototype.slideDownWarningHTML5 = function(text){
         var self = this;
         this.panelContainerSearchWarning.text(text).slideDown(500,function(){
@@ -1090,15 +1196,22 @@
             },5000);
         });
     };
-  
+    /**
+     * slideUpWarningHTML5
+     */
     wgs.genericreco.UI.prototype.slideUpWarningHTML5 = function(){
         this.panelContainerSearchWarning.slideUp(500);
     };
+    /**
+     * hideWarningHTML5
+     */
     wgs.genericreco.UI.prototype.hideWarningHTML5 = function(){
         this.panelContainerSearchWarning.hide();
     };     
     /** 
+     * buildHTMLRecommendationResults
      * Build the HTML of the results of a location search
+     * @param stores
      **/     
     wgs.genericreco.UI.prototype.buildHTMLRecommendationResults = function(stores){
         var self = this;
@@ -1141,26 +1254,37 @@
         }
         this.showResultsBlock();
     };
-    
+    /**
+     * resetStoreSearch
+     */
     wgs.genericreco.UI.prototype.resetStoreSearch = function() {
         var self = this;
         window.jQuery('.gr-wgs-homestore-panel-address-reset').trigger('click');
     };
-    
+    /**
+     * openStore
+     * @param store
+     */
     wgs.genericreco.UI.prototype.openStore = function(store){
         if(store.properties.contact && store.properties.contact.website) {
             window.open(store.properties.contact.website, store.properties.contact.website || '_self');
         }
     };
-    
+    /**
+     * openAllStores
+     */
     wgs.genericreco.UI.prototype.openAllStores = function(){
         window.open(wgs.genericreco.options.urls.stores.href, wgs.genericreco.options.urls.stores.target || '_self');
     };
-    
+    /**
+     * showLoader
+     */
     wgs.genericreco.UI.prototype.showLoader = function(){
         this.panelContainer.find('.gr-wgs-homestore-panel-loaderBlock').show();
     };
-    
+    /**
+     * hideLoader
+     */
     wgs.genericreco.UI.prototype.hideLoader = function(){
         this.panelContainer.find('.gr-wgs-homestore-panel-loaderBlock').hide();
     };
