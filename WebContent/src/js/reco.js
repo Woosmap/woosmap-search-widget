@@ -7,7 +7,9 @@
      * CONSTANTS
      */
     wgs.genericreco.CONSTANT = {
-        debug: false
+        debug: false,
+        defaultLang : 'fr',
+        target: ['_blank','_self','_parent','_top','framename']
     }
     
     /**
@@ -22,18 +24,21 @@
             channel: ''
         },
         urls:{
+            //lien vers la page du store recommandé
             store: {
+                href: false, //boolean or string
                 target: '_self'
             },
+            //lien vers la page "tous nos stores"
             stores: {
-                href: '',
+                href: 'https://developers.woosmap.com/',
                 target: '_self'
             }
         },
         usePlaces: true,
         autocompletePlaces: {
             minLength: 2,
-            bounds: {
+            bounds: {//default : France
                 west: -4.87293470,
                 north: 51.089062,
                 south: 42.19809198,
@@ -104,37 +109,50 @@
         };
         
         /**
-         * check mandatories options
+         * isArray
+         * check is an object is an array
+         * return boolean
+         */
+        var isArray = function(obj) {
+            return Object.prototype.toString.call(obj) === '[object Array]';
+        }
+        
+        /**
+         * checkOptions
+         * @param {Object} options
          */
         var checkOptions = function(options){
             /**
              * check html container 
              */
             if(typeof options.container === 'undefined')
-                throw new Error("the html container is undefined");
+                throw new Error("the container (html locator) is undefined");
             else if(typeof options.container !== 'string')
-                throw new Error("the html container must be a string");
+                throw new Error("the container (html locator) must be a string");
             else if(options.container.replace(' ','') === '')
-                throw new Error("the html container is empty");
+                throw new Error("the container (html locator) is empty");
             
             /**
              * check woosmap public key
              */
             if(typeof options.woosmapKey === 'undefined')
-                throw new Error("woosmapKey is undefined");
+                throw new Error("woosmapKey (public key) is undefined");
             else if(typeof options.woosmapKey !== 'string')
-                throw new Error("woosmapKey must be a string");
+                throw new Error("woosmapKey (public key) must be a string");
             else if(options.woosmapKey.replace(' ','') === '')
-                throw new Error("woosmapKey is empty");
+                throw new Error("woosmapKey (public key) is empty");
             
             /**
-             * check google client id & channel
+             * check google options (clientId & channel)
              */
             if(typeof options.google === 'undefined')
                 throw new Error("google options is not defined");
             else if(typeof options.google !== 'object')
                 throw new Error("google options must be an object");
             else {
+                /**
+                 * check google clientId
+                 */
                 if(typeof options.google.clientId === 'undefined')
                     throw new Error("google clientId is undefined");
                 else if(typeof options.google.clientId !== 'string')
@@ -142,14 +160,108 @@
                 else if(options.google.clientId.replace(' ','') === '')
                     throw new Error("google clientId is empty");
                 else if(typeof options.google.channel !== 'undefined') {
+                    /**
+                     * check channel if it's defined
+                     */
                     if(typeof options.google.channel !== 'string')
                         throw new Error("google client channel must be a string");
                 }
             }
             
             /**
-             * 
+             * check stores links
              */
+            if(typeof options.urls !== 'undefined') {
+                /**
+                 * check stores link
+                 */
+                if(typeof options.urls.stores !== 'undefined') {
+                    if(typeof options.urls.stores.href !== 'string')
+                        throw new Error("urls.stores.href must be a string");
+                    if(typeof options.urls.stores.target !== 'undefined'){
+                        if(typeof options.urls.stores.target !== 'string')
+                            throw new Error("urls.stores.target must be a string");
+                        if(wgs.genericreco.CONSTANT.target.indexOf(options.urls.stores.target)===-1)
+                            throw new Error("urls.stores.target must be : " + wgs.genericreco.CONSTANT.target.join(', '));
+                    }
+                }
+                
+                /**
+                 * check store link
+                 */
+                if(typeof options.urls.store !== 'undefined') {
+                    if(typeof options.urls.store.href !== 'undefined') {
+                        if(typeof options.urls.store.href !== 'string' && typeof options.urls.store.href !== 'boolean')
+                            throw new Error("urls.stores.href must be a string or boolean");
+                    }
+                    if(typeof options.urls.store.target !== 'undefined'){
+                        if(typeof options.urls.store.target !== 'string')
+                            throw new Error("urls.store.target must be a string");
+                        if(wgs.genericreco.CONSTANT.target.indexOf(options.urls.store.target)===-1)
+                            throw new Error("urls.store.target must be : " + wgs.genericreco.CONSTANT.target.join(', '));
+                    }
+                }
+            }
+            
+            /**
+             * check usePlaces
+             */
+            if(typeof options.usePlaces !== 'undefined') {
+               if(typeof options.usePlaces !== 'boolean')
+                   throw new Error("usePlaces must be a boolean");
+            }
+            
+            /**
+             * check autocompletePlaces
+             */
+            if(typeof options.autocompletePlaces !== 'undefined') {
+                if(typeof options.autocompletePlaces.minLength !== 'number')
+                    throw new Error("autocompletePlaces.minLength must be a number");
+                
+                if(typeof options.autocompletePlaces.bounds !== 'undefined') {
+                    if(typeof options.autocompletePlaces.bounds !== 'object')
+                        throw new Error("autocompletePlaces.bounds must be an object {west: <number>, north: <number>, south: <number>, east: <number>}");
+                    
+                    if(typeof options.autocompletePlaces.bounds.west === 'undefined')
+                        throw new Error("autocompletePlaces.bounds.west is missing");
+                    if(typeof options.autocompletePlaces.bounds.west !== 'number')
+                        throw new Error("autocompletePlaces.bounds.west must be a number");
+                    
+                    if(typeof options.autocompletePlaces.bounds.north === 'undefined')
+                        throw new Error("autocompletePlaces.bounds.north is missing");
+                    if(typeof options.autocompletePlaces.bounds.north !== 'number')
+                        throw new Error("autocompletePlaces.bounds.north must be a number");
+                    
+                    if(typeof options.autocompletePlaces.bounds.south === 'undefined')
+                        throw new Error("autocompletePlaces.bounds.south is missing");
+                    if(typeof options.autocompletePlaces.bounds.south !== 'number')
+                        throw new Error("autocompletePlaces.bounds.south must be a number");
+                    
+                    if(typeof options.autocompletePlaces.bounds.east === 'undefined')
+                        throw new Error("autocompletePlaces.bounds.east is missing");
+                    if(typeof options.autocompletePlaces.bounds.east !== 'number')
+                        throw new Error("autocompletePlaces.bounds.east must be a number");
+                }
+                
+                if(typeof options.autocompletePlaces.types !== 'undefined') {
+                    if( !isArray(options.autocompletePlaces.types) )
+                        throw new Error("autocompletePlaces.types must be an array of string, e.g: ['geocode']");
+                }
+            }
+            
+            if(typeof options.lang === 'undefined')
+                throw new Error("autocompletePlaces.lang is undefined, e.g: 'fr'");
+            if(typeof options.lang !== 'string')
+                throw new Error("autocompletePlaces.lang must be a string");
+            
+            if(typeof options.translations[options.lang] === 'undefined')
+                throw new Error("translations for the lang \'" + options.lang + "\' are not found");
+            if(typeof options.translations[options.lang] !== 'object')
+                throw new Error("translations must be an object");
+            for(var key in options.translations[options.lang]) {
+                if(typeof options.translations[options.lang][key] !== 'string')
+                    throw new Error("translations." + options.lang + "." + key + " must be a string");
+            }
         };
         
         if(!options) options = {};
@@ -159,8 +271,11 @@
         if(lang) {
             if(options.translations && options.translations.hasOwnProperty(lang)) {
                 wgs.genericreco.L10n = extend(wgs.genericreco.options.translations[lang],options.translations[lang]);
-            } else {
+            } else if (wgs.genericreco.options.translations.hasOwnProperty(lang)) {
                 wgs.genericreco.L10n = wgs.genericreco.options.translations[lang];
+            } else {
+                console.warn('translations lang \'' + lang + '\' not found');
+                wgs.genericreco.L10n = wgs.genericreco.options.translations[wgs.genericreco.CONSTANT.defaultLang];
             }
         }
         
@@ -360,9 +475,9 @@
         script.async = false;
         script.type = 'text/javascript';
         script.src = '//maps.googleapis.com/maps/api/js?' + 
-            (this.googleClientId ? '&client=' + this.googleClientId : '') +
-            (this.googleChannel ? '&channel=' + this.googleChannel : '') +
-            (this.googleKey ? '&key=' + this.googleKey : '') +
+            (this.googleClientId && this.googleClientId !== '' ? '&client=' + this.googleClientId : '') +
+            (this.googleChannel && this.googleChannel !== '' ? '&channel=' + this.googleChannel : '') +
+            (this.googleKey && this.googleKey !== '' ? '&key=' + this.googleKey : '') +
             '&libraries=places' +
             '&callback=' + callback;        
         document.documentElement.firstChild.appendChild(script);    
@@ -875,8 +990,7 @@
                     if(wgs.genericreco.options.autocompletePlaces.bounds)
                         request.bounds = wgs.genericreco.options.autocompletePlaces.bounds;
                     if(wgs.genericreco.options.autocompletePlaces.types)
-                        request.types = wgs.genericreco.options.autocompletePlaces.types;
-                        
+                        request.types = wgs.genericreco.options.autocompletePlaces.types;    
                     self.getPredictions(request, function(results){
                         self.buildHTMLPredictions(results);
                     }, function(error){
@@ -1080,10 +1194,13 @@
             var coord = store.geometry.coordinates;
             var lat = coord[1];
             var lng = coord[0];
+            var callback = function(store) {
+                self.openStore(store);
+            };
             self.plugin.manager.reco.sendUserConsultedPOI(lat, lng, store.properties.store_id, function(){
-                //self.openStore(store);
+                callback(store);
             }, function(){
-                //self.openStore(store);
+                callback(store);
             });
             self.toggleSearchPanel();
         });
@@ -1266,8 +1383,14 @@
      * @param store
      */
     wgs.genericreco.UI.prototype.openStore = function(store){
-        if(store.properties.contact && store.properties.contact.website) {
-            window.open(store.properties.contact.website, store.properties.contact.website || '_self');
+        var url;
+        if(store.properties.contact && store.properties.contact.website && wgs.genericreco.options.urls.store.target !== false) {
+            if(wgs.genericreco.options.urls.store.href === true) {
+                url = store.properties.contact.website;
+            } else if (typeof wgs.genericreco.options.urls.store.href === 'string'){
+                url = wgs.genericreco.options.urls.store.href;
+            }
+            window.open(url, wgs.genericreco.options.urls.store.target || '_self');
         }
     };
     /**
