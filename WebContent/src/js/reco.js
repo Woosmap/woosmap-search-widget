@@ -784,7 +784,7 @@
                     var clickEvent = document.createEvent('MouseEvents');
                     clickEvent.initEvent("click", true, true);
                     if (self.containerResultsList.querySelectorAll('.pac-item-selected').length > 0) {
-                        self.containerResultsList.querySelectorAll('.pac-item-selected').dispatchEvent(clickEvent);
+                        self.containerResultsList.querySelector('.pac-item-selected').dispatchEvent(clickEvent);
                     }
                     else {
                         self.containerResultsList.querySelector('.pac-item').dispatchEvent(clickEvent);
@@ -953,7 +953,6 @@
                 var clickEvent = document.createEvent('MouseEvents');
                 clickEvent.initEvent("click", true, true);
                 if (self.containerPredictionsList.querySelectorAll('.pac-item-selected').length > 0) {
-
                     self.containerPredictionsList.querySelector('.pac-item-selected').dispatchEvent(clickEvent);
                 }
                 else {
