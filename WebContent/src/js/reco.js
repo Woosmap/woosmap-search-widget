@@ -11,6 +11,22 @@
         debug: false,
         defaultLang: 'fr',
         target: ['_blank', '_self', '_parent', '_top', 'framename']
+    };
+
+    if (window.Element && !Element.prototype.closest) {
+        Element.prototype.closest =
+            function (s) {
+                var matches = (this.document || this.ownerDocument).querySelectorAll(s),
+                    i,
+                    el = this;
+                do {
+                    i = matches.length;
+                    while (--i >= 0 && matches.item(i) !== el) {
+                    }
+
+                } while ((i < 0) && (el = el.parentElement));
+                return el;
+            };
     }
 
     /**
@@ -297,7 +313,6 @@
         this.scriptsLoader = new wgs.genericreco.ScriptsLoader(wgs.genericreco.options.google.clientId, wgs.genericreco.options.google.channel, wgs.genericreco.options.google.key);
 
         this.scriptsLoader.loadGoogleMaps('googleMapsLoaded');
-
 
         googleMapsLoaded = function () {
             initialize();
@@ -767,7 +782,7 @@
                 }
                 else {
                     var clickEvent = document.createEvent('MouseEvents');
-                    clickEvent.initEvent( "click", true, true );
+                    clickEvent.initEvent("click", true, true);
                     if (self.containerResultsList.querySelectorAll('.pac-item-selected').length > 0) {
                         self.containerResultsList.querySelectorAll('.pac-item-selected').dispatchEvent(clickEvent);
                     }
@@ -802,15 +817,16 @@
         // self.containerResultsList.delegate('.pac-item','click', function(event){
         self.containerResultsList.addEventListener('click', function (event) {
             var target = event.target;
-
-            var lat = target.getAttribute('data-lat');
-            var lng = target.getAttribute('data-lng');
-            var name = target.querySelector('.pac-item-query').text;
+            var pacItem = target.closest('.pac-item');
+            var lat = pacItem.getAttribute('data-lat');
+            var lng = pacItem.getAttribute('data-lng');
+            var name = pacItem.querySelector('.pac-item-query').innerText;
             self.container.querySelector('input').value = name;
 
             self.askForStores(lat, lng);
-            self.containerResultsList.hide();
-        });
+            self.containerResultsList.style.display = 'none';
+            self.containerResultsList.innerHTML = '';
+        }, true);
 
         // handle the click on the reset search field button
         self.container.querySelector('.gr-wgs-homestore-panel-address-reset').addEventListener('click', function () {
@@ -847,8 +863,6 @@
         };
         this.containerResultsList.innerHTML = '';
         this.containerResultsList.style.display = 'block';
-
-
 
         for (var i = 0; i < results.length; i++) {
             buildResult(results[i]);
@@ -937,7 +951,7 @@
             // key enter
             if (event.keyCode === 13) {
                 var clickEvent = document.createEvent('MouseEvents');
-                clickEvent.initEvent( "click", true, true );
+                clickEvent.initEvent("click", true, true);
                 if (self.containerPredictionsList.querySelectorAll('.pac-item-selected').length > 0) {
 
                     self.containerPredictionsList.querySelector('.pac-item-selected').dispatchEvent(clickEvent);
@@ -945,7 +959,7 @@
                 else {
                     self.containerPredictionsList.querySelector('.pac-item').dispatchEvent(clickEvent);
                 }
-          }
+            }
             //key up
             else if (event.keyCode === 38) {
                 if (self.containerPredictionsList.querySelectorAll('.pac-item-selected').length > 0) {
@@ -990,15 +1004,13 @@
             }
         });
 
-        self.container.addEventListener('click', function (event) {
-            var target = event.target;
-            if (target.classList.contains('pac-item')) {
-                var place_id = target.getAttribute('data-place-id');
-                self.container.querySelector('input').value = target.querySelector('.pac-item-query').innerText;
-                self.containerPredictionsList.style.display = 'none';
-                self.getDetails(place_id);
-            }
-        });
+        self.containerPredictionsList.addEventListener('click', function (event) {
+            var pacItem = event.target.closest('.pac-item');
+            var place_id = pacItem.getAttribute('data-place-id');
+            self.container.querySelector('input').value = pacItem.querySelector('.pac-item-query').innerText;
+            self.containerPredictionsList.style.display = 'none';
+            self.getDetails(place_id);
+        }, true);
 
         this.container.querySelector('.gr-wgs-homestore-panel-address-reset').addEventListener('click', function () {
             self.clearPanel();
@@ -1011,11 +1023,11 @@
 
     };
 
-    wgs.genericreco.PlacesLocation.prototype.clearPanel = function() {
-            this.container.querySelector('input').value = '';
-            this.containerPredictionsList.innerHTML = '';
-            this.containerPredictionsList.style.display = 'none';
-            this.plugin.ui.hideResultsBlock();
+    wgs.genericreco.PlacesLocation.prototype.clearPanel = function () {
+        this.container.querySelector('input').value = '';
+        this.containerPredictionsList.innerHTML = '';
+        this.containerPredictionsList.style.display = 'none';
+        this.plugin.ui.hideResultsBlock();
     };
 
     /**
@@ -1035,8 +1047,8 @@
 
             self.containerPredictionsList.insertAdjacentHTML('beforeend', template);
         };
-        this.containerPredictionsList.innerHTML='';
-        this.containerPredictionsList.style.display='block';
+        this.containerPredictionsList.innerHTML = '';
+        this.containerPredictionsList.style.display = 'block';
         for (var i = 0; i < predictions.length; i++) {
             buildPrediction(predictions[i]);
         }
@@ -1131,7 +1143,7 @@
         this.panelContainerSearch = this.container.querySelector('.gr-wgs-homestore-panel-searchBlock');
         this.panelContainerSearchWarning = this.container.querySelector('.gr-wgs-homestore-panel-searchBlock-warning');
         this.panelContainerResultsBlock = this.container.querySelector('.gr-wgs-homestore-panel-resultBlock');
-        this.panelContainerResultsList =this.container.querySelector('.gr-wgs-homestore-panel-resultBlock-listBlock');
+        this.panelContainerResultsList = this.container.querySelector('.gr-wgs-homestore-panel-resultBlock-listBlock');
         this.panelContainerFooter = this.container.querySelector('.gr-wgs-homestore-panel-footerBlock');
 
         new wgs.genericreco.HTML5Location(this.panelContainerSearch, this.plugin);
@@ -1139,7 +1151,7 @@
             this._searchManager = new wgs.genericreco.PlacesLocation(this.panelContainerSearch, this.plugin);
         }
         else {
-             this._searchManager = new wgs.genericreco.GeocodingLocation(this.panelContainerSearch, this.plugin);
+            this._searchManager = new wgs.genericreco.GeocodingLocation(this.panelContainerSearch, this.plugin);
         }
 
         this.hideResultsBlock();
@@ -1166,7 +1178,7 @@
         var template =
             '<div class="gr-wgs-homestore-mainBlockTitle gr-wgs-homestore-mainBlock-yourStore">' +
             '<span class="gr-wgs-homestore-mainBlock-yourStore-icon icon icon-garageN"></span>' +
-            '<span class="gr-wgs-homestore-mainBlock-yourStore-change">' + //onclick="document.getElementById('gr-wgs-homestore-panel').style.display='block'"
+            '<span class="gr-wgs-homestore-mainBlock-yourStore-change">' +
             wgs.genericreco.L10n.changeStore +
             '</span>' +
             '<span class="gr-wgs-homestore-mainBlock-yourStore-name">' +
@@ -1213,8 +1225,8 @@
             '</span>' +
             '</div>';
 
-        this.headerContainer.innerHTML=template;
-            // .show();
+        this.headerContainer.innerHTML = template;
+        // .show();
 
         var self = this;
         this.headerContainer.querySelector('.gr-wgs-homestore-mainBlock-findStore').addEventListener('click', function () {
@@ -1243,6 +1255,7 @@
         });
         self.mainContainer.addEventListener('click', function (event) {
             event.stopPropagation();
+            return false;
         });
     };
     /**
@@ -1278,13 +1291,13 @@
      * showResultsBlock
      */
     wgs.genericreco.UI.prototype.showResultsBlock = function () {
-        this.panelContainerResultsBlock.style.display='block';
+        this.panelContainerResultsBlock.style.display = 'block';
     };
     /**
      * hideResultsBlock
      */
     wgs.genericreco.UI.prototype.hideResultsBlock = function () {
-        this.panelContainerResultsBlock.style.display='none';
+        this.panelContainerResultsBlock.style.display = 'none';
     };
     /**
      * slideDownWarningHTML5
@@ -1293,21 +1306,20 @@
     wgs.genericreco.UI.prototype.slideDownWarningHTML5 = function (text) {
         var self = this;
         this.panelContainerSearchWarning.innerText = text;
-        this.panelContainerSearchWarning.style.display='block';
+        this.panelContainerSearchWarning.style.display = 'block';
 
     };
     /**
      * slideUpWarningHTML5
      */
     wgs.genericreco.UI.prototype.slideUpWarningHTML5 = function () {
-        // this.panelContainerSearchWarning.slideUp(500);
-        this.panelContainerSearchWarning.style.display='none';
+        this.panelContainerSearchWarning.style.display = 'none';
     };
     /**
      * hideWarningHTML5
      */
     wgs.genericreco.UI.prototype.hideWarningHTML5 = function () {
-        this.panelContainerSearchWarning.style.display='none';
+        this.panelContainerSearchWarning.style.display = 'none';
     };
     /**
      * buildHTMLRecommendationResults
@@ -1348,7 +1360,7 @@
             });
         };
 
-        self.panelContainerResultsList.innerHTML='';
+        self.panelContainerResultsList.innerHTML = '';
         for (var i = 0; i < stores.length; i++) {
             buildHTMLStore(stores[i]);
         }
