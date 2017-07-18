@@ -494,7 +494,7 @@
             (this.googleKey && this.googleKey !== '' ? '&key=' + this.googleKey : '') +
             '&libraries=places' +
             '&callback=' + callback;
-        document.documentElement.firstChild.appendChild(script);
+        document.getElementsByTagName('head')[0].appendChild(script);
     };
 
     /**
@@ -721,7 +721,6 @@
         };
 
         var successCallback = function (resp) {
-            debugger;
             lat = resp.coords.latitude;
             lng = resp.coords.longitude;
             self.plugin.manager.HTML5Recommendation(lat, lng);
