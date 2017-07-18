@@ -993,7 +993,6 @@
                         self.containerPredictionsList.querySelector('.gr-wgs-pac-item').classList.add('gr-wgs-pac-item-selected');
                     else
                         nextSibling.classList.add('gr-wgs-pac-item-selected');
-                        
                 }
                 else {
                     self.containerPredictionsList.querySelector('.gr-wgs-pac-item').classList.add('gr-wgs-pac-item-selected');
