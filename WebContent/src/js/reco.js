@@ -1,6 +1,4 @@
 (function () {
-    window.$ = undefined;
-    window.jQuery = undefined;
     window.wgs = window.wgs || {};
     wgs.genericreco = {};
 
@@ -81,6 +79,8 @@
                 findStore: 'Choisir mon centre',
                 selectStore: 'Choisir',
                 geolocationNotice: 'La géolocalisation n\'est pas activée sur votre navigateur. Veuillez changez vos préférences.',
+                geolocationErrHttps: 'Votre position géographique n’a pas été renvoyée par votre navigateur. Veuillez saisir une adresse pour rechercher les magasins à proximité.',
+                geolocationErrBlocked: 'La géolocalisation n\'est pas activée sur votre navigateur. Veuillez saisir une adresse pour rechercher les magasins à proximité.',
                 closeBtn: 'Fermer'
             }
         }
@@ -170,18 +170,26 @@
                 /**
                  * check google clientId
                  */
-                if (typeof options.google.clientId === 'undefined')
-                    throw new Error("google clientId is undefined");
-                else if (typeof options.google.clientId !== 'string')
-                    throw new Error("google clientId must be a string");
-                else if (options.google.clientId.replace(' ', '') === '')
-                    throw new Error("google clientId is empty");
-                else if (typeof options.google.channel !== 'undefined') {
-                    /**
-                     * check channel if it's defined
-                     */
-                    if (typeof options.google.channel !== 'string')
-                        throw new Error("google client channel must be a string");
+                if (typeof options.google.clientId === 'undefined' && typeof options.google.key === 'undefined')
+                    throw new Error("google clientId or api key must be defined");
+                else if (typeof options.google.clientId !== 'undefined') {
+                    if (typeof options.google.clientId !== 'string')
+                        throw new Error("google clientId must be a string");
+                    else if (options.google.clientId.replace(' ', '') === '')
+                        throw new Error("google clientId is empty");
+                    else if (typeof options.google.channel !== 'undefined') {
+                        /**
+                         * check channel if it's defined
+                         */
+                        if (typeof options.google.channel !== 'string')
+                            throw new Error("google client channel must be a string");
+                    }
+                
+                } else if (typeof options.google.key !== 'undefined') {
+                    if(typeof options.google.key !== 'string')
+                        throw new Error("google api key must be a string");
+                    else if (typeof options.google.key.replace(' ','') === '')
+                        throw new Error("google api key is empty");
                 }
             }
 
@@ -299,7 +307,7 @@
         wgs.genericreco.options = extend(wgs.genericreco.options, options);
         wgs.genericreco.options.container = container;
 
-        var places = wgs.genericreco.options.usePlaces == undefined ? true : wgs.genericreco.options.usePlaces;
+        var places = wgs.genericreco.options.usePlaces === undefined ? true : wgs.genericreco.options.usePlaces;
 
         if (wgs.genericreco.CONSTANT.debug) {
             console.log(wgs.genericreco.options);
@@ -310,7 +318,8 @@
         checkOptions(wgs.genericreco.options);
 
         // load of the required scripts
-        this.scriptsLoader = new wgs.genericreco.ScriptsLoader(wgs.genericreco.options.google.clientId, wgs.genericreco.options.google.channel, wgs.genericreco.options.google.key);
+        this.scriptsLoader = new wgs.genericreco.ScriptsLoader(wgs.genericreco.options.google.clientId, 
+                wgs.genericreco.options.google.channel, wgs.genericreco.options.google.key);
 
         this.scriptsLoader.loadGoogleMaps('googleMapsLoaded');
 
@@ -652,14 +661,14 @@
 
         var self = this;
         matrice.getDistanceMatrix(request, function (response, status) {
-            if (status == google.maps.DistanceMatrixStatus.OK) {
+            if (status === google.maps.DistanceMatrixStatus.OK) {
                 var results = response.rows[0].elements;
                 for (var i = 0; i < self.stores.length; i++) {
                     self.stores[i].properties.distanceWithGoogle = results[i].distance.value;
                 }
                 callback();
             }
-            else if (status == google.maps.DistanceMatrixStatus.UNKNOWN_ERROR) {
+            else if (status === google.maps.DistanceMatrixStatus.UNKNOWN_ERROR) {
                 window.setTimeout(function () {
                     self.updateStoresWithGoogle(coords, callback, errorCallback);
                 }, 1500);
@@ -700,8 +709,8 @@
         this.plugin = plugin;
 
         var ERRORS = {
-            HTTPS: 'Votre position géographique n’a pas été renvoyée par votre navigateur. Veuillez saisir une adresse pour rechercher les magasins à proximité.',
-            BLOCKED: 'La géolocalisation n\'est pas activée sur votre navigateur. Veuillez saisir une adresse pour rechercher les magasins à proximité.'
+            HTTPS: wgs.genericreco.L10n.geolocationErrHttps,
+            BLOCKED: wgs.genericreco.L10n.geolocationErrBlocked
         };
 
         var self = this;
@@ -719,7 +728,7 @@
         };
 
         var errorCallback = function (resp) {
-            if (resp && resp.message && resp.message.indexOf("Only secure origins are allowed") == 0) {
+            if (resp && resp.message && resp.message.indexOf("Only secure origins are allowed") === 0) {
                 self.plugin.ui.slideDownWarningHTML5(ERRORS.HTTPS);
             }
             else {
@@ -766,7 +775,7 @@
             '</form>' +
             '<div class="gr-wgs-homestore-panel-address-reset"></div>' +
             '</div>' +
-            '<div class= "gr-wgs-homestore-panel-address-results pac-container"></div>';
+            '<div class= "gr-wgs-homestore-panel-address-results gr-wgs-pac-container"></div>';
 
         this.container.insertAdjacentHTML('beforeend', template);
         this.containerResultsList = this.container.querySelector('.gr-wgs-homestore-panel-address-results');
@@ -776,51 +785,51 @@
         // handle the key events on the input to trigger a search or navigate in the results list 
         self.container.querySelector('input').addEventListener('keyup', function (event) {
             // key enter
-            if (event.keyCode == 13) {
-                if (self.containerResultsList.querySelectorAll('.pac-item').length == 0) {
+            if (event.keyCode === 13) {
+                if (self.containerResultsList.querySelectorAll('.gr-wgs-pac-item').length === 0) {
                     self.geocode(event.target.value);
                 }
                 else {
                     var clickEvent = document.createEvent('MouseEvents');
                     clickEvent.initEvent("click", true, true);
-                    if (self.containerResultsList.querySelectorAll('.pac-item-selected').length > 0) {
-                        self.containerResultsList.querySelector('.pac-item-selected').dispatchEvent(clickEvent);
+                    if (self.containerResultsList.querySelectorAll('.gr-wgs-pac-item-selected').length > 0) {
+                        self.containerResultsList.querySelector('.gr-wgs-pac-item-selected').dispatchEvent(clickEvent);
                     }
                     else {
-                        self.containerResultsList.querySelector('.pac-item').dispatchEvent(clickEvent);
+                        self.containerResultsList.querySelector('.gr-wgs-pac-item').dispatchEvent(clickEvent);
                     }
                 }
             }
             // key up
-            else if (event.keyCode == 38) {
-                if (self.containerResultsList.querySelectorAll('.pac-item-selected').length > 0) {
-                    self.containerResultsList.querySelector('.pac-item-selected').previousElementSibling.classList.add('pac-item-selected');
-                    self.containerResultsList.querySelector('.pac-item-selected:last-child').classList.remove('pac-item-selected');
+            else if (event.keyCode === 38) {
+                if (self.containerResultsList.querySelectorAll('.gr-wgs-pac-item-selected').length > 0) {
+                    self.containerResultsList.querySelector('.gr-wgs-pac-item-selected').previousElementSibling.classList.add('gr-wgs-pac-item-selected');
+                    self.containerResultsList.querySelector('.gr-wgs-pac-item-selected:last-child').classList.remove('gr-wgs-pac-item-selected');
                 }
                 else {
-                    self.containerResultsList.querySelector('.pac-item:last-child').classList.add('pac-item-selected');
+                    self.containerResultsList.querySelector('.gr-wgs-pac-item:last-child').classList.add('gr-wgs-pac-item-selected');
                 }
             }
             // key down
-            else if (event.keyCode == 40) {
-                if (self.containerResultsList.querySelectorAll('.pac-item-selected').length > 0) {
-                    self.containerResultsList.querySelector('.pac-item-selected').nextElementSibling.classList.add('pac-item-selected');
-                    self.containerResultsList.querySelector('.pac-item-selected').classList.remove('pac-item-selected');
+            else if (event.keyCode === 40) {
+                if (self.containerResultsList.querySelectorAll('.gr-wgs-pac-item-selected').length > 0) {
+                    self.containerResultsList.querySelector('.gr-wgs-pac-item-selected').nextElementSibling.classList.add('gr-wgs-pac-item-selected');
+                    self.containerResultsList.querySelector('.gr-wgs-pac-item-selected').classList.remove('gr-wgs-pac-item-selected');
                 }
                 else {
-                    self.containerResultsList.querySelector('.pac-item').classList.add('pac-item-selected');
+                    self.containerResultsList.querySelector('.gr-wgs-pac-item').classList.add('gr-wgs-pac-item-selected');
                 }
             }
         });
 
         // handle click event on a geocoding result in the list
-        // self.containerResultsList.delegate('.pac-item','click', function(event){
+        // self.containerResultsList.delegate('.gr-wgs-pac-item','click', function(event){
         self.containerResultsList.addEventListener('click', function (event) {
             var target = event.target;
-            var pacItem = target.closest('.pac-item');
+            var pacItem = target.closest('.gr-wgs-pac-item');
             var lat = pacItem.getAttribute('data-lat');
             var lng = pacItem.getAttribute('data-lng');
-            var name = pacItem.querySelector('.pac-item-query').innerText;
+            var name = pacItem.querySelector('.gr-wgs-pac-item-query').innerText;
             self.container.querySelector('input').value = name;
 
             self.askForStores(lat, lng);
@@ -854,9 +863,9 @@
 
             var coor = result.geometry.location;
             var template =
-                '<div class="pac-item" data-lat="' + coor.lat() + '" data-lng="' + coor.lng() + '">' +
-                '<span class="pac-icon pac-icon-marker"></span>' +
-                '<span class="pac-item-query">' + result.formatted_address + '</span>' +
+                '<div class="gr-wgs-pac-item" data-lat="' + coor.lat() + '" data-lng="' + coor.lng() + '">' +
+                '<span class="gr-wgs-pac-icon gr-wgs-pac-icon-marker"></span>' +
+                '<span class="gr-wgs-pac-item-query">' + result.formatted_address + '</span>' +
                 '</div>';
 
             self.containerResultsList.insertAdjacentHTML('beforeend', template);
@@ -896,11 +905,11 @@
         var geocoder = new google.maps.Geocoder();
         var self = this;
         geocoder.geocode(request, function (results, status) {
-            if (status == google.maps.GeocoderStatus.UNKNOWN_ERROR) {
+            if (status === google.maps.GeocoderStatus.UNKNOWN_ERROR) {
                 self.geocode(address);
             }
-            else if (status == google.maps.GeocoderStatus.OK) {
-                if (results.length == 1) {
+            else if (status === google.maps.GeocoderStatus.OK) {
+                if (results.length === 1) {
                     self.container.querySelector('.gr-wgs-homestore-panel-searchBlock-btn').value = results[0].formatted_address;
                     var coor = results[0].geometry.location;
                     self.askForStores(coor.lat(), coor.lng());
@@ -940,7 +949,7 @@
             '</form>' +
             '<div class="gr-wgs-homestore-panel-address-reset"></div>' +
             '</div>' +
-            '<div class= "gr-wgs-homestore-panel-address-predictions pac-container"></div>';
+            '<div class= "gr-wgs-homestore-panel-address-predictions gr-wgs-pac-container"></div>';
 
         this.container.insertAdjacentHTML('beforeend', template);
         this.containerPredictionsList = this.container.querySelector('.gr-wgs-homestore-panel-address-predictions');
@@ -952,35 +961,42 @@
             if (event.keyCode === 13) {
                 var clickEvent = document.createEvent('MouseEvents');
                 clickEvent.initEvent("click", true, true);
-                if (self.containerPredictionsList.querySelectorAll('.pac-item-selected').length > 0) {
-                    self.containerPredictionsList.querySelector('.pac-item-selected').dispatchEvent(clickEvent);
+                if (self.containerPredictionsList.querySelectorAll('.gr-wgs-pac-item-selected').length > 0) {
+                    self.containerPredictionsList.querySelector('.gr-wgs-pac-item-selected').dispatchEvent(clickEvent);
                 }
                 else {
-                    self.containerPredictionsList.querySelector('.pac-item').dispatchEvent(clickEvent);
+                    self.containerPredictionsList.querySelector('.gr-wgs-pac-item').dispatchEvent(clickEvent);
                 }
             }
             //key up
             else if (event.keyCode === 38) {
-                if (self.containerPredictionsList.querySelectorAll('.pac-item-selected').length > 0) {
-                    var selectedItem = self.containerPredictionsList.querySelector('.pac-item-selected');
+                if (self.containerPredictionsList.querySelectorAll('.gr-wgs-pac-item-selected').length > 0) {
+                    var selectedItem = self.containerPredictionsList.querySelector('.gr-wgs-pac-item-selected');
                     var previousSibling = selectedItem.previousElementSibling;
-                    selectedItem.classList.remove('pac-item-selected');
-                    previousSibling.classList.add('pac-item-selected');
+                    selectedItem.classList.remove('gr-wgs-pac-item-selected');
+                    if(previousSibling === null)
+                        self.containerPredictionsList.querySelector('.gr-wgs-pac-item:last-child').classList.add('gr-wgs-pac-item-selected');
+                    else
+                        previousSibling.classList.add('gr-wgs-pac-item-selected');
                 }
                 else {
-                    self.containerPredictionsList.querySelector('.pac-item:last-child').classList.add('pac-item-selected');
+                    self.containerPredictionsList.querySelector('.gr-wgs-pac-item:last-child').classList.add('gr-wgs-pac-item-selected');
                 }
             }
             // key down
             else if (event.keyCode === 40) {
-                if (self.containerPredictionsList.querySelectorAll('.pac-item-selected').length > 0) {
-                    var selectedItem = self.containerPredictionsList.querySelector('.pac-item-selected');
+                if (self.containerPredictionsList.querySelectorAll('.gr-wgs-pac-item-selected').length > 0) {
+                    var selectedItem = self.containerPredictionsList.querySelector('.gr-wgs-pac-item-selected');
                     var nextSibling = selectedItem.nextElementSibling;
-                    selectedItem.classList.remove('pac-item-selected');
-                    nextSibling.classList.add('pac-item-selected');
+                    selectedItem.classList.remove('gr-wgs-pac-item-selected');
+                    if(nextSibling === null)
+                        self.containerPredictionsList.querySelector('.gr-wgs-pac-item').classList.add('gr-wgs-pac-item-selected');
+                    else
+                        nextSibling.classList.add('gr-wgs-pac-item-selected');
+                        
                 }
                 else {
-                    self.containerPredictionsList.querySelector('.pac-item').classList.add('pac-item-selected');
+                    self.containerPredictionsList.querySelector('.gr-wgs-pac-item').classList.add('gr-wgs-pac-item-selected');
                 }
             }
             // other keys : undisplay the list
@@ -1004,9 +1020,9 @@
         });
 
         self.containerPredictionsList.addEventListener('click', function (event) {
-            var pacItem = event.target.closest('.pac-item');
+            var pacItem = event.target.closest('.gr-wgs-pac-item');
             var place_id = pacItem.getAttribute('data-place-id');
-            self.container.querySelector('input').value = pacItem.querySelector('.pac-item-query').innerText;
+            self.container.querySelector('input').value = pacItem.querySelector('.gr-wgs-pac-item-query').innerText;
             self.containerPredictionsList.style.display = 'none';
             self.getDetails(place_id);
         }, true);
@@ -1039,9 +1055,9 @@
         var buildPrediction = function (prediction) {
 
             var template =
-                '<div class="pac-item" data-place-id="' + prediction.place_id + '">' +
-                '<span class="pac-icon pac-icon-marker"></span>' +
-                '<span class="pac-item-query">' + prediction.description + '</span>' +
+                '<div class="gr-wgs-pac-item" data-place-id="' + prediction.place_id + '">' +
+                '<span class="gr-wgs-pac-icon gr-wgs-pac-icon-marker"></span>' +
+                '<span class="gr-wgs-pac-item-query">' + prediction.description + '</span>' +
                 '</div>';
 
             self.containerPredictionsList.insertAdjacentHTML('beforeend', template);
@@ -1203,9 +1219,14 @@
             self.toggleSearchPanel();
         });
 
-        this.headerContainer.querySelector('.gr-wgs-homestore-mainBlock-yourStore-change, .gr-wgs-homestore-mainBlock-yourStore-icon').addEventListener('click', function () {
+        this.headerContainer.querySelector('.gr-wgs-homestore-mainBlock-yourStore-icon').addEventListener('click', function () {
             self.toggleSearchPanel();
         });
+        
+        this.headerContainer.querySelector('.gr-wgs-homestore-mainBlock-yourStore-change').addEventListener('click', function () {
+            self.toggleSearchPanel();
+        });
+        
     };
     /**
      * buildHTMLFindMyStore

@@ -310,7 +310,7 @@ input.gr-wgs-homestore-panel-address-btn::placeholder {
     cursor:pointer;
 }
 
-.pac-container{
+.gr-wgs-pac-container{
     background-color:#fff;
     border: 1px solid #bbb;
     box-sizing:border-box;
@@ -323,7 +323,7 @@ input.gr-wgs-homestore-panel-address-btn::placeholder {
     -webkit-box-sizing:border-box; 
 }
  
-.pac-container:after{
+.gr-wgs-pac-container:after{
     content:"";
     padding:1px 1px 1px 0;
     height:16px;
@@ -334,17 +334,17 @@ input.gr-wgs-homestore-panel-address-btn::placeholder {
     background-repeat:no-repeat;
     background-size:104px 16px
 }
-.pac-container.pac-container-not:after{
+.gr-wgs-pac-container.gr-wgs-pac-container-not:after{
     background-image:none;
     height:0px;
     padding:0;
 }
 
-.hdpi.pac-container:after{
+.hdpi.gr-wgs-pac-container:after{
     background-image:url(//maps.gstatic.com/mapfiles/api-3/images/powered-by-google-on-white2_hdpi.png)
 }
 
-.pac-item{
+.gr-wgs-pac-item{
     cursor:default;
     padding:0 4px;
     text-overflow:ellipsis;
@@ -356,25 +356,25 @@ input.gr-wgs-homestore-panel-address-btn::placeholder {
     font-size:11px;color:#999;
     min-width: 210px;
 }
-.pac-item:hover{
+.gr-wgs-pac-item:hover{
     background-color:#fafafa
 }
-.pac-item-selected, #am-container .pac-item-selected:hover{
+.gr-wgs-pac-item-selected, #am-container .gr-wgs-pac-item-selected:hover{
     background-color:#ebf2fe
 }
-.pac-matched{
+.gr-wgs-pac-matched{
     font-weight:700
 }
-.pac-item-query{
+.gr-wgs-pac-item-query{
     font-size:13px;
     padding-right:3px;
     color:#000
 }
-.pac-item-query span{
+.gr-wgs-pac-item-query span{
     font-size:13px;
     padding:0px;
 }
-.pac-icon{
+.gr-wgs-pac-icon{
     width:15px;
     height:20px;
     margin-right:7px;
@@ -384,21 +384,21 @@ input.gr-wgs-homestore-panel-address-btn::placeholder {
     background-image:url(//maps.gstatic.com/mapfiles/api-3/images/autocomplete-icons.png);
     background-size:34px
 }
-.hdpi .pac-icon{
+.hdpi .gr-wgs-pac-icon{
     background-image:url(//maps.gstatic.com/mapfiles/api-3/images/autocomplete-icons_hdpi.png)
 }
-.pac-icon-search{
+.gr-wgs-pac-icon-search{
     background-position:-1px -1px
 }
-.pac-item-selected .pac-icon-search{
+.gr-wgs-pac-item-selected .gr-wgs-pac-icon-search{
     background-position:-18px -1px
 }
-.pac-icon-marker{
+.gr-wgs-pac-icon-marker{
     background-position:-1px -161px
 }
-.pac-item-selected .pac-icon-marker{
+.gr-wgs-pac-item-selected .gr-wgs-pac-icon-marker{
     background-position:-18px -161px
 }
-.pac-placeholder{
+.gr-wgs-pac-placeholder{
     color:gray
 }
