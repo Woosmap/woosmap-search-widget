@@ -34,9 +34,11 @@
         container: '',
         woosmapKey: '',
         google: {
-            key: '',
+            //key: '',
             clientId: '',
-            channel: ''
+            channel: '',
+            //language: '',
+            //region: ''
         },
         urls: {
             //lien vers la page du store recommandé
@@ -192,7 +194,22 @@
                         throw new Error("google api key is empty");
                 }
             }
-
+            
+            if(typeof options.google.language !== 'undefined') {
+                if(typeof options.google.language !== 'string')
+                    throw new Error("google api language must be a string");
+                else if (options.google.language.length !== 2)
+                    throw new Error("google api language format is not valid");
+            }
+            
+            if(typeof options.google.region !== 'undefined') {
+                if(typeof options.google.region !== 'string')
+                    throw new Error("google api region must be a string");
+                else if (options.google.language.length !== 2)
+                    throw new Error("google api region format is not valid");
+            }
+                
+            
             /**
              * check stores links
              */
@@ -491,7 +508,9 @@
         script.src = '//maps.googleapis.com/maps/api/js?' +
             (this.googleClientId && this.googleClientId !== '' ? '&client=' + this.googleClientId : '') +
             (this.googleChannel && this.googleChannel !== '' ? '&channel=' + this.googleChannel : '') +
-            (this.googleKey && this.googleKey !== '' ? '&key=' + this.googleKey : '') +
+            (this.googleKey && this.googleKey !== '' ? '&key=' + this.googleKey : '') + 
+            (wgs.genericreco.options.google.language && wgs.genericreco.options.google.language !== '' ? '&language=' + wgs.genericreco.options.google.language : '') + 
+            (wgs.genericreco.options.google.region && wgs.genericreco.options.google.region !== '' ? '&region=' + wgs.genericreco.options.google.region : '') +
             '&libraries=places' +
             '&callback=' + callback;
         document.getElementsByTagName('head')[0].appendChild(script);
