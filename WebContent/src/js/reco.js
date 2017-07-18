@@ -1,6 +1,4 @@
 (function () {
-    window.$ = undefined;
-    window.jQuery = undefined;
     window.wgs = window.wgs || {};
     wgs.genericreco = {};
 
@@ -170,18 +168,26 @@
                 /**
                  * check google clientId
                  */
-                if (typeof options.google.clientId === 'undefined')
-                    throw new Error("google clientId is undefined");
-                else if (typeof options.google.clientId !== 'string')
-                    throw new Error("google clientId must be a string");
-                else if (options.google.clientId.replace(' ', '') === '')
-                    throw new Error("google clientId is empty");
-                else if (typeof options.google.channel !== 'undefined') {
-                    /**
-                     * check channel if it's defined
-                     */
-                    if (typeof options.google.channel !== 'string')
-                        throw new Error("google client channel must be a string");
+                if (typeof options.google.clientId === 'undefined' && typeof options.google.key === 'undefined')
+                    throw new Error("google clientId or api key must be defined");
+                else if (typeof options.google.clientId !== 'undefined') {
+                    if (typeof options.google.clientId !== 'string')
+                        throw new Error("google clientId must be a string");
+                    else if (options.google.clientId.replace(' ', '') === '')
+                        throw new Error("google clientId is empty");
+                    else if (typeof options.google.channel !== 'undefined') {
+                        /**
+                         * check channel if it's defined
+                         */
+                        if (typeof options.google.channel !== 'string')
+                            throw new Error("google client channel must be a string");
+                    }
+                
+                } else if (typeof options.google.key !== 'undefined') {
+                    if(typeof options.google.key !== 'string')
+                        throw new Error("google api key must be a string");
+                    else if (typeof options.google.key.replace(' ','') === '')
+                        throw new Error("google api key is empty");
                 }
             }
 
@@ -310,7 +316,8 @@
         checkOptions(wgs.genericreco.options);
 
         // load of the required scripts
-        this.scriptsLoader = new wgs.genericreco.ScriptsLoader(wgs.genericreco.options.google.clientId, wgs.genericreco.options.google.channel, wgs.genericreco.options.google.key);
+        this.scriptsLoader = new wgs.genericreco.ScriptsLoader(wgs.genericreco.options.google.clientId, 
+                wgs.genericreco.options.google.channel, wgs.genericreco.options.google.key);
 
         this.scriptsLoader.loadGoogleMaps('googleMapsLoaded');
 
@@ -965,7 +972,10 @@
                     var selectedItem = self.containerPredictionsList.querySelector('.pac-item-selected');
                     var previousSibling = selectedItem.previousElementSibling;
                     selectedItem.classList.remove('pac-item-selected');
-                    previousSibling.classList.add('pac-item-selected');
+                    if(previousSibling === null)
+                        self.containerPredictionsList.querySelector('.pac-item:last-child').classList.add('pac-item-selected');
+                    else
+                        previousSibling.classList.add('pac-item-selected');
                 }
                 else {
                     self.containerPredictionsList.querySelector('.pac-item:last-child').classList.add('pac-item-selected');
@@ -977,7 +987,11 @@
                     var selectedItem = self.containerPredictionsList.querySelector('.pac-item-selected');
                     var nextSibling = selectedItem.nextElementSibling;
                     selectedItem.classList.remove('pac-item-selected');
-                    nextSibling.classList.add('pac-item-selected');
+                    if(nextSibling === null)
+                        self.containerPredictionsList.querySelector('.pac-item').classList.add('pac-item-selected');
+                    else
+                        nextSibling.classList.add('pac-item-selected');
+                        
                 }
                 else {
                     self.containerPredictionsList.querySelector('.pac-item').classList.add('pac-item-selected');
