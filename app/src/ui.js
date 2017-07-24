@@ -144,13 +144,13 @@ UI.prototype.buildWarningHTML5 = function () {
  * onClickOutsideContainer
  */
 UI.prototype.onClickOutsideContainer = function () {
-    var self = this;
     window.addEventListener('click', function (event) {
-        if (self.isVisibleSearchPanel() && event.target.getAttribute('id') !== this.config.options.container.replace('#', '')) {
-            self.hideSearchPanel();
+        if (this.isVisibleSearchPanel() && event.target.getAttribute('id') !== this.config.options.container.replace('#', '')) {
+            this.hideSearchPanel();
         }
-    });
-    self.mainContainer.addEventListener('click', function (event) {
+    }.bind(this));
+
+    this.mainContainer.addEventListener('click', function (event) {
         event.stopPropagation();
         return false;
     });
