@@ -249,7 +249,7 @@ UI.prototype.buildHTMLStore = function (store) {
         var lat = coord[1];
         var lng = coord[0];
         woosmapRecommendation.sendUserFavoritedPOI({
-            lat: lat, lng: lng, storeId: store.properties.store_id,
+            lat: lat, lng: lng, id: store.properties.store_id,
             successCallback: function () {
                 this.plugin.ui.resetStoreSearch();
                 this.hideSearchPanel();
