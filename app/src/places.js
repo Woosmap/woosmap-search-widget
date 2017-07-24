@@ -55,7 +55,7 @@ PlacesLocation.prototype.buildHTML = function () {
                 else
                     previousSibling.classList.add('gr-wgs-pac-item-selected');
             }
-            else {
+            else if (self.containerPredictionsList.querySelector('.gr-wgs-pac-item:last-child') !== null){
                 self.containerPredictionsList.querySelector('.gr-wgs-pac-item:last-child').classList.add('gr-wgs-pac-item-selected');
             }
         }
@@ -69,7 +69,7 @@ PlacesLocation.prototype.buildHTML = function () {
                 else
                     nextSibling.classList.add('gr-wgs-pac-item-selected');
             }
-            else {
+            else if(self.containerPredictionsList.querySelector('.gr-wgs-pac-item') !== null){
                 self.containerPredictionsList.querySelector('.gr-wgs-pac-item').classList.add('gr-wgs-pac-item-selected');
             }
         }
