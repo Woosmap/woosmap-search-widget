@@ -1,10 +1,7 @@
 "use strict";
-// const fs = require('fs');
 var webpack = require('webpack');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-
-var loaders = [];
 
 var webpackConfig = {
     node: {
@@ -27,30 +24,12 @@ var webpackConfig = {
             template: 'WebContent/index.html'
         })
         ,
-        new CopyWebpackPlugin([{
-            from: 'WebContent/NORAUTO-INDEX_COPIE_files', to: "NORAUTO-INDEX_COPIE_files"
-        }
-            , {
-                from: 'app/css', to: "css"
-            },
-            {
-                from: 'app/fonts', to: "fonts"
-            }, {
-                from: 'app/img', to: "img"
-            }])
-        //     from: 'app/src/assets', to: "assets"
-        // },
-        //     {
-        //         from: 'app/src/utils/promise.min.js', to: "promise.min.js"
-        //     }])
-        // ,
-        // // new webpack.optimize.CommonsChunkPlugin({
-        //     name: 'console-libs',
-        //     filename: "[chunkhash].console-libs.js",
-        //     minChunks: function (module) {
-        //         return isExternal(module);
-        //     }
-        // })
+        new CopyWebpackPlugin([
+            {from: 'WebContent/NORAUTO-INDEX_COPIE_files', to: "NORAUTO-INDEX_COPIE_files"},
+            {from: 'app/css', to: "css"},
+            {from: 'app/fonts', to: "fonts"},
+            {from: 'app/img', to: "img"}
+        ])
     ]
 };
 webpackConfig.module.loaders.push({test: /\.js$/, loader: "eslint-loader", exclude: /node_modules/});
