@@ -58,14 +58,15 @@ function Config(options) {
         },
         usePlaces: true,
         autocompletePlaces: {
-            minLength: 2,
-            bounds: {//default : France
+            minLength: 1,
+            types: ['geocode']/*,
+            bounds: {
                 west: -4.87293470,
                 north: 51.089062,
                 south: 42.19809198,
                 east: 8.332631
             },
-            types: ['geocode']
+            componentRestrictions: ['fr']*/
         },
         woosmap: {
             reco: {
@@ -267,6 +268,12 @@ Config.prototype.checkConfig = function (options) {
         if (typeof options.autocompletePlaces.types !== 'undefined') {
             if (!Array.isArray(options.autocompletePlaces.types))
                 throw new Error("autocompletePlaces.types must be an array of string, e.g: ['geocode']");
+        }
+        
+        if (typeof options.autocompletePlaces.componentRestrictions !== 'undefined' ) {
+            if (typeof options.autocompletePlaces.componentRestrictions !== 'object' ){
+                throw new Error("autocompletePlaces.componentRestrictions must be a Google GeocoderComponentRestrictions object");
+            }
         }
     }
 
