@@ -8,7 +8,7 @@ function buildSearchStoresCallback(lat, lng, limit, query, maxDistance, callback
             lng: lng,
             successCallback: function (resp) {
                 var stores = resp.features;
-                updateStoresWithGoogle(stores, lat, lng, callback);
+                updateStoresWithGoogle(stores, lat, lng, callback, errorCallback);
             },
             errorCallback: errorCallback,
             storesByPage: limit,
@@ -29,7 +29,7 @@ function Manager(plugin, config) {
     this.config = config;
     this.limit = this.config.options.woosmap.limit;
     this.query = this.config.options.woosmap.query;
-    this.maxDistance = this.config.options.woosmap.maxDistance || 100000;
+    this.maxDistance = this.config.options.woosmap.maxDistance || 0;
     woosmapRecommendation.setProjectKey(this.config.options.woosmapKey);
 
     this.initialRecommendation();
