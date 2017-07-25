@@ -16,7 +16,9 @@ function RecommendationPlugin(selector, options) {
         clientId: this.config.options.google.clientId,
         channelId: this.config.options.google.channel,
         key: this.config.options.google.key,
-        librariesToLoad: ['places']
+        librariesToLoad: ['places'],
+        region: this.config.options.google.region,
+        language: this.config.options.google.language
     });
     this.container = document.querySelector(selector);
 
