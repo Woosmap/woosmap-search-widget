@@ -116,7 +116,7 @@ UI.prototype.buildHTMLFindMyStore = function () {
 
     var template =
         '<div class="gr-wgs-homestore-mainBlockTitle gr-wgs-homestore-mainBlock-findStore">' +
-        '<span class="gr-wgs-homestore-mainBlock-yourStore-icon icon icon-garageN"></span>' +
+        '<span class="gr-wgs-homestore-mainBlock-yourStore-icon"></span>' +
         '<span class="gr-wgs-homestore-mainBlock-yourStore-change">' + //onclick="document.getElementById('gr-wgs-homestore-panel').style.display='block'"
         this.config.L10n.changeStore +
         '</span>' +
@@ -233,11 +233,11 @@ UI.prototype.buildHTMLRecommendationResults = function (stores) {
 UI.prototype.buildHTMLStore = function (store) {
     var distance = store.properties.distanceWithGoogle / 1000;
     var temp = '<li class="gr-wgs-homestore-panel-resultBlock-listItem" data-id=' + store.properties.store_id + '>' +
-        '<span class="gr-wgs-homestore-panel-resultBlock-listItem-icon icon-garagN"></span>' +
+        '<span class="gr-wgs-homestore-panel-resultBlock-listItem-icon"></span>' +
         '<span class="gr-wgs-homestore-panel-resultBlock-listItem-infos">' +
         '<div>' +
         '<div class="gr-wgs-homestore-panel-resultBlock-listItem-title">' + store.properties.name + '</div>' +
-        '<div class="gr-wgs-homestore-panel-resultBlock-listItem-choose" style="float:right">' + this.config.L10n.selectStore + '</div>' +
+        '<div class="gr-wgs-homestore-panel-resultBlock-listItem-choose">' + this.config.L10n.selectStore + '</div>' +
         '<div class="gr-wgs-homestore-panel-resultBlock-listItem-distance">' + (!isNaN(distance) ? '(' + distance.toFixed(1) + 'km)' : '') + '</div>' +
         '</div>' +
         '</span>' +
