@@ -238,7 +238,7 @@ UI.prototype.buildHTMLStore = function (store) {
         '<div>' +
         '<div class="gr-wgs-homestore-panel-resultBlock-listItem-title">' + store.properties.name + '</div>' +
         '<div class="gr-wgs-homestore-panel-resultBlock-listItem-choose" style="float:right">' + this.config.L10n.selectStore + '</div>' +
-        '<div class="gr-wgs-homestore-panel-resultBlock-listItem-distance">(' + distance.toFixed(1) + 'km)</div>' +
+        '<div class="gr-wgs-homestore-panel-resultBlock-listItem-distance">' + (!isNaN(distance) ? '(' + distance.toFixed(1) + 'km)' : '') + '</div>' +
         '</div>' +
         '</span>' +
         '</li>';

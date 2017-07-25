@@ -1,5 +1,5 @@
 function distanceWithGoogleSortFunction(a, b) {
-    return a.properties.distanceWithGoogle - b.properties.distanceWithGoogle;
+    return ((typeof a.properties.distanceWithGoogle === 'undefined' || typeof b.properties.distanceWithGoogle === 'undefined') ? null : a.properties.distanceWithGoogle - b.properties.distanceWithGoogle);
 }
 
 /**
@@ -30,7 +30,8 @@ function updateStoresWithGoogle(stores, latitude, longitude, callback, errorCall
         if (status === google.maps.DistanceMatrixStatus.OK) {
             var results = response.rows[0].elements;
             for (var i = 0; i < stores.length; i++) {
-                stores[i].properties.distanceWithGoogle = results[i].distance.value;
+                if(results[i].status !== google.maps.DistanceMatrixElementStatus.ZERO_RESULTS)
+                    stores[i].properties.distanceWithGoogle = results[i].distance.value;
             }
             stores.sort(distanceWithGoogleSortFunction);
             callback(stores);
