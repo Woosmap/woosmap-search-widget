@@ -71,7 +71,7 @@ function Config(options) {
         woosmap: {
             query: '',
             limit: 5,
-            maxDistance: 100000
+            maxDistance: 0
         },
         lang: 'fr',
         translations: {
