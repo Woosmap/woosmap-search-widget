@@ -84,6 +84,8 @@ PlacesLocation.prototype.buildHTML = function () {
                     request.bounds = this.config.options.autocompletePlaces.bounds;
                 if (this.config.options.autocompletePlaces.types)
                     request.types = this.config.options.autocompletePlaces.types;
+                if (this.config.options.autocompletePlaces.componentRestrictions)
+                    request.componentRestrictions = this.config.options.autocompletePlaces.componentRestrictions;
                 self.getPredictions(request, function (results) {
                     self.buildHTMLPredictions(results);
                 }, function (error) {
