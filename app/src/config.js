@@ -69,10 +69,9 @@ function Config(options) {
             componentRestrictions: ['fr']*/
         },
         woosmap: {
-            reco: {
-                query: ''
-            },
-            limit: 10
+            query: '',
+            limit: 5,
+            maxDistance: 100000
         },
         lang: 'fr',
         translations: {

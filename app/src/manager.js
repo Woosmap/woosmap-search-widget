@@ -1,7 +1,7 @@
 var updateStoresWithGoogle = require('./stores.js');
 var CONSTANT = require('./constants.js');
 
-function buildSearchStoresCallback(lat, lng, limit, callback, errorCallback) {
+function buildSearchStoresCallback(lat, lng, limit, query, maxDistance, callback, errorCallback) {
     return function () {
         woosmapRecommendation.searchStores({
             lat: lat,
@@ -11,7 +11,9 @@ function buildSearchStoresCallback(lat, lng, limit, callback, errorCallback) {
                 updateStoresWithGoogle(stores, lat, lng, callback);
             },
             errorCallback: errorCallback,
-            storesByPage: limit
+            storesByPage: limit,
+            query: query,
+            maxDistance: maxDistance
         });
     };
 }
@@ -26,6 +28,8 @@ function Manager(plugin, config) {
     this.plugin = plugin;
     this.config = config;
     this.limit = this.config.options.woosmap.limit;
+    this.query = this.config.options.woosmap.query;
+    this.maxDistance = this.config.options.woosmap.maxDistance || 100000;
     woosmapRecommendation.setProjectKey(this.config.options.woosmapKey);
 
     this.initialRecommendation();
@@ -50,7 +54,9 @@ Manager.prototype.initialRecommendation = function () {
                 self.plugin.ui.buildHTMLFindMyStore();
             }
         },
-        limit: this.limit
+        limit: this.limit,
+        query: this.query,
+        maxDistance: this.maxDistance
     });
 };
 
@@ -74,6 +80,8 @@ Manager.prototype.HTML5Recommendation = function (lat, lng) {
             lat,
             lng,
             self.limit,
+            self.query,
+            self.maxDistance,
             function (sortedStores) {
                 self.plugin.ui.hideLoader();
                 self.plugin.ui.buildHTMLRecommendationResults(sortedStores);
@@ -102,6 +110,8 @@ Manager.prototype.SearchedRecommendation = function (lat, lng) {
             lat,
             lng,
             this.limit,
+            this.query,
+            this.maxDistance,
             function (sortedStores) {
                 this.plugin.ui.hideLoader();
                 this.plugin.ui.buildHTMLRecommendationResults(sortedStores);
@@ -130,6 +140,8 @@ Manager.prototype.SearchedStores = function (lat, lng) {
             lat,
             lng,
             this.limit,
+            this.query,
+            this.maxDistance,
             function (sortedStores) {
                 this.plugin.ui.hideLoader();
                 this.plugin.ui.buildHTMLRecommendationResults(sortedStores);
