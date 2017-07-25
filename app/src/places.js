@@ -41,7 +41,7 @@ PlacesLocation.prototype.buildHTML = function () {
             if (self.containerPredictionsList.querySelectorAll('.gr-wgs-pac-item-selected').length > 0) {
                 self.containerPredictionsList.querySelector('.gr-wgs-pac-item-selected').dispatchEvent(clickEvent);
             }
-            else {
+            else if(self.containerPredictionsList.querySelector('.gr-wgs-pac-item') !== null) {
                 self.containerPredictionsList.querySelector('.gr-wgs-pac-item').dispatchEvent(clickEvent);
             }
         }
