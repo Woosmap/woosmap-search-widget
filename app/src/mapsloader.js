@@ -63,7 +63,7 @@ function MapsLoader(options) {
     this.channel = options.channelId;
     this.librariesToLoad = options.librariesToLoad || [];
     this.language = options.language || 'fr';
-    this.region = options.region || 'FR';
+    this.region = options.region || undefined;
     this.version = options.version || '3';
 }
 
@@ -78,7 +78,10 @@ MapsLoader.prototype.load = function (callback) {
     }
 
     _getScript('https://www.google.com/jsapi', function () {
-        var params = 'language=' + this.language + '&region=' + this.region;
+        var params = 'language=' + this.language;
+        if (this.region) {
+            params += '&region=' + this.region;
+        }
         if (this.clientId) {
             params += '&client=' + this.clientId;
         }
