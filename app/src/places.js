@@ -34,6 +34,8 @@ PlacesLocation.prototype.buildHTML = function () {
 
     this.container.querySelector('input').addEventListener('keyup', function (event) {
         var selectedItem = self.containerPredictionsList.querySelector('.gr-wgs-pac-item-selected');
+        var firstItem = self.containerPredictionsList.querySelector('.gr-wgs-pac-item');
+        
         // key enter
         if (event.keyCode === 13) {
             var clickEvent = document.createEvent('MouseEvents');
@@ -41,8 +43,8 @@ PlacesLocation.prototype.buildHTML = function () {
             if (self.containerPredictionsList.querySelectorAll('.gr-wgs-pac-item-selected').length > 0) {
                 self.containerPredictionsList.querySelector('.gr-wgs-pac-item-selected').dispatchEvent(clickEvent);
             }
-            else if(self.containerPredictionsList.querySelector('.gr-wgs-pac-item') !== null) {
-                self.containerPredictionsList.querySelector('.gr-wgs-pac-item').dispatchEvent(clickEvent);
+            else if(firstItem !== null) {
+                firstItem.dispatchEvent(clickEvent);
             }
         }
         //key up
@@ -65,12 +67,12 @@ PlacesLocation.prototype.buildHTML = function () {
                 var nextSibling = selectedItem.nextElementSibling;
                 selectedItem.classList.remove('gr-wgs-pac-item-selected');
                 if (nextSibling === null)
-                    self.containerPredictionsList.querySelector('.gr-wgs-pac-item').classList.add('gr-wgs-pac-item-selected');
+                    firstItem.classList.add('gr-wgs-pac-item-selected');
                 else
                     nextSibling.classList.add('gr-wgs-pac-item-selected');
             }
-            else if(self.containerPredictionsList.querySelector('.gr-wgs-pac-item') !== null){
-                self.containerPredictionsList.querySelector('.gr-wgs-pac-item').classList.add('gr-wgs-pac-item-selected');
+            else if(firstItem !== null){
+                firstItem.classList.add('gr-wgs-pac-item-selected');
             }
         }
         // other keys : undisplay the list
