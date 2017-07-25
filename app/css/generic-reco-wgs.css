@@ -289,6 +289,11 @@ input.gr-wgs-homestore-panel-address-btn::placeholder {
 .gr-wgs-homestore-panel-resultBlock-listItem-distance {
     font-size:12px;
 }
+
+.gr-wgs-homestore-panel-resultBlock-listItem-choose {
+    float: right;
+}
+
 .gr-wgs-homestore-panel-footerBlock {
     height:21px;
     color:#002b6f;
