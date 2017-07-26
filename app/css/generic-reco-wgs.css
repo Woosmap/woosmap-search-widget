@@ -212,7 +212,7 @@ input.gr-wgs-homestore-panel-address-btn {
 input.gr-wgs-homestore-panel-address-btn::placeholder {
   color: #888
 }
-.gr-wgs-homestore-panel-address-predictions{
+.gr-wgs-homestore-panel-address-predictions, .gr-wgs-homestore-panel-address-results{
     margin-bottom: 20px;
     margin-top: -13px;
     width: 100%;
