@@ -34,40 +34,53 @@ GeocodingLocation.prototype.buildHTML = function () {
 
     // handle the key events on the input to trigger a search or navigate in the results list 
     this.container.querySelector('input').addEventListener('keyup', function (event) {
+        var selectedItemClass = 'gr-wgs-pac-item-selected';
+        var selectedItem = self.containerResultsList.querySelector('.gr-wgs-pac-item-selected');
+        var firstItem = self.containerResultsList.querySelector('.gr-wgs-pac-item');
+        var lastItem = self.containerResultsList.querySelector('.gr-wgs-pac-item:last-child');
+        
         // key enter
         if (event.keyCode === 13) {
-            if (self.containerResultsList.querySelectorAll('.gr-wgs-pac-item').length === 0) {
+            if (firstItem === null) {
                 self.geocode(event.target.value);
             }
             else {
                 var clickEvent = document.createEvent('MouseEvents');
                 clickEvent.initEvent("click", true, true);
-                if (self.containerResultsList.querySelectorAll('.gr-wgs-pac-item-selected').length > 0) {
-                    self.containerResultsList.querySelector('.gr-wgs-pac-item-selected').dispatchEvent(clickEvent);
+                if (selectedItem !== null) {
+                    selectedItem.dispatchEvent(clickEvent);
                 }
-                else {
-                    self.containerResultsList.querySelector('.gr-wgs-pac-item').dispatchEvent(clickEvent);
+                else if (firstItem !== null) {
+                    firstItem.dispatchEvent(clickEvent);
                 }
             }
         }
         // key up
         else if (event.keyCode === 38) {
-            if (self.containerResultsList.querySelectorAll('.gr-wgs-pac-item-selected').length > 0) {
-                self.containerResultsList.querySelector('.gr-wgs-pac-item-selected').previousElementSibling.classList.add('gr-wgs-pac-item-selected');
-                self.containerResultsList.querySelector('.gr-wgs-pac-item-selected:last-child').classList.remove('gr-wgs-pac-item-selected');
+            if (selectedItem) {
+                var previousSibling = selectedItem.previousElementSibling;
+                selectedItem.classList.remove(selectedItemClass);
+                if(previousSibling === null)
+                    lastItem.classList.add(selectedItemClass);
+                else
+                    previousSibling.classList.add(selectedItemClass);
             }
-            else {
-                self.containerResultsList.querySelector('.gr-wgs-pac-item:last-child').classList.add('gr-wgs-pac-item-selected');
+            else if ( lastItem !== null) {
+                lastItem.classList.add(selectedItemClass);
             }
         }
         // key down
         else if (event.keyCode === 40) {
-            if (self.containerResultsList.querySelectorAll('.gr-wgs-pac-item-selected').length > 0) {
-                self.containerResultsList.querySelector('.gr-wgs-pac-item-selected').nextElementSibling.classList.add('gr-wgs-pac-item-selected');
-                self.containerResultsList.querySelector('.gr-wgs-pac-item-selected').classList.remove('gr-wgs-pac-item-selected');
+            if (selectedItem) {
+                var nextSibling = selectedItem.nextElementSibling;
+                selectedItem.classList.remove(selectedItemClass);
+                if (nextSibling === null)
+                    firstItem.classList.add(selectedItemClass);
+                else
+                    nextSibling.classList.add(selectedItemClass);
             }
-            else {
-                self.containerResultsList.querySelector('.gr-wgs-pac-item').classList.add('gr-wgs-pac-item-selected');
+            else if(firstItem !== null){
+                firstItem.classList.add(selectedItemClass);
             }
         }
     });
