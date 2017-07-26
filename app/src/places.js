@@ -33,15 +33,17 @@ PlacesLocation.prototype.buildHTML = function () {
     var self = this;
 
     this.container.querySelector('input').addEventListener('keyup', function (event) {
+        var selectedItemClass = 'gr-wgs-pac-item-selected';
         var selectedItem = self.containerPredictionsList.querySelector('.gr-wgs-pac-item-selected');
         var firstItem = self.containerPredictionsList.querySelector('.gr-wgs-pac-item');
+        var lastItem = self.containerPredictionsList.querySelector('.gr-wgs-pac-item:last-child');
         
         // key enter
         if (event.keyCode === 13) {
             var clickEvent = document.createEvent('MouseEvents');
             clickEvent.initEvent("click", true, true);
-            if (self.containerPredictionsList.querySelectorAll('.gr-wgs-pac-item-selected').length > 0) {
-                self.containerPredictionsList.querySelector('.gr-wgs-pac-item-selected').dispatchEvent(clickEvent);
+            if (selectedItem !== null) {
+                selectedItem.dispatchEvent(clickEvent);
             }
             else if(firstItem !== null) {
                 firstItem.dispatchEvent(clickEvent);
@@ -51,28 +53,28 @@ PlacesLocation.prototype.buildHTML = function () {
         else if (event.keyCode === 38) {
             if (selectedItem) {
                 var previousSibling = selectedItem.previousElementSibling;
-                selectedItem.classList.remove('gr-wgs-pac-item-selected');
+                selectedItem.classList.remove(selectedItemClass);
                 if (previousSibling === null)
-                    self.containerPredictionsList.querySelector('.gr-wgs-pac-item:last-child').classList.add('gr-wgs-pac-item-selected');
+                    lastItem.classList.add(selectedItemClass);
                 else
-                    previousSibling.classList.add('gr-wgs-pac-item-selected');
+                    previousSibling.classList.add(selectedItemClass);
             }
-            else if (self.containerPredictionsList.querySelector('.gr-wgs-pac-item:last-child') !== null){
-                self.containerPredictionsList.querySelector('.gr-wgs-pac-item:last-child').classList.add('gr-wgs-pac-item-selected');
+            else if (lastItem !== null){
+                lastItem.classList.add(selectedItemClass);
             }
         }
         // key down
         else if (event.keyCode === 40) {
             if (selectedItem) {
                 var nextSibling = selectedItem.nextElementSibling;
-                selectedItem.classList.remove('gr-wgs-pac-item-selected');
+                selectedItem.classList.remove(selectedItemClass);
                 if (nextSibling === null)
-                    firstItem.classList.add('gr-wgs-pac-item-selected');
+                    firstItem.classList.add(selectedItemClass);
                 else
-                    nextSibling.classList.add('gr-wgs-pac-item-selected');
+                    nextSibling.classList.add(selectedItemClass);
             }
             else if(firstItem !== null){
-                firstItem.classList.add('gr-wgs-pac-item-selected');
+                firstItem.classList.add(selectedItemClass);
             }
         }
         // other keys : undisplay the list
