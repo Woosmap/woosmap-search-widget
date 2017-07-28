@@ -38,20 +38,16 @@ GeocodingLocation.prototype.buildHTML = function () {
         var selectedItem = self.containerResultsList.querySelector('.gr-wgs-pac-item-selected');
         var firstItem = self.containerResultsList.querySelector('.gr-wgs-pac-item');
         var lastItem = self.containerResultsList.querySelector('.gr-wgs-pac-item:last-child');
-        
+        var minLength = 1;
         // key enter
         if (event.keyCode === 13) {
-            if (firstItem === null) {
-                self.geocode(event.target.value);
-            }
-            else {
-                var clickEvent = document.createEvent('MouseEvents');
-                clickEvent.initEvent("click", true, true);
-                if (selectedItem !== null) {
-                    selectedItem.dispatchEvent(clickEvent);
-                }
-                else if (firstItem !== null) {
-                    firstItem.dispatchEvent(clickEvent);
+            var clickEvent = document.createEvent('MouseEvents');
+            clickEvent.initEvent("click", true, true);
+            if (selectedItem !== null) {
+                selectedItem.dispatchEvent(clickEvent);
+            } else {
+                if (event.currentTarget.value.length >= minLength) {
+                    self.geocode(event.target.value);
                 }
             }
         }
@@ -83,7 +79,7 @@ GeocodingLocation.prototype.buildHTML = function () {
                 firstItem.classList.add(selectedItemClass);
             }
         }
-    });
+    }.bind(this));
 
     // handle click event on a geocoding result in the list
     // self.containerResultsList.delegate('.gr-wgs-pac-item','click', function(event){
@@ -133,8 +129,7 @@ GeocodingLocation.prototype.buildHTMLResults = function (results) {
         self.containerResultsList.insertAdjacentHTML('beforeend', template);
     };
     this.containerResultsList.innerHTML = '';
-    this.containerResultsList.style.display = 'block';
-
+    this.containerResultsList.style.display = (results.length > 0 ? 'block' : 'none');
     for (var i = 0; i < results.length; i++) {
         buildResult(results[i]);
     }
@@ -175,10 +170,14 @@ GeocodingLocation.prototype.geocode = function (address) {
                 self.container.querySelector('.gr-wgs-homestore-panel-searchBlock-btn').value = results[0].formatted_address;
                 var coords = results[0].geometry.location;
                 self.askForStores(coords.lat(), coords.lng());
+                self.buildHTMLResults([]);
             }
             else {
                 self.buildHTMLResults(results);
             }
+        } 
+        else if (status === google.maps.GeocoderStatus.ZERO_RESULTS) {
+            self.buildHTMLResults([]);
         }
         else {
             console.error(status);

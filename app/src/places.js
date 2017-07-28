@@ -143,7 +143,7 @@ PlacesLocation.prototype.buildHTMLPredictions = function (predictions) {
         self.containerPredictionsList.insertAdjacentHTML('beforeend', template);
     };
     this.containerPredictionsList.innerHTML = '';
-    this.containerPredictionsList.style.display = 'block';
+    this.containerPredictionsList.style.display = (predictions.length > 0 ? 'block' : 'none');
     for (var i = 0; i < predictions.length; i++) {
         buildPrediction(predictions[i]);
     }
@@ -166,7 +166,9 @@ PlacesLocation.prototype.getPredictions = function (request) {
                 self.getPredictions(request);
             }, 1000);
         }
-        else {
+        else if (status === google.maps.places.PlacesServiceStatus.ZERO_RESULTS){
+            self.buildHTMLPredictions([]);
+        } else {
             console.error(status);
         }
     });
