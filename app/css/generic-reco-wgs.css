@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'genericreco';
-  src: url('../fonts/GenericIcon.eot');
-  src: url('../fonts/GenericIcon.eot') format('embedded-opentype'),
-       url('../fonts/GenericIcon.woff') format('woff'),
-       url('../fonts/GenericIcon.ttf') format('truetype'),
-       url('../fonts/GenericIcon.svg#genericreco') format('svg');
+  src: url('../fonts/genericicon.eot');
+  src: url('../fonts/genericicon.eot') format('embedded-opentype'),
+       url('../fonts/genericicon.woff') format('woff'),
+       url('../fonts/genericicon.ttf') format('truetype'),
+       url('../fonts/genericicon.svg#genericreco') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -269,9 +269,14 @@ input.gr-wgs-homestore-panel-address-btn::placeholder {
 /*    vertical-align: middle;*/
 }
 .gr-wgs-homestore-panel-resultBlock-listItem span.gr-wgs-homestore-panel-resultBlock-listItem-icon:before {
-    content:"\E004";
+    content:"\e804";
     font-family:genericreco;
-    font-size:24px;
+    font-size:26px;
+}
+.gr-wgs-homestore-panel-resultBlock-listItem:hover span.gr-wgs-homestore-panel-resultBlock-listItem-icon:before {
+    content:"\f031";
+    font-family:genericreco;
+    font-size:26px;
 }
 .gr-wgs-homestore-panel-resultBlock-listItem span.gr-wgs-homestore-panel-resultBlock-listItem-infos {
     line-height:normal;
