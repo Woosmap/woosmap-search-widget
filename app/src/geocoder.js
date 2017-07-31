@@ -47,7 +47,9 @@ GeocodingLocation.prototype.buildHTML = function () {
                 selectedItem.dispatchEvent(clickEvent);
             } else {
                 if (event.currentTarget.value.length >= minLength) {
-                    self.geocode(event.target.value);
+                    var request = ( this.config.options.geocoder ? this.config.options.geocoder : {} );
+                    request.address = event.target.value;
+                    self.geocode(request);
                 }
             }
         }
@@ -154,16 +156,12 @@ GeocodingLocation.prototype.askForStores = function (lat, lng) {
  * geocode
  * @param address
  */
-GeocodingLocation.prototype.geocode = function (address) {
-    var request = {
-        address: address,
-        region: 'fr'
-    };
+GeocodingLocation.prototype.geocode = function (request) {
     var geocoder = new google.maps.Geocoder();
     var self = this;
     geocoder.geocode(request, function (results, status) {
         if (status === google.maps.GeocoderStatus.UNKNOWN_ERROR) {
-            self.geocode(address);
+            self.geocode(request);
         }
         else if (status === google.maps.GeocoderStatus.OK) {
             if (results.length === 1) {

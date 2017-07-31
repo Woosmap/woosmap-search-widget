@@ -68,6 +68,9 @@ function Config(options) {
             },
             componentRestrictions: ['fr']*/
         },
+        geocoder: {
+            region: 'fr'
+        },
         woosmap: {
             query: '',
             limit: 5,
