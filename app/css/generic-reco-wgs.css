@@ -13,7 +13,7 @@
     min-width:152px;
     text-align:left;
 }
-@media (min-width:768px) {
+@media (min-width:0px) {
   .gr-wgs-homestore-container {
     position:relative;
   }
@@ -153,16 +153,16 @@
 }
 @media (max-width:767px) {
     #gr-wgs-homestore-panel {
-        top:45px;
+        /* top:45px;
         left:auto;
         right:0px;
-        margin-left:0;
+        margin-left:0; */
     }
     #gr-wgs-homestore-panel:before {
-        right:20px;
+        /* right:20px; */
     }
     #gr-wgs-homestore-panel:after {
-        right:21px;
+        /* right:21px; */
     }
 
 }
@@ -256,8 +256,6 @@ input.gr-wgs-homestore-panel-address-btn::placeholder {
     margin-bottom:0!important;
 }
 .gr-wgs-homestore-panel-resultBlock-listItem {
-    line-height:40px;
-    height:40px;
     margin-bottom:12px;
     cursor:pointer;
 }
@@ -297,6 +295,9 @@ input.gr-wgs-homestore-panel-address-btn::placeholder {
 
 .gr-wgs-homestore-panel-resultBlock-listItem-choose {
     float: right;
+}
+.gr-wgs-openinghours-day, .gr-wgs-openinghours-day-slice {
+    font-weight: bold;
 }
 
 .gr-wgs-homestore-panel-footerBlock {

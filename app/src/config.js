@@ -76,6 +76,11 @@ function Config(options) {
             limit: 5,
             maxDistance: 0
         },
+        display: {
+            /*h12: true,*/
+            openingDay: true,
+            openingWeek: true
+        },
         lang: 'fr',
         translations: {
             fr: {
@@ -87,10 +92,43 @@ function Config(options) {
                 changeStore: 'Centre à proximité',
                 findStore: 'Choisir mon centre',
                 selectStore: 'Choisir',
+                openingHoursDay: 'Ouvert aujourd\'hui :',
+                openingHoursWeek: '',
                 geolocationNotice: 'La géolocalisation n\'est pas activée sur votre navigateur. Veuillez changez vos préférences.',
                 geolocationErrHttps: 'Votre position géographique n’a pas été renvoyée par votre navigateur. Veuillez saisir une adresse pour rechercher les magasins à proximité.',
                 geolocationErrBlocked: 'La géolocalisation n\'est pas activée sur votre navigateur. Veuillez saisir une adresse pour rechercher les magasins à proximité.',
-                closeBtn: 'Fermer'
+                closeBtn: 'Fermer',
+                open24: "24h/24",
+                days: {
+                    1: {
+                        full: "Lundi",
+                        short: "Lun"
+                    },
+                    2: {
+                        full: "Mardi",
+                        short: "Tue"
+                    },
+                    3: {
+                        full: "Mercredi",
+                        short: "Mer"
+                    },
+                    4: {
+                        full: "Jeudi",
+                        short: "Jeu"
+                    },
+                    5: {
+                        full: "Vendredi",
+                        short: "Ven"
+                      },
+                    6: {
+                        full: "Samedi",
+                        short: "Sam"
+                    },
+                    7: {
+                        full: "Dimanche",
+                        short: "Dim"
+                    }
+                }
             }
         }
     };
@@ -278,7 +316,22 @@ Config.prototype.checkConfig = function (options) {
             }
         }
     }
-
+    
+    if (typeof options.display !== 'undefined') {
+        if(typeof options.display !== 'object')
+            throw new Error('display option must be an object');
+        else if(typeof options.display.h12 !== 'undefined') {
+            if(typeof options.display.h12 !== 'boolean')
+                throw new Error('display h12 option (AM/PM) must be a boolean');
+        } else if(typeof options.display.openingDay !== 'undefined') {
+            if(typeof options.display.openingDay !== 'boolean')
+                throw new Error('openingDay option must be a boolean');
+        } else if(typeof options.display.openingWeek !== 'undefined') {
+            if(typeof options.display.openingWeek !== 'boolean')
+                throw new Error('openingWeek option must be a boolean');
+        }
+    }
+    
     if (typeof options.lang === 'undefined')
         throw new Error("autocompletePlaces.lang is undefined, e.g: 'fr'");
     if (typeof options.lang !== 'string')
@@ -290,7 +343,11 @@ Config.prototype.checkConfig = function (options) {
         throw new Error("translations must be an object");
     for (var key in options.translations[options.lang]) {
         if (options.translations[options.lang].hasOwnProperty(key)) {
-            if (typeof options.translations[options.lang][key] !== 'string')
+            if (key === 'days') {
+                if(typeof options.translations[options.lang][key] !== 'object')
+                    throw new Error("translations." + options.lang + "." + key + " must be an object (days list)");
+            }
+            else if (typeof options.translations[options.lang][key] !== 'string')
                 throw new Error("translations." + options.lang + "." + key + " must be a string");
         }
     }

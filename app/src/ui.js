@@ -230,15 +230,141 @@ UI.prototype.buildHTMLRecommendationResults = function (stores) {
     this.showResultsBlock();
 };
 
+UI.prototype.convertTo12Hrs = function (hour,sep) {
+    if(typeof sep === 'undefined') sep = ':';
+    if(typeof hour === 'undefined') return false;
+    if(typeof hour !== 'string') return false;
+    var hours = hour.split(sep);
+    var hr = parseInt(hours[0]); 
+    var ampmSwitch = (hr > 12)? "PM":"AM";
+    var convHrs = (hr >12)? hr-12:hr;
+    return convHrs + sep + hours[1] + ' ' + ampmSwitch; 
+};
+
+UI.prototype.concatenateStoreHours = function (openHours) {
+    var hoursText = "";
+    var end;
+    
+    if(openHours) {
+        if (openHours.length == 1) {
+            var start = openHours[0].start;
+            end = openHours[0].end;
+            if ((start == "00:00" || start == "00:01") && (end == "23:59" || end == "00:00")) {
+                if (this.config.L10n.open24)
+                    return this.config.L10n.open24;
+                return "24h/24";
+            }
+        }
+
+        for (var idx in openHours) {
+            if(typeof openHours[idx] === 'object') {
+                end = openHours[idx].end;
+                if (end == "23:59") {
+                    end = "00:00";
+                }
+                
+                if(this.config.options.display && this.config.options.display.h12) {
+                    hoursText += this.convertTo12Hrs(openHours[idx].start) + " - " + this.convertTo12Hrs(end);
+                } else {
+                    hoursText += openHours[idx].start + " - " + end;
+                }
+                
+                if (idx < openHours.length - 1) {
+                    hoursText += ", ";
+                }
+            }
+        }
+      
+    }
+    
+    return hoursText;  
+};
+
+UI.prototype.generateHoursLiArray = function(store) {
+    var self = this;
+    var usualHours = store.properties.opening_hours.usual;
+    var defaultHourText = this.concatenateStoreHours(usualHours["default"]);
+    
+    var openingHoursArray = [];
+
+    var createLiHour = function(firstDay, lastDay, hourText) {
+        var daysText = self.config.L10n.days;
+
+        if (hourText === "") {
+            // nothing
+        } else if (firstDay === lastDay) {
+            openingHoursArray.push("<li>" + daysText[firstDay].full + ": " + hourText + "</li>");
+        } else {
+            openingHoursArray.push("<li>" + daysText[firstDay].short + "-" + daysText[lastDay].short + ": " + hourText + "</li>");
+        }
+    };
+
+    var firstDaySerie = 0;
+    var currentHoursText = "";
+    var previousHoursText = "";
+
+    for (var dayIndex = 1; dayIndex < 8; dayIndex++) {
+        currentHoursText = "";
+        if (dayIndex in usualHours) {
+            currentHoursText = this.concatenateStoreHours(usualHours[dayIndex]);
+        } else {
+            currentHoursText = defaultHourText;
+        }
+
+        if (currentHoursText != previousHoursText) {
+            createLiHour(firstDaySerie, dayIndex - 1, previousHoursText);
+            firstDaySerie = dayIndex;
+            previousHoursText = currentHoursText;
+        }
+    }
+
+    createLiHour(firstDaySerie, 7, currentHoursText);
+
+    return openingHoursArray;
+};
+
+UI.prototype.buildHTMLOpeningHours = function (store) {
+    var str = '';
+    
+    var op = store.properties.open;
+    if(op && this.config.options.display && this.config.options.display.openingDay) {
+        if(op.open_hours.length>0) {
+            str += '<div class="gr-wgs-openinghours-day">' + this.config.L10n.openingHoursDay + '</div>';
+            str += '<ul class="gr-wgs-openinghours-day-' + op.week_day + ( op.opening_now ? ' gr-wgs-openinghours-opennow' : '' ) + '">';
+            for(var j=0; j<op.open_hours.length; j++) {
+                str += '<li class="gr-wgs-openinghours-day-slice">';
+                if(this.config.options.display.h12) {
+                    str += this.convertTo12Hrs(op.open_hours[j].start) + ' - ' +this.convertTo12Hrs(op.open_hours[j].end);
+                } else {
+                    str += op.open_hours[j].start + ' - ' + op.open_hours[j].end;
+                }
+                str += '</li>';
+            }
+            str += '</ul>';
+        }
+    }
+    
+    var oph = store.properties.opening_hours;
+    if(oph && this.config.options.display && this.config.options.display.openingWeek) {
+        if(oph.usual['default'].length > 0 || Object.keys(oph.usual).length > 1) {
+            str += '<div class="gr-wgs-openinghours-week-btn">' + this.config.L10n.openingHoursWeek + '</div>';
+            str += '<ul class="gr-wgs-openinghours-week">' + this.generateHoursLiArray(store).join('') + '</ul>';
+        }
+    }
+    
+    return str;
+};
+
 UI.prototype.buildHTMLStore = function (store) {
     var distance = store.properties.distanceWithGoogle / 1000;
-    var temp = '<li class="gr-wgs-homestore-panel-resultBlock-listItem" data-id=' + store.properties.store_id + '>' +
+    var temp = '<li class="gr-wgs-homestore-panel-resultBlock-listItem" data-id="' + store.properties.store_id + '">' +
         '<span class="gr-wgs-homestore-panel-resultBlock-listItem-icon"></span>' +
         '<span class="gr-wgs-homestore-panel-resultBlock-listItem-infos">' +
         '<div>' +
         '<div class="gr-wgs-homestore-panel-resultBlock-listItem-title">' + store.properties.name + '</div>' +
         '<div class="gr-wgs-homestore-panel-resultBlock-listItem-choose">' + this.config.L10n.selectStore + '</div>' +
         '<div class="gr-wgs-homestore-panel-resultBlock-listItem-distance">' + (!isNaN(distance) ? '(' + distance.toFixed(1) + 'km)' : '') + '</div>' +
+        '<div class="gr-wgs-homestore-panel-resultBlock-listItem-openinghours">' + this.buildHTMLOpeningHours(store) + '</div>' +
         '</div>' +
         '</span>' +
         '</li>';
