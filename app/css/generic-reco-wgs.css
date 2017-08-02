@@ -261,7 +261,8 @@ input.gr-wgs-homestore-panel-address-btn::placeholder {
 }
 .gr-wgs-homestore-panel-resultBlock-listItem span {
     display:inline-block;
-/*    vertical-align: middle;*/
+    vertical-align: top;
+    width: 20px;
 }
 .gr-wgs-homestore-panel-resultBlock-listItem span.gr-wgs-homestore-panel-resultBlock-listItem-icon:before {
     content:"\e804";
