@@ -339,7 +339,7 @@ UI.prototype.buildHTMLOpeningHours = function (store) {
     
     var oph = store.properties.opening_hours;
     if(oph && this.config.options.display && this.config.options.display.openingWeek) {
-        if(oph.usual['default'].length > 0 || Object.keys(oph.usual).length > 1) {
+        if(oph.usual['default'] && oph.usual['default'].length > 0 || Object.keys(oph.usual).length > 1) {
             str += '<div class="gr-wgs-openinghours-week-btn">' + this.config.L10n.openingHoursWeek + '</div>';
             str += '<ul class="gr-wgs-openinghours-week">' + this.generateHoursLiArray(store).join('') + '</ul>';
         }
