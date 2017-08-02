@@ -77,12 +77,13 @@ function Config(options) {
             maxDistance: 0
         },
         display: {
+            /*h12: true,*/
             recommendation: {
                 address: true,
                 phone: true,
             }
             ,search:{
-                /*h12: true,*/
+                address: true,
                 openingDay: true,
                 openingWeek: true
             }
@@ -324,30 +325,38 @@ Config.prototype.checkConfig = function (options) {
         }
     }
     
-    if (typeof options.display.search !== 'undefined') {
-        if(typeof options.display.search !== 'object')
-            throw new Error('display search option must be an object');
-        else if(typeof options.display.search.h12 !== 'undefined') {
-            if(typeof options.display.search.h12 !== 'boolean')
-                throw new Error('display.search.h12 option (AM/PM) must be a boolean');
-        } else if(typeof options.display.search.openingDay !== 'undefined') {
-            if(typeof options.display.search.openingDay !== 'boolean')
-                throw new Error('display.search.openingDay option must be a boolean');
-        } else if(typeof options.display.search.openingWeek !== 'undefined') {
-            if(typeof options.display.search.openingWeek !== 'boolean')
-                throw new Error('display.search.openingWeek option must be a boolean');
-        }
-    }
+    if (typeof options.display !== 'undefined') {
     
-    if (typeof options.display.recommendation !== 'undefined') {
-        if(typeof options.display.recommendation !== 'object')
-            throw new Error('display.recommendation.option must be an object');
-        else if(typeof options.display.recommendation.address !== 'undefined') {
-            if(typeof options.display.recommendation.address !== 'boolean')
-                throw new Error('display.recommendation.address option must be a boolean');
-        } else if(typeof options.display.recommendation.phone !== 'undefined') {
-            if(typeof options.display.search.phone !== 'boolean')
-                throw new Error('display.recommendation.phone option must be a boolean');
+        if(typeof options.display.h12 !== 'undefined') {
+            if(typeof options.display.h12 !== 'boolean')
+                throw new Error('display.h12 option (AM/PM) must be a boolean');
+        }
+        
+        if (typeof options.display.search !== 'undefined') {
+            if(typeof options.display.search !== 'object')
+                throw new Error('display search option must be an object');
+            else if(typeof options.display.search.openingDay !== 'undefined') {
+                if(typeof options.display.search.openingDay !== 'boolean')
+                    throw new Error('display.search.openingDay option must be a boolean');
+            } else if(typeof options.display.search.openingWeek !== 'undefined') {
+                if(typeof options.display.search.openingWeek !== 'boolean')
+                    throw new Error('display.search.openingWeek option must be a boolean');
+            } else if(typeof options.display.search.address !== 'undefined') {
+                if(typeof options.display.search.address !== 'boolean')
+                    throw new Error('display.search.address option must be a boolean');
+            }
+        }
+        
+        if (typeof options.display.recommendation !== 'undefined') {
+            if(typeof options.display.recommendation !== 'object')
+                throw new Error('display.recommendation.option must be an object');
+            else if(typeof options.display.recommendation.address !== 'undefined') {
+                if(typeof options.display.recommendation.address !== 'boolean')
+                    throw new Error('display.recommendation.address option must be a boolean');
+            } else if(typeof options.display.recommendation.phone !== 'undefined') {
+                if(typeof options.display.search.phone !== 'boolean')
+                    throw new Error('display.recommendation.phone option must be a boolean');
+            }
         }
     }
     

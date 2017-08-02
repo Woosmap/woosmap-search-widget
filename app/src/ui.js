@@ -60,33 +60,44 @@ function UI(container, usePlaces, plugin, config) {
 }
 
 /**
+ * Build address content from store
+ * @param {Object} store
+ * @return String
+ */
+UI.prototype.buildAddress = function (store) {
+    var address = '', city = '';
+    
+    if(store.properties.address.lines) {
+        for(var a=0; a < store.properties.address.lines.length; a++){
+            if(store.properties.address.lines[a] !== '')
+                address += store.properties.address.lines[a];
+        }
+     }
+     
+     if(store.properties.address.zipcode && store.properties.address.zipcode !== '')
+         city += store.properties.address.zipcode;
+     if(store.properties.address.city && store.properties.address.city !== '')
+         city += (city !== '' ? ' ': '') + store.properties.address.city;
+ 
+     address += (address !== '' && city !== '' ? ', ' + city : '');
+ 
+     if(store.properties.address.country_code && store.properties.address.country_code !== '')
+         address += ', ' + store.properties.address.country_code;
+     
+    return address;
+};
+
+/**
  * buildHTMLInitialReco
  * Build the HTML of the store recommendation in the header
  * @param {Store} store max number of stores to retrieve
  **/
 UI.prototype.buildHTMLInitialReco = function (store) {
     var self = this;
-    var address = '', city = '', phone = '';
+    var address = '', phone = '';
     
     if(typeof this.config.options.display.recommendation.address !== 'undefined' && this.config.options.display.recommendation.address) {
-        if(store.properties.address.lines) {
-           for(var a=0; a < store.properties.address.lines.length; a++){
-               if(store.properties.address.lines[a] !== '')
-                   address += store.properties.address.lines[a];
-           }
-        }
-        
-        if(store.properties.address.zipcode && store.properties.address.zipcode !== '')
-            city += store.properties.address.zipcode;
-        if(store.properties.address.city && store.properties.address.city !== '')
-            city += (city !== '' ? ' ': '') + store.properties.address.city;
-    
-        address += (address !== '' && city !== '' ? ', ' + city : '');
-    
-        if(store.properties.address.country_code && store.properties.address.country_code !== '')
-            address += ', ' + store.properties.address.country_code;
-    
-        address = '<span class="gr-wgs-homestore-mainBlock-yourStore-address">' + address + '</span>';
+        address = '<span class="gr-wgs-homestore-mainBlock-yourStore-address">' + this.buildAddress(store) + '</span>';
     }
     
     if(typeof this.config.options.display.recommendation.phone !== 'undefined' && this.config.options.display.recommendation.phone && store.properties.contact && store.properties.contact.phone !== '')
@@ -283,7 +294,7 @@ UI.prototype.concatenateStoreHours = function (openHours) {
             if(typeof openHours[idx] === 'object') {
                 end = openHours[idx].end;
                 
-                if(typeof this.config.options.display.recommendation.h12 !== 'undefined' && this.config.options.display.recommendation.h12) {
+                if(typeof this.config.options.display.h12 !== 'undefined' && this.config.options.display.h12) {
                     hoursText += this.convertTo12Hrs(openHours[idx].start) + " - " + this.convertTo12Hrs(end);
                 } else {
                     hoursText += openHours[idx].start + " - " + end;
@@ -353,7 +364,7 @@ UI.prototype.buildHTMLOpeningHours = function (store) {
             str += '<ul class="gr-wgs-openinghours-day-' + op.week_day + ( op.opening_now ? ' gr-wgs-openinghours-opennow' : '' ) + '">';
             for(var j=0; j<op.open_hours.length; j++) {
                 str += '<li class="gr-wgs-openinghours-day-slice">';
-                if(typeof this.config.options.display.recommendation.h12 !== 'undefined' && this.config.options.display.recommendation.h12) {
+                if(typeof this.config.options.display.h12 !== 'undefined' && this.config.options.display.h12) {
                     str += this.convertTo12Hrs(op.open_hours[j].start) + ' - ' +this.convertTo12Hrs(op.open_hours[j].end);
                 } else {
                     str += op.open_hours[j].start + ' - ' + op.open_hours[j].end;
@@ -376,7 +387,13 @@ UI.prototype.buildHTMLOpeningHours = function (store) {
 };
 
 UI.prototype.buildHTMLStore = function (store) {
+    var address = '';
     var distance = store.properties.distanceWithGoogle / 1000;
+    
+    if(typeof this.config.options.display.search.address !== 'undefined' && this.config.options.display.search.address) {
+        address = '<div class="gr-wgs-homestore-panel-resultBlock-listItem-address">' + this.buildAddress(store) + '</div>';
+    }
+    
     var temp = '<li class="gr-wgs-homestore-panel-resultBlock-listItem" data-id="' + store.properties.store_id + '">' +
         '<span class="gr-wgs-homestore-panel-resultBlock-listItem-icon"></span>' +
         '<span class="gr-wgs-homestore-panel-resultBlock-listItem-infos">' +
@@ -384,6 +401,7 @@ UI.prototype.buildHTMLStore = function (store) {
         '<div class="gr-wgs-homestore-panel-resultBlock-listItem-title">' + store.properties.name + '</div>' +
         '<div class="gr-wgs-homestore-panel-resultBlock-listItem-choose">' + this.config.L10n.selectStore + '</div>' +
         '<div class="gr-wgs-homestore-panel-resultBlock-listItem-distance">' + (!isNaN(distance) ? '(' + distance.toFixed(1) + 'km)' : '') + '</div>' +
+        address + 
         '<div class="gr-wgs-homestore-panel-resultBlock-listItem-openinghours">' + this.buildHTMLOpeningHours(store) + '</div>' +
         '</div>' +
         '</span>' +
