@@ -12,12 +12,9 @@
 .gr-wgs-homestore-container {
     min-width:152px;
     text-align:left;
-}
-@media (min-width:0px) {
-  .gr-wgs-homestore-container {
     position:relative;
-  }
 }
+
 .gr-wgs-homestore-container * {
     box-sizing:border-box;
 }
