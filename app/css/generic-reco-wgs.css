@@ -20,7 +20,7 @@
 }
 
 /* -------------- */
-/* bloc principal */
+/*   main block   */
 /* -------------- */
 
 .gr-wgs-homestore-mainBlock {
@@ -59,9 +59,7 @@
     display:inline-block;  
     width: 160px;
 }
-.gr-wgs-homestore-mainBlock-yourStore > div {
-/*    max-width:120px;*/
-}
+
 .gr-wgs-homestore-mainBlock-yourStore div:first-child {
     text-overflow:ellipsis;
     overflow:hidden;
@@ -91,7 +89,7 @@
     top: 0 !important;
 }
 
-.gr-wgs-homestore-mainBlock-yourStore-name {
+.gr-wgs-homestore-mainBlock-yourStore-name, .gr-wgs-homestore-mainBlock-yourStore-address, .gr-wgs-homestore-mainBlock-yourStore-phone {
     display: block;
     color: #666;
     font-size: 11px;
@@ -100,11 +98,10 @@
 }
 
 /* ----------------- */
-/* panneau dynamique */
+/* homestore panel   */
 /* ----------------- */
 
 #gr-wgs-homestore-panel {
-    /*display: none;*/
     position:absolute;
     top:50px;
     left:50%;
@@ -147,21 +144,6 @@
     right:141px;
     border-top-color:white;
     border-width:9px;
-}
-@media (max-width:767px) {
-    #gr-wgs-homestore-panel {
-        /* top:45px;
-        left:auto;
-        right:0px;
-        margin-left:0; */
-    }
-    #gr-wgs-homestore-panel:before {
-        /* right:20px; */
-    }
-    #gr-wgs-homestore-panel:after {
-        /* right:21px; */
-    }
-
 }
 @media (max-width:479px) {
     #gr-wgs-homestore-panel {
@@ -243,9 +225,7 @@ input.gr-wgs-homestore-panel-address-btn::placeholder {
 }
 .gr-wgs-homestore-panel-resultBlock-title {
     padding:12px 0;
-/*     text-transform:uppercase; */
     color:#002b6f;
-/*     font-size:18px; */
     font-weight:bold;
 }
 .gr-wgs-homestore-panel-resultBlock-listBlock {

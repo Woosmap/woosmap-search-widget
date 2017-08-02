@@ -77,9 +77,15 @@ function Config(options) {
             maxDistance: 0
         },
         display: {
-            /*h12: true,*/
-            openingDay: true,
-            openingWeek: true
+            recommendation: {
+                address: true,
+                phone: true,
+            }
+            ,search:{
+                /*h12: true,*/
+                openingDay: true,
+                openingWeek: true
+            }
         },
         lang: 'fr',
         translations: {
@@ -97,6 +103,7 @@ function Config(options) {
                 geolocationNotice: 'La géolocalisation n\'est pas activée sur votre navigateur. Veuillez changez vos préférences.',
                 geolocationErrHttps: 'Votre position géographique n’a pas été renvoyée par votre navigateur. Veuillez saisir une adresse pour rechercher les magasins à proximité.',
                 geolocationErrBlocked: 'La géolocalisation n\'est pas activée sur votre navigateur. Veuillez saisir une adresse pour rechercher les magasins à proximité.',
+                telephone: 'Tél :',
                 closeBtn: 'Fermer',
                 open24: "24h/24",
                 days: {
@@ -317,18 +324,30 @@ Config.prototype.checkConfig = function (options) {
         }
     }
     
-    if (typeof options.display !== 'undefined') {
-        if(typeof options.display !== 'object')
-            throw new Error('display option must be an object');
-        else if(typeof options.display.h12 !== 'undefined') {
-            if(typeof options.display.h12 !== 'boolean')
-                throw new Error('display h12 option (AM/PM) must be a boolean');
-        } else if(typeof options.display.openingDay !== 'undefined') {
-            if(typeof options.display.openingDay !== 'boolean')
-                throw new Error('openingDay option must be a boolean');
-        } else if(typeof options.display.openingWeek !== 'undefined') {
-            if(typeof options.display.openingWeek !== 'boolean')
-                throw new Error('openingWeek option must be a boolean');
+    if (typeof options.display.search !== 'undefined') {
+        if(typeof options.display.search !== 'object')
+            throw new Error('display search option must be an object');
+        else if(typeof options.display.search.h12 !== 'undefined') {
+            if(typeof options.display.search.h12 !== 'boolean')
+                throw new Error('display.search.h12 option (AM/PM) must be a boolean');
+        } else if(typeof options.display.search.openingDay !== 'undefined') {
+            if(typeof options.display.search.openingDay !== 'boolean')
+                throw new Error('display.search.openingDay option must be a boolean');
+        } else if(typeof options.display.search.openingWeek !== 'undefined') {
+            if(typeof options.display.search.openingWeek !== 'boolean')
+                throw new Error('display.search.openingWeek option must be a boolean');
+        }
+    }
+    
+    if (typeof options.display.recommendation !== 'undefined') {
+        if(typeof options.display.recommendation !== 'object')
+            throw new Error('display.recommendation.option must be an object');
+        else if(typeof options.display.recommendation.address !== 'undefined') {
+            if(typeof options.display.recommendation.address !== 'boolean')
+                throw new Error('display.recommendation.address option must be a boolean');
+        } else if(typeof options.display.recommendation.phone !== 'undefined') {
+            if(typeof options.display.search.phone !== 'boolean')
+                throw new Error('display.recommendation.phone option must be a boolean');
         }
     }
     

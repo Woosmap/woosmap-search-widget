@@ -65,37 +65,64 @@ function UI(container, usePlaces, plugin, config) {
  * @param {Store} store max number of stores to retrieve
  **/
 UI.prototype.buildHTMLInitialReco = function (store) {
-
+    var self = this;
+    var address = '', city = '', phone = '';
+    
+    if(typeof this.config.options.display.recommendation.address !== 'undefined' && this.config.options.display.recommendation.address) {
+        if(store.properties.address.lines) {
+           for(var a=0; a < store.properties.address.lines.length; a++){
+               if(store.properties.address.lines[a] !== '')
+                   address += store.properties.address.lines[a];
+           }
+        }
+        
+        if(store.properties.address.zipcode && store.properties.address.zipcode !== '')
+            city += store.properties.address.zipcode;
+        if(store.properties.address.city && store.properties.address.city !== '')
+            city += (city !== '' ? ' ': '') + store.properties.address.city;
+    
+        address += (address !== '' && city !== '' ? ', ' + city : '');
+    
+        if(store.properties.address.country_code && store.properties.address.country_code !== '')
+            address += ', ' + store.properties.address.country_code;
+    
+        address = '<span class="gr-wgs-homestore-mainBlock-yourStore-address">' + address + '</span>';
+    }
+    
+    if(typeof this.config.options.display.recommendation.phone !== 'undefined' && this.config.options.display.recommendation.phone && store.properties.contact && store.properties.contact.phone !== '')
+        phone += '<span class="gr-wgs-homestore-mainBlock-yourStore-phone"><span class="gr-wgs-homestore-mainBlock-yourStore-phone-label">' + this.config.L10n.telephone + '</span> ' + (store.properties.contact.phone ? store.properties.contact.phone : '') + '</span>';
+    
     var template =
         '<div class="gr-wgs-homestore-mainBlockTitle gr-wgs-homestore-mainBlock-yourStore">' +
-        '<span class="gr-wgs-homestore-mainBlock-yourStore-icon icon icon-garageN"></span>' +
+        '<span class="gr-wgs-homestore-mainBlock-yourStore-icon"></span>' +
         '<span class="gr-wgs-homestore-mainBlock-yourStore-change">' +
         this.config.L10n.changeStore +
-        '</span>' +
+        '</span>' + 
         '<span class="gr-wgs-homestore-mainBlock-yourStore-name">' +
-        store.properties.name +
-        '</span>' +
+        store.properties.name + 
+        '</span>' + 
+        address + 
+        phone + 
         '</div>';
 
     this.headerContainer.innerHTML = template;
 
-    var self = this;
     this.headerContainer.querySelector('.gr-wgs-homestore-mainBlock-yourStore-name').addEventListener('click', function () {
         /*
-         var coord = store.geometry.coordinates;
-
-         var lat = coord[1];
-         var lng = coord[0];
-         var callback = function (store) {
-         self.openStore(store);
-         };
-
-         self.plugin.manager.reco.sendUserConsultedPOI(lat, lng, store.properties.store_id, function () {
-         callback(store);
-         }, function () {
-         callback(store);
-         });
-         */
+        var coord = store.geometry.coordinates;
+        
+        var lat = coord[1];
+        var lng = coord[0];
+        var callback = function (store) {
+            self.openStore(store);
+        };
+        
+        self.plugin.manager.reco.sendUserConsultedPOI(lat, lng, store.properties.store_id, function () {
+            callback(store);
+        }, function () {
+            callback(store);
+        });
+        */
         self.toggleSearchPanel();
     });
 
@@ -256,7 +283,7 @@ UI.prototype.concatenateStoreHours = function (openHours) {
             if(typeof openHours[idx] === 'object') {
                 end = openHours[idx].end;
                 
-                if(this.config.options.display && this.config.options.display.h12) {
+                if(typeof this.config.options.display.recommendation.h12 !== 'undefined' && this.config.options.display.recommendation.h12) {
                     hoursText += this.convertTo12Hrs(openHours[idx].start) + " - " + this.convertTo12Hrs(end);
                 } else {
                     hoursText += openHours[idx].start + " - " + end;
@@ -320,13 +347,13 @@ UI.prototype.buildHTMLOpeningHours = function (store) {
     var str = '';
     
     var op = store.properties.open;
-    if(op && this.config.options.display && this.config.options.display.openingDay) {
+    if(op && typeof this.config.options.display.search.openingDay !== 'undefined' && this.config.options.display.search.openingDay) {
         if(op.open_hours.length>0) {
             str += '<div class="gr-wgs-openinghours-day">' + this.config.L10n.openingHoursDay + '</div>';
             str += '<ul class="gr-wgs-openinghours-day-' + op.week_day + ( op.opening_now ? ' gr-wgs-openinghours-opennow' : '' ) + '">';
             for(var j=0; j<op.open_hours.length; j++) {
                 str += '<li class="gr-wgs-openinghours-day-slice">';
-                if(this.config.options.display.h12) {
+                if(typeof this.config.options.display.recommendation.h12 !== 'undefined' && this.config.options.display.recommendation.h12) {
                     str += this.convertTo12Hrs(op.open_hours[j].start) + ' - ' +this.convertTo12Hrs(op.open_hours[j].end);
                 } else {
                     str += op.open_hours[j].start + ' - ' + op.open_hours[j].end;
@@ -338,7 +365,7 @@ UI.prototype.buildHTMLOpeningHours = function (store) {
     }
     
     var oph = store.properties.opening_hours;
-    if(oph && this.config.options.display && this.config.options.display.openingWeek) {
+    if(oph && typeof this.config.options.display.search.openingWeek !== 'undefined' && this.config.options.display.search.openingWeek) {
         if(oph.usual['default'] && oph.usual['default'].length > 0 || Object.keys(oph.usual).length > 1) {
             str += '<div class="gr-wgs-openinghours-week-btn">' + this.config.L10n.openingHoursWeek + '</div>';
             str += '<ul class="gr-wgs-openinghours-week">' + this.generateHoursLiArray(store).join('') + '</ul>';
