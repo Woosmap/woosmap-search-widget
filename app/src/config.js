@@ -106,7 +106,7 @@ function Config(options) {
                     },
                     2: {
                         full: "Mardi",
-                        short: "Tue"
+                        short: "Mar"
                     },
                     3: {
                         full: "Mercredi",
