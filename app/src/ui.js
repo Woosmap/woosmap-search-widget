@@ -246,22 +246,15 @@ UI.prototype.concatenateStoreHours = function (openHours) {
     var end;
     
     if(openHours) {
-        if (openHours.length == 1) {
-            var start = openHours[0].start;
-            end = openHours[0].end;
-            if ((start == "00:00" || start == "00:01") && (end == "23:59" || end == "00:00")) {
-                if (this.config.L10n.open24)
-                    return this.config.L10n.open24;
-                return "24h/24";
-            }
+        if (openHours['all-day'] || openHours['all_day']) {
+            if (this.config.L10n.open24)
+                return this.config.L10n.open24;
+            return "24h/24";
         }
 
         for (var idx in openHours) {
             if(typeof openHours[idx] === 'object') {
                 end = openHours[idx].end;
-                if (end == "23:59") {
-                    end = "00:00";
-                }
                 
                 if(this.config.options.display && this.config.options.display.h12) {
                     hoursText += this.convertTo12Hrs(openHours[idx].start) + " - " + this.convertTo12Hrs(end);
