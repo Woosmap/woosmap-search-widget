@@ -99,19 +99,23 @@ GeocodingLocation.prototype.buildHTML = function () {
 
     // handle the click on the reset search field button
     self.container.querySelector('.gr-wgs-homestore-panel-address-reset').addEventListener('click', function () {
-        self.container.querySelector('input').value = '';
-        self.containerResultsList.style.display = 'none';
-        self.containerResultsList.innerHTML = '';
-        self.plugin.ui.hideResultsBlock();
+        self.clearPanel();
     });
 
     // cancel the submit event in the form
     this.container.querySelector('form.gr-wgs-homestore-panel-searchBlock-form').addEventListener('submit', function (event) {
         event.preventDefault();
-
         return false;
     });
 };
+
+GeocodingLocation.prototype.clearPanel = function () {
+    this.container.querySelector('input').value = '';
+    this.containerResultsList.style.display = 'none';
+    this.containerResultsList.innerHTML = '';
+    this.plugin.ui.hideResultsBlock();  
+};
+
 /**
  * buildHTMLResults
  * @param results
