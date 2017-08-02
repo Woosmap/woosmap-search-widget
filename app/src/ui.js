@@ -65,7 +65,8 @@ function UI(container, usePlaces, plugin, config) {
  * @return String
  */
 UI.prototype.buildAddress = function (store) {
-    var address = '', city = '';
+    var address = '', 
+    city = '';
     
     if(store.properties.address.lines) {
         for(var a=0; a < store.properties.address.lines.length; a++){
@@ -79,7 +80,7 @@ UI.prototype.buildAddress = function (store) {
      if(store.properties.address.city && store.properties.address.city !== '')
          city += (city !== '' ? ' ': '') + store.properties.address.city;
  
-     address += (address !== '' && city !== '' ? ', ' + city : '');
+     address += (address !== '' && city !== '' ? '<br>' + city : '');
  
      if(store.properties.address.country_code && store.properties.address.country_code !== '')
          address += ', ' + store.properties.address.country_code;
@@ -94,10 +95,23 @@ UI.prototype.buildAddress = function (store) {
  **/
 UI.prototype.buildHTMLInitialReco = function (store) {
     var self = this;
-    var address = '', phone = '';
+    var address = '', 
+    phone = '',
+    openingday = '', 
+    openingweek = '',
+    op = store.properties.open, 
+    oph = store.properties.opening_hours;   
     
     if(typeof this.config.options.display.recommendation.address !== 'undefined' && this.config.options.display.recommendation.address) {
         address = '<span class="gr-wgs-homestore-mainBlock-yourStore-address">' + this.buildAddress(store) + '</span>';
+    }
+        
+    if(op && typeof this.config.options.display.recommendation.openingDay !== 'undefined' && this.config.options.display.recommendation.openingDay) {
+        openingday = this.buildHTMLOpeningHoursDay(store);
+    }
+    
+    if(oph && typeof this.config.options.display.recommendation.openingWeek !== 'undefined' && this.config.options.display.recommendation.openingWeek) {
+        openingweek = this.buildHTMLOpeningHoursWeek(store);
     }
     
     if(typeof this.config.options.display.recommendation.phone !== 'undefined' && this.config.options.display.recommendation.phone && store.properties.contact && store.properties.contact.phone !== '')
@@ -114,6 +128,7 @@ UI.prototype.buildHTMLInitialReco = function (store) {
         '</span>' + 
         address + 
         phone + 
+        '<span class="gr-wgs-homestore-mainBlock-yourStore-openinghours">' + openingday + openingweek + '</span>' +
         '</div>';
 
     this.headerContainer.innerHTML = template;
@@ -137,11 +152,7 @@ UI.prototype.buildHTMLInitialReco = function (store) {
         self.toggleSearchPanel();
     });
 
-    this.headerContainer.querySelector('.gr-wgs-homestore-mainBlock-yourStore-icon').addEventListener('click', function () {
-        self.toggleSearchPanel();
-    });
-
-    this.headerContainer.querySelector('.gr-wgs-homestore-mainBlock-yourStore-change').addEventListener('click', function () {
+    this.headerContainer.querySelector('.gr-wgs-homestore-mainBlock-yourStore').addEventListener('click', function () {
         self.toggleSearchPanel();
     });
 
@@ -354,44 +365,69 @@ UI.prototype.generateHoursLiArray = function(store) {
     return openingHoursArray;
 };
 
-UI.prototype.buildHTMLOpeningHours = function (store) {
-    var str = '';
+
+/**
+ * build html opening hours of the day
+ * @param {Object} store
+ * @returns {String}
+ */
+UI.prototype.buildHTMLOpeningHoursDay = function(store) {
+    var str = '', 
+    op = store.properties.open;
     
-    var op = store.properties.open;
-    if(op && typeof this.config.options.display.search.openingDay !== 'undefined' && this.config.options.display.search.openingDay) {
-        if(op.open_hours.length>0) {
-            str += '<div class="gr-wgs-openinghours-day">' + this.config.L10n.openingHoursDay + '</div>';
-            str += '<ul class="gr-wgs-openinghours-day-' + op.week_day + ( op.opening_now ? ' gr-wgs-openinghours-opennow' : '' ) + '">';
-            for(var j=0; j<op.open_hours.length; j++) {
-                str += '<li class="gr-wgs-openinghours-day-slice">';
-                if(typeof this.config.options.display.h12 !== 'undefined' && this.config.options.display.h12) {
-                    str += this.convertTo12Hrs(op.open_hours[j].start) + ' - ' +this.convertTo12Hrs(op.open_hours[j].end);
-                } else {
-                    str += op.open_hours[j].start + ' - ' + op.open_hours[j].end;
-                }
-                str += '</li>';
+    if(op.open_hours.length>0) {
+        str += '<span class="gr-wgs-openinghours-day">' + this.config.L10n.openingHoursDay + '</span>';
+        str += '<ul class="gr-wgs-openinghours-day-' + op.week_day + ( op.opening_now ? ' gr-wgs-openinghours-opennow' : '' ) + '">';
+        for(var j=0; j<op.open_hours.length; j++) {
+            str += '<li class="gr-wgs-openinghours-day-slice">';
+            if(typeof this.config.options.display.h12 !== 'undefined' && this.config.options.display.h12) {
+                str += this.convertTo12Hrs(op.open_hours[j].start) + ' - ' +this.convertTo12Hrs(op.open_hours[j].end);
+            } else {
+                str += op.open_hours[j].start + ' - ' + op.open_hours[j].end;
             }
-            str += '</ul>';
+            str += '</li>';
         }
+        str += '</ul>';
     }
     
-    var oph = store.properties.opening_hours;
-    if(oph && typeof this.config.options.display.search.openingWeek !== 'undefined' && this.config.options.display.search.openingWeek) {
-        if(oph.usual['default'] && oph.usual['default'].length > 0 || Object.keys(oph.usual).length > 1) {
-            str += '<div class="gr-wgs-openinghours-week-btn">' + this.config.L10n.openingHoursWeek + '</div>';
-            str += '<ul class="gr-wgs-openinghours-week">' + this.generateHoursLiArray(store).join('') + '</ul>';
-        }
+    return str;
+};
+
+/**
+ * build html weekly opening hours
+ * @param [Object} store
+ * @returns {String}
+ */
+UI.prototype.buildHTMLOpeningHoursWeek = function (store) {
+    var str = '', 
+    oph = store.properties.opening_hours;
+    
+    if(oph.usual['default'] && oph.usual['default'].length > 0 || Object.keys(oph.usual).length > 1) {
+        str += '<span class="gr-wgs-openinghours-week-btn">' + this.config.L10n.openingHoursWeek + '</span>';
+        str += '<ul class="gr-wgs-openinghours-week">' + this.generateHoursLiArray(store).join('') + '</ul>';
     }
     
     return str;
 };
 
 UI.prototype.buildHTMLStore = function (store) {
-    var address = '';
-    var distance = store.properties.distanceWithGoogle / 1000;
+    var address = '', 
+    openingday = '', 
+    openingweek = '',
+    op = store.properties.open, 
+    oph = store.properties.opening_hours,
+    distance = store.properties.distanceWithGoogle / 1000;
     
     if(typeof this.config.options.display.search.address !== 'undefined' && this.config.options.display.search.address) {
         address = '<div class="gr-wgs-homestore-panel-resultBlock-listItem-address">' + this.buildAddress(store) + '</div>';
+    }
+        
+    if(op && typeof this.config.options.display.search.openingDay !== 'undefined' && this.config.options.display.search.openingDay) {
+        openingday = this.buildHTMLOpeningHoursDay(store);
+    }
+    
+    if(oph && typeof this.config.options.display.search.openingWeek !== 'undefined' && this.config.options.display.search.openingWeek) {
+        openingweek = this.buildHTMLOpeningHoursWeek(store);
     }
     
     var temp = '<li class="gr-wgs-homestore-panel-resultBlock-listItem" data-id="' + store.properties.store_id + '">' +
@@ -402,7 +438,7 @@ UI.prototype.buildHTMLStore = function (store) {
         '<div class="gr-wgs-homestore-panel-resultBlock-listItem-choose">' + this.config.L10n.selectStore + '</div>' +
         '<div class="gr-wgs-homestore-panel-resultBlock-listItem-distance">' + (!isNaN(distance) ? '(' + distance.toFixed(1) + 'km)' : '') + '</div>' +
         address + 
-        '<div class="gr-wgs-homestore-panel-resultBlock-listItem-openinghours">' + this.buildHTMLOpeningHours(store) + '</div>' +
+        '<div class="gr-wgs-homestore-panel-resultBlock-listItem-openinghours">' + openingday + openingweek + '</div>' +
         '</div>' +
         '</span>' +
         '</li>';

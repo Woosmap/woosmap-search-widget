@@ -89,7 +89,10 @@
     top: 0 !important;
 }
 
-.gr-wgs-homestore-mainBlock-yourStore-name, .gr-wgs-homestore-mainBlock-yourStore-address, .gr-wgs-homestore-mainBlock-yourStore-phone {
+.gr-wgs-homestore-mainBlock-yourStore-name, 
+.gr-wgs-homestore-mainBlock-yourStore-address, 
+.gr-wgs-homestore-mainBlock-yourStore-phone, 
+.gr-wgs-homestore-mainBlock-yourStore-openinghours {
     display: block;
     color: #666;
     font-size: 11px;
@@ -239,7 +242,7 @@ input.gr-wgs-homestore-panel-address-btn::placeholder {
 .gr-wgs-homestore-panel-resultBlock-listItem:hover {
     color:#002b6f;
 }
-.gr-wgs-homestore-panel-resultBlock-listItem span {
+.gr-wgs-homestore-panel-resultBlock-listItem > span {
     display:inline-block;
     vertical-align: top;
     width: 20px;
