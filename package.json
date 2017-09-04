@@ -1,0 +1,17 @@
+{
+  "name": "generic-reco-homepage",
+  "version": "0.0.1",
+  "scripts": {
+    "start": "cross-env DEBUG=yes webpack-dev-server --inline --content-base build --history-api-fallback --host 0.0.0.0",
+    "build": "webpack"
+  },
+  "devDependencies": {
+    "copy-webpack-plugin": "^4.0.1",
+    "cross-env": "^5.0.1",
+    "eslint": "^4.3.0",
+    "eslint-loader": "^1.9.0",
+    "html-webpack-plugin": "^2.29.0",
+    "webpack": "^3.3.0",
+    "webpack-dev-server": "^2.5.1"
+  }
+}
