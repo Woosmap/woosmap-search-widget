@@ -1,6 +1,14 @@
 {
-  "name": "generic-reco-homepage",
+  "name": "reco-widget",
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wgs-projects/generic-reco-homepage"
+  },
+  "bugs": {
+    "url": "https://github.com/wgs-projects/generic-reco-homepage/issues"
+  },
+  "homepage": "https://github.com/wgs-projects/generic-reco-homepage",
   "scripts": {
     "start": "cross-env DEBUG=yes webpack-dev-server --inline --content-base build --history-api-fallback --host 0.0.0.0",
     "build": "webpack"

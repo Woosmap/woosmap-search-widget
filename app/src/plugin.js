@@ -3,6 +3,22 @@ var MapsLoader = require('./mapsloader.js');
 var UI = require('./ui.js');
 var Manager = require('./manager.js');
 
+/**
+ * Construct a new Recommendation Widget instance
+ *
+ * @param {String} [containerId] parameters to load Google Maps API or clientId as string
+ * @param {RecommendationPluginConf} [configObject] YTotozgiorn loirzfgnoprzg
+ * additional google libraries to load.
+ * @constructor
+ * @memberOf wgs.genericreco
+ * @example Instantiation Example
+ *
+ *```js
+ *document.addEventListener('DOMContentLoaded', function () {
+ *  new wgs.genericreco.RecommendationPlugin('containerId', {"woosmapKey":"xxxx"});
+ *})
+ *```
+ */
 function RecommendationPlugin(selector, options) {
     this.manager = null;
     this.ui = null;
