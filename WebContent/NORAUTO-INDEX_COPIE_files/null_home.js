@@ -1,1 +1,0 @@
-/* Tag mal posé : mauvais numéro d'annonceur */

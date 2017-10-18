@@ -1,4 +1,4 @@
-# generic-reco-homepage
+# woosmap-search-widget
 
 # Install dependencies
 

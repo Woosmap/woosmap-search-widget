@@ -1,14 +1,14 @@
 {
-  "name": "reco-widget",
+  "name": "woosmap-search-widget",
   "version": "0.0.1",
   "repository": {
     "type": "git",
-    "url": "https://github.com/wgs-projects/generic-reco-homepage"
+    "url": "https://github.com/woosmap/woosmap-search-widget"
   },
   "bugs": {
-    "url": "https://github.com/wgs-projects/generic-reco-homepage/issues"
+    "url": "https://github.com/woosmap/woosmap-search-widget/issues"
   },
-  "homepage": "https://github.com/wgs-projects/generic-reco-homepage",
+  "homepage": "https://github.com/woosmap/woosmap-search-widget",
   "scripts": {
     "start": "cross-env DEBUG=yes webpack-dev-server --inline --content-base build --history-api-fallback --host 0.0.0.0",
     "build": "webpack"

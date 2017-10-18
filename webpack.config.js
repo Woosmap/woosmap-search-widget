@@ -9,7 +9,7 @@ var webpackConfig = {
     },
     entry: './app/src/index.js',
 
-    output: {path: __dirname + '/build', filename: "reco.js", publicPath: "/"},
+    output: {path: __dirname + '/build', filename: "woosmapsearchwidget.js", publicPath: "/"},
 
     module: {
         loaders: []
@@ -21,13 +21,11 @@ var webpackConfig = {
 
     plugins: [
         new HtmlWebpackPlugin({
-            template: 'WebContent/index.html'
+            template: 'sample/index.html'
         })
         ,
         new CopyWebpackPlugin([
-            {from: 'WebContent/NORAUTO-INDEX_COPIE_files', to: "NORAUTO-INDEX_COPIE_files"},
             {from: 'app/css', to: "css"},
-            {from: 'app/fonts', to: "fonts"},
             {from: 'app/img', to: "img"}
         ])
     ]
