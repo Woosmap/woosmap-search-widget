@@ -9,7 +9,7 @@ var webpackConfig = {
     },
     entry: './app/src/index.js',
 
-    output: {path: __dirname + '/build', filename: "reco.js", publicPath: "/"},
+    output: {path: __dirname + '/build', filename: "woosmapsearchwidget.js", publicPath: "/"},
 
     module: {
         loaders: []

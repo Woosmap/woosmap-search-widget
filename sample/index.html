@@ -16,7 +16,7 @@
             box-shadow: 0 0 3px 0 rgba(0, 0, 0, .2);
         }
 
-        #search-container {
+        #woosmap-search-widget-container {
             height: 100%;
 
         }
@@ -27,10 +27,9 @@
 <!-- WOOSMAP SEARCH WIDGET -->
 <script src="https://recommendation-js.woosmap.com/recommendation.js"></script>
 <div id="wrapper">
-    <div id="search-container"></div>
+    <div id="woosmap-search-widget-container"></div>
 </div>
-
-<script src="reco.js"></script>
+<script src="woosmapsearchwidget.js"></script>
 <script>
     var groptions = {
         woosmapKey: 'woos-27e715eb-6454-3019-95c1-e90a418939a9',
@@ -46,24 +45,26 @@
                 autocompletePlaceholder: 'Address...',
                 allStores: 'All Stores',
                 changeStore: 'Recommended Store',
-                findStore: 'Choose my Store',
+                findStore: 'Find my Store',
                 geolocationNotice: 'Geolocation capability is\'nt enable on your browser. Please, change your settings.',
-                closeBtn: 'Close'
+                closeBtn: 'Close',
+                selectStore: 'Select',
+                telephone: 'Tel:'
             }
         },
-        "urls": {
-            "store": {
-                "href": false,
-                "target": "_self"
+        urls: {
+            store: {
+                href: false,
+                target: "_self"
             },
-            "stores": {
-                "href": "https://blog.woosmap.com/webapp?key=woos-27e715eb-6454-3019-95c1-e90a418939a9",
-                "target": "_self"
+            stores: {
+                href: "https://blog.woosmap.com/webapp?key=woos-27e715eb-6454-3019-95c1-e90a418939a9",
+                target: "_self"
             }
         }
-    }
+    };
     document.addEventListener('DOMContentLoaded', function () {
-        new wgs.genericreco.RecommendationPlugin('#search-container', groptions);
+        new wgs.genericreco.RecommendationPlugin('#woosmap-search-widget-container', groptions);
     })
 </script>
 <!-- WOOSMAP SEARCH WIDGET -->
