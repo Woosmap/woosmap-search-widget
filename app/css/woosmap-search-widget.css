@@ -1,0 +1,423 @@
+.gr-wgs-homestore-container {
+    min-width: 152px;
+    text-align: left;
+    position: relative;
+}
+
+.gr-wgs-homestore-container * {
+    box-sizing: border-box;
+}
+
+/* -------------- */
+/*   main block   */
+/* -------------- */
+
+.gr-wgs-homestore-mainBlock {
+    position: relative;
+    color: #002b6f;
+}
+
+.gr-wgs-homestore-mainBlock > img {
+    height: 25px;
+    margin-right: 5px;
+}
+
+@media (min-width: 768px) {
+    .gr-wgs-homestore-mainBlock > img {
+        vertical-align: top;
+        height: 38px;
+    }
+}
+
+.gr-wgs-homestore-mainBlockTitle {
+    vertical-align: top;
+}
+
+.gr-wgs-homestore-mainBlockTitle > div {
+    text-align: left;
+}
+
+.gr-wgs-homestore-mainBlock-findStore {
+    display: inline-block;
+}
+
+.gr-wgs-homestore-mainBlock-findStore > div {
+    line-height: 1em;
+    cursor: pointer;
+}
+
+.gr-wgs-homestore-mainBlock-findStore > div:hover {
+    color: #002b6f;
+}
+
+.gr-wgs-homestore-mainBlock-yourStore {
+    display: inline-block;
+}
+
+.gr-wgs-homestore-mainBlock-yourStore div:first-child {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    line-height: 1.2em;
+    cursor: pointer;
+}
+
+.gr-wgs-homestore-mainBlock-yourStore div:first-child:hover {
+    color: #002b6f;
+}
+
+.gr-wgs-homestore-mainBlock-yourStore div:last-child {
+    font-size: smaller;
+    line-height: 1em;
+    cursor: pointer;
+}
+
+.gr-wgs-homestore-mainBlock-yourStore div:last-child:hover {
+    color: #002b6f;
+}
+
+.gr-wgs-homestore-mainBlock-yourStore-change {
+    display: block;
+    margin-bottom: 1px;
+}
+
+.gr-wgs-homestore-mainBlock-yourStore-icon.icon::before {
+    left: -35px !important;
+    top: 0 !important;
+}
+
+.gr-wgs-homestore-mainBlock-yourStore-name,
+.gr-wgs-homestore-mainBlock-yourStore-address,
+.gr-wgs-homestore-mainBlock-yourStore-phone,
+.gr-wgs-homestore-mainBlock-yourStore-openinghours {
+    display: block;
+    color: #666;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ----------------- */
+/* homestore panel   */
+/* ----------------- */
+
+#gr-wgs-homestore-panel {
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    width: 300px;
+    margin-left: -140px;
+    margin-top: -10000px;
+    background-color: white;
+    box-shadow: 1px 1px 12px #555;
+    opacity: 0;
+    z-index: 2;
+    color: #666;
+    border: 1px solid #ddd;
+    padding: 15px 15px 12px;
+    transition: opacity .5s ease, top .4s ease;
+    -webkit-transition: opacity .5s ease, top .4s ease;
+    -o-transition: opacity .5s ease, top .4s ease;
+}
+
+#gr-wgs-homestore-panel.gr-wgs-homestore-panel-open {
+    opacity: 1;
+    z-index: 201;
+    margin-top: 0;
+}
+
+#gr-wgs-homestore-panel:before,
+#gr-wgs-homestore-panel:after {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-color: transparent;
+    border-bottom: 0;
+}
+
+#gr-wgs-homestore-panel:before {
+    top: -1px;
+    right: 140px;
+    border-top-color: #ddd;
+    border-width: 10px;
+}
+
+#gr-wgs-homestore-panel:after {
+    top: -1px;
+    right: 141px;
+    border-top-color: white;
+    border-width: 9px;
+}
+
+@media (max-width: 479px) {
+    #gr-wgs-homestore-panel {
+        width: 240px;
+    }
+
+}
+
+form.gr-wgs-homestore-panel-searchBlock-form {
+    margin-bottom: 0px;
+}
+
+.gr-wgs-homestore-panel-searchBlock-warning {
+    color: #002b6f;
+    margin-bottom: 10px;
+}
+
+.gr-wgs-homestore-panel-searchBlock-btn {
+    margin-bottom: 12px;
+    color: #002b6f;
+    width: 100%;
+}
+
+.gr-wgs-homestore-panel-aroundMe-btn {
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 10px;
+    font-size: 18px;
+    border-radius: 6px;
+    background-color: #002b6f;
+    color: white;
+}
+
+.gr-wgs-homestore-panel-address-wrapper {
+    position: relative;
+}
+
+.gr-wgs-homestore-panel-address-wrapper label {
+    margin-bottom: 0;
+    color: #002b6f;
+}
+
+input.gr-wgs-homestore-panel-address-btn {
+    padding: 10px 25px 10px 5px;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+}
+
+input.gr-wgs-homestore-panel-address-btn::placeholder {
+    color: #888
+}
+
+.gr-wgs-homestore-panel-address-predictions, .gr-wgs-homestore-panel-address-results {
+    margin-bottom: 20px;
+    margin-top: -13px;
+    width: 100%;
+}
+
+.gr-wgs-homestore-panel-address-reset {
+    background-image: url('../img/close.png');
+    background-repeat: no-repeat;
+    background-size: 12px 12px;
+    background-position: center center;
+    position: absolute;
+    bottom: 21px;
+    right: 5px;
+    width: 20px;
+    height: 20px;
+}
+
+.gr-wgs-homestore-panel-aroundMe-btn:hover,
+.gr-wgs-homestore-panel-aroundMe-btn:active {
+    background-color: #002b6f;
+    color: white;
+}
+
+.gr-wgs-homestore-panel-loaderBlock {
+    background-image: url('../img/loader.gif');
+    background-repeat: no-repeat;
+    background-position: top center;
+    height: 20px;
+    display: none;
+}
+
+.gr-wgs-homestore-panel-resultBlock {
+    border-top: 1px solid #ddd;
+}
+
+.gr-wgs-homestore-panel-resultBlock-title {
+    padding: 12px 0;
+    color: #002b6f;
+    font-weight: bold;
+}
+
+.gr-wgs-homestore-panel-resultBlock-listBlock {
+    list-style-type: none;
+    margin-bottom: 0 !important;
+}
+
+.gr-wgs-homestore-panel-resultBlock-listItem {
+    margin-bottom: 12px;
+    cursor: pointer;
+}
+
+.gr-wgs-homestore-panel-resultBlock-listItem:hover {
+    color: #002b6f;
+}
+
+.gr-wgs-homestore-panel-resultBlock-listItem > span {
+    display: inline-block;
+    vertical-align: top;
+    width: 20px;
+}
+
+.gr-wgs-homestore-panel-resultBlock-listItem span.gr-wgs-homestore-panel-resultBlock-listItem-icon:before {
+    content: url(../img/default_marker.svg)
+}
+
+.gr-wgs-homestore-panel-resultBlock-listItem:hover span.gr-wgs-homestore-panel-resultBlock-listItem-icon:before {
+    content: url(../img/hover_marker.svg)
+}
+
+.gr-wgs-homestore-panel-resultBlock-listItem span.gr-wgs-homestore-panel-resultBlock-listItem-infos {
+    line-height: normal;
+    width: calc(100% - 50px);
+    margin-left: 10px;
+}
+
+.gr-wgs-homestore-panel-resultBlock-listItem-title {
+    text-transform: uppercase;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.gr-wgs-homestore-panel-resultBlock-listItem-choose {
+    float: right;
+}
+
+.gr-wgs-openinghours-day, .gr-wgs-openinghours-day-slice {
+    font-weight: bold;
+}
+
+.gr-wgs-homestore-panel-footerBlock {
+    height: 21px;
+    color: #002b6f;
+}
+
+.gr-wgs-homestore-panel-footerBlock div:hover {
+    color: #002b6f;
+}
+
+.gr-wgs-homestore-panel-footerBlock-allStores {
+    float: left;
+    cursor: pointer;
+}
+
+.gr-wgs-homestore-panel-footerBlock-closePanel {
+    background-image: url('../img/close.png');
+    background-repeat: no-repeat;
+    background-position: left center;
+    background-size: 9px 9px;
+    padding-left: 15px;
+    float: right;
+    cursor: pointer;
+}
+
+.gr-wgs-pac-container {
+    background-color: #fff;
+    border: 1px solid #bbb;
+    box-sizing: border-box;
+    display: none;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+    z-index: 1000;
+
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+.gr-wgs-pac-container:after {
+    content: "";
+    padding: 1px 1px 1px 0;
+    height: 16px;
+    text-align: right;
+    display: block;
+    background-image: url(//maps.gstatic.com/mapfiles/api-3/images/powered-by-google-on-white2.png);
+    background-position: right;
+    background-repeat: no-repeat;
+    background-size: 104px 16px
+}
+
+.gr-wgs-pac-container.gr-wgs-pac-container-not:after {
+    background-image: none;
+    height: 0px;
+    padding: 0;
+}
+
+.hdpi.gr-wgs-pac-container:after {
+    background-image: url(//maps.gstatic.com/mapfiles/api-3/images/powered-by-google-on-white2_hdpi.png)
+}
+
+.gr-wgs-pac-item {
+    cursor: default;
+    padding: 0 4px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    line-height: 30px;
+    text-align: left;
+    border-top: 1px solid #e6e6e6;
+    color: #999;
+    min-width: 210px;
+}
+
+.gr-wgs-pac-item:hover {
+    background-color: #fafafa
+}
+
+.gr-wgs-pac-item-selected, #am-container .gr-wgs-pac-item-selected:hover {
+    background-color: #ebf2fe
+}
+
+.gr-wgs-pac-matched {
+    font-weight: 700
+}
+
+.gr-wgs-pac-item-query {
+    padding-right: 3px;
+    color: #000
+}
+
+.gr-wgs-pac-item-query span {
+    padding: 0px;
+}
+
+.gr-wgs-pac-icon {
+    width: 15px;
+    height: 20px;
+    margin-right: 7px;
+    margin-top: 6px;
+    display: inline-block;
+    vertical-align: top;
+    background-image: url(//maps.gstatic.com/mapfiles/api-3/images/autocomplete-icons.png);
+    background-size: 34px
+}
+
+.hdpi .gr-wgs-pac-icon {
+    background-image: url(//maps.gstatic.com/mapfiles/api-3/images/autocomplete-icons_hdpi.png)
+}
+
+.gr-wgs-pac-icon-search {
+    background-position: -1px -1px
+}
+
+.gr-wgs-pac-item-selected .gr-wgs-pac-icon-search {
+    background-position: -18px -1px
+}
+
+.gr-wgs-pac-icon-marker {
+    background-position: -1px -161px
+}
+
+.gr-wgs-pac-item-selected .gr-wgs-pac-icon-marker {
+    background-position: -18px -161px
+}
+
+.gr-wgs-pac-placeholder {
+    color: gray
+}

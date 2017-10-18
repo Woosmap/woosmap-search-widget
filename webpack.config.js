@@ -21,13 +21,11 @@ var webpackConfig = {
 
     plugins: [
         new HtmlWebpackPlugin({
-            template: 'WebContent/index.html'
+            template: 'sample/index.html'
         })
         ,
         new CopyWebpackPlugin([
-            {from: 'WebContent/NORAUTO-INDEX_COPIE_files', to: "NORAUTO-INDEX_COPIE_files"},
             {from: 'app/css', to: "css"},
-            {from: 'app/fonts', to: "fonts"},
             {from: 'app/img', to: "img"}
         ])
     ]
