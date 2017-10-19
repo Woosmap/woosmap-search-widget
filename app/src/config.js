@@ -253,8 +253,8 @@ Config.prototype.checkConfig = function (options) {
             if (typeof options.urls.stores.target !== 'undefined') {
                 if (typeof options.urls.stores.target !== 'string')
                     throw new Error("urls.stores.target must be a string");
-                if (wgs.genericreco.CONSTANT.target.indexOf(options.urls.stores.target) === -1)
-                    throw new Error("urls.stores.target must be : " + wgs.genericreco.CONSTANT.target.join(', '));
+                if (wgs.searchwidget.CONSTANT.target.indexOf(options.urls.stores.target) === -1)
+                    throw new Error("urls.stores.target must be : " + wgs.searchwidget.CONSTANT.target.join(', '));
             }
         }
 
@@ -269,8 +269,8 @@ Config.prototype.checkConfig = function (options) {
             if (typeof options.urls.store.target !== 'undefined') {
                 if (typeof options.urls.store.target !== 'string')
                     throw new Error("urls.store.target must be a string");
-                if (wgs.genericreco.CONSTANT.target.indexOf(options.urls.store.target) === -1)
-                    throw new Error("urls.store.target must be : " + wgs.genericreco.CONSTANT.target.join(', '));
+                if (wgs.searchwidget.CONSTANT.target.indexOf(options.urls.store.target) === -1)
+                    throw new Error("urls.store.target must be : " + wgs.searchwidget.CONSTANT.target.join(', '));
             }
         }
     }

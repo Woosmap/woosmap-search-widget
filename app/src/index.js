@@ -1,7 +1,7 @@
 require('./polyfills.js');
 
 wgs = {
-    genericreco: {
+    searchwidget: {
         CONSTANT: require('./constants.js'),
         RecommendationPlugin: require('./plugin.js')
     }
