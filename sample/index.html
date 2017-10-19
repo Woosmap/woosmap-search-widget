@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Sample Recommendation Widget</title>
+    <title>Sample Woosmap Search Widget</title>
     <style>
         body {
             background-color: #f8fcfd;
@@ -31,11 +31,12 @@
 </div>
 <script src="woosmapsearchwidget.js"></script>
 <script>
-    var groptions = {
-        woosmapKey: 'woos-27e715eb-6454-3019-95c1-e90a418939a9',
+    var widgetOptions = {
+        woosmapKey: 'starbucks-developers',
         google: {
             clientId: 'gme-webgeoservicessa1'
         },
+        usePlaces: true,
         lang: 'en',
         translations: {
             en: {
@@ -48,23 +49,56 @@
                 findStore: 'Find my Store',
                 geolocationNotice: 'Geolocation capability is\'nt enable on your browser. Please, change your settings.',
                 closeBtn: 'Close',
-                selectStore: 'Select',
-                telephone: 'Tel:'
+                selectStore: 'Set as Favorite',
+                telephone: 'Tel:',
+                open24: "All Day",
+                openingHoursDay: "today: ",
+                openingHoursWeek: "opening hours: ",
+                days: {
+                    1: {
+                        full: "Monday",
+                        short: "Mon"
+                    },
+                    2: {
+                        full: "Tuesday",
+                        short: "Tue"
+                    },
+                    3: {
+                        full: "Wednesday",
+                        short: "Wed"
+                    },
+                    4: {
+                        full: "Thursday",
+                        short: "Thu"
+                    },
+                    5: {
+                        full: "Friday",
+                        short: "Fri"
+                    },
+                    6: {
+                        full: "Saturday",
+                        short: "Sat"
+                    },
+                    7: {
+                        full: "Sunday",
+                        short: "Sun"
+                    }
+                }
             }
         },
-        urls: {
-            store: {
-                href: false,
-                target: "_self"
+        "urls": {
+            "store": {
+                "href": false,
+                "target": "_self"
             },
-            stores: {
-                href: "https://blog.woosmap.com/webapp?key=woos-27e715eb-6454-3019-95c1-e90a418939a9",
-                target: "_self"
+            "stores": {
+                "href": "https://blog.woosmap.com/webapp?key=starbucks-developers",
+                "target": "_self"
             }
         }
     };
     document.addEventListener('DOMContentLoaded', function () {
-        new wgs.genericreco.RecommendationPlugin('#woosmap-search-widget-container', groptions);
+        new wgs.searchwidget.RecommendationPlugin('#woosmap-search-widget-container', widgetOptions);
     })
 </script>
 <!-- WOOSMAP SEARCH WIDGET -->

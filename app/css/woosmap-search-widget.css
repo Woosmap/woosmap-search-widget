@@ -102,13 +102,11 @@
 
 #gr-wgs-homestore-panel {
     position: absolute;
-    top: 50px;
-    left: 50%;
-    width: 300px;
-    margin-left: -140px;
+    top: 50%;
+    width: 100%;
     margin-top: -10000px;
     background-color: white;
-    box-shadow: 1px 1px 12px #555;
+    box-shadow: 0 1px 5px 0 rgba(0, 0, 0, .3);
     opacity: 0;
     z-index: 2;
     color: #666;
@@ -245,7 +243,9 @@ input.gr-wgs-homestore-panel-address-btn::placeholder {
 }
 
 .gr-wgs-homestore-panel-resultBlock-listBlock {
-    list-style-type: none;
+    margin-left: 0;
+    list-style: none;
+    padding-left: 0;
     margin-bottom: 0 !important;
 }
 
