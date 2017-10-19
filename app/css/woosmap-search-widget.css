@@ -96,6 +96,11 @@
     text-overflow: ellipsis;
 }
 
+.gr-wgs-homestore-mainBlock-yourStore-openinghours ul {
+    margin-left: 0.5em;
+    list-style: none;
+}
+
 /* ----------------- */
 /* homestore panel   */
 /* ----------------- */
@@ -170,15 +175,24 @@ form.gr-wgs-homestore-panel-searchBlock-form {
 }
 
 .gr-wgs-homestore-panel-aroundMe-btn {
+    white-space: nowrap;
     text-align: center;
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 14px;
+    box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+    border-radius: 4px;
+    font-size: 15px;
+    font-weight: 600;
     text-transform: uppercase;
-    font-weight: bold;
-    cursor: pointer;
-    padding: 10px;
-    font-size: 18px;
-    border-radius: 6px;
-    background-color: #002b6f;
-    color: white;
+    letter-spacing: .025em;
+    text-decoration: none;
+    transition: all .15s ease;
+    text-shadow: 0 1px 3px rgba(3, 169, 244, 0.4);
+    color: #fff;
+    background: #03A9F4;
+    margin-right: 1.5em;
 }
 
 .gr-wgs-homestore-panel-address-wrapper {
@@ -220,8 +234,9 @@ input.gr-wgs-homestore-panel-address-btn::placeholder {
 
 .gr-wgs-homestore-panel-aroundMe-btn:hover,
 .gr-wgs-homestore-panel-aroundMe-btn:active {
-    background-color: #002b6f;
-    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 7px 14px rgba(50, 50, 93, .1), 0 3px 6px rgba(0, 0, 0, .08);
+    cursor: pointer;
 }
 
 .gr-wgs-homestore-panel-loaderBlock {
