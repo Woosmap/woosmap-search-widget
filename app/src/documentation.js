@@ -107,11 +107,15 @@
  *```json
  *{
  *   "autocomplete": {
- *       "minLength": "customer-clientId",
- *       "types": "AIzaSyAgaUwsVVXJ6KMxlxI-1234556789",
- *       "bounds": "prod-integration",
- *       "componentRestrictions": "fr",
- *       "region": "FR"
+ *       "minLength": 3,
+ *       "types": ["geocode"],
+ *       "bounds": {
+ *           "west": -4.87293470,
+ *           "north": 51.089062,
+ *           "south": 42.19809198,
+ *           "east": 8.332631
+ *       },
+ *       "componentRestrictions": {"country": "gb"}
  *   }
  *}
  *```
@@ -119,9 +123,8 @@
  * @property {Array<String>}types types of predictions to be returned. For a list of supported types.
  * See: [supported types](https://developers.google.com/places/supported_types#table3)
  * @property {String}channel used for Google API Usage reports
- * @property {String}language Google Language Parameter (used for Google Places geocoder).
- * * See: [languages support](https://developers.google.com/maps/faq#languagesupport)
- * @property {String}region Google region Parameter (used for Google Places geocoder). This parameter will only influence, not fully restrict, results from the geocoder.
+ * @property {String}componentRestrictions Geocoding Component Restriction to restrict the autocomplete search to a particular country.
+ * * See: [Autocomplete for Addresses and Search support](https://developers.google.com/maps/documentation/javascript/places-autocomplete)
  */
 
 

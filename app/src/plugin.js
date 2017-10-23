@@ -10,12 +10,12 @@ var Manager = require('./manager.js');
  * @param {RecommendationPluginConf} [configObject] YTotozgiorn loirzfgnoprzg
  * additional google libraries to load.
  * @constructor
- * @memberOf wgs.genericreco
+ * @memberOf wgs.searchwidget
  * @example Instantiation Example
  *
  *```js
  *document.addEventListener('DOMContentLoaded', function () {
- *  new wgs.genericreco.RecommendationPlugin('containerId', {"woosmapKey":"xxxx"});
+ *  new wgs.searchwidget.RecommendationPlugin('containerId', {"woosmapKey":"xxxx"});
  *})
  *```
  */

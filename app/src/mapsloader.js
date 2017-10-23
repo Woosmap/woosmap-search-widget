@@ -27,36 +27,6 @@ function _getScript(scriptUrl, callback) {
     }
 }
 
-/**
- * @typedef {Object} MapsLoaderOptions
- * @property {string} [clientId] the google client id.
- * @property {Array} [librariesToLoad] a list of String containing
- * additional google libraries to load.
- * @property {String} [channelId] is a string to track usage across
- * different applications using the same client ID
- * @property {String} [key] a google maps api key.
- * @property {String} [language] desired for google maps api
- * @property {String} [region] desired for google maps api
- * @property {String} [version] desired for google maps api
- * @example MapsLoaderOptions example
- *
- * ```javascript
- * var mapsOptions = {
- *    clientId: "a_client_id",
- *    librariesToLoad: ["places"],
- *    channelId: "a_channel_id",
- *    language: "fr",
- *    region: "FR"
- *    version: "3.26"
- * }
- * ```
- */
-
-/**
- * Constructs a MapsLoader instance.
- * @param {MapsLoaderOptions} options parameters to load Google Maps API
- * @constructor
- */
 function MapsLoader(options) {
     this.clientId = options.clientId;
     this.apiKey = options.key;
@@ -67,10 +37,7 @@ function MapsLoader(options) {
     this.version = options.version || '3';
 }
 
-/**
- * Loads the google maps api and calls the callback when done.
- * @param {function}callback the function to be called when done.
- */
+
 MapsLoader.prototype.load = function (callback) {
     var librariesParams = '';
     if (this.librariesToLoad.length > 0) {
