@@ -80,10 +80,10 @@ UI.prototype.buildAddress = function (store) {
     if (store.properties.address.city && store.properties.address.city !== '')
         city += (city !== '' ? ' ' : '') + store.properties.address.city;
 
-    address += (address !== '' && city !== '' ? '<br>' + city : '');
+    address += (address !== '' && city !== '' ? '<span class="gr-wgs-homestore-mainBlock-yourStore-city">' + city : '</span>');
 
     if (store.properties.address.country_code && store.properties.address.country_code !== '')
-        address += ', ' + store.properties.address.country_code;
+        address += '<span class="gr-wgs-homestore-mainBlock-yourStore-country"><span class="gr-wgs-homestore-mainBlock-yourStore-sep">, </span><span class="gr-wgs-homestore-mainBlock-yourStore-countrycode">' + store.properties.address.country_code + '</span></span>';
 
     return address;
 };
