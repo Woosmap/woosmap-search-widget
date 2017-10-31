@@ -96,6 +96,10 @@
     text-overflow: ellipsis;
 }
 
+.gr-wgs-homestore-mainBlock-yourStore-city {
+	  display: block;
+} 
+
 .gr-wgs-homestore-mainBlock-yourStore-openinghours ul {
     margin-left: 0.5em;
     list-style: none;
