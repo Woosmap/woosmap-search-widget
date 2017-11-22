@@ -8,7 +8,7 @@ function UI(container, usePlaces, plugin, config) {
     this.config = config;
     var L10n = this.config.L10n;
 
-    var template = '<div class="gr-wgs-homestore-container">' +
+    this.container.innerHTML = '<div class="gr-wgs-homestore-container">' +
         '<div class="gr-wgs-homestore-mainBlock"></div>' +
         '<div id="gr-wgs-homestore-panel">' +
         '<div class="gr-wgs-homestore-panel-searchBlock">' +
@@ -25,8 +25,6 @@ function UI(container, usePlaces, plugin, config) {
         '</div>' +
         '</div>' +
         '</div>';
-
-    this.container.innerHTML = template;
 
     this.mainContainer = this.container.querySelector('.gr-wgs-homestore-container');
     this.headerContainer = this.container.querySelector('.gr-wgs-homestore-mainBlock');
@@ -117,7 +115,7 @@ UI.prototype.buildHTMLInitialReco = function (store) {
     if (typeof this.config.options.display.recommendation.phone !== 'undefined' && this.config.options.display.recommendation.phone && store.properties.contact && store.properties.contact.phone !== '')
         phone += '<span class="gr-wgs-homestore-mainBlock-yourStore-phone"><span class="gr-wgs-homestore-mainBlock-yourStore-phone-label">' + this.config.L10n.telephone + '</span> ' + (store.properties.contact.phone ? store.properties.contact.phone : '') + '</span>';
 
-    var template =
+    this.headerContainer.innerHTML =
         '<div class="gr-wgs-homestore-mainBlockTitle gr-wgs-homestore-mainBlock-yourStore">' +
         '<span class="gr-wgs-homestore-mainBlock-yourStore-icon"></span>' +
         '<span class="gr-wgs-homestore-mainBlock-yourStore-change">' +
@@ -131,28 +129,6 @@ UI.prototype.buildHTMLInitialReco = function (store) {
         '<span class="gr-wgs-homestore-mainBlock-yourStore-openinghours">' + openingday + openingweek + '</span>' +
         '</div>';
 
-    this.headerContainer.innerHTML = template;
-
-    this.headerContainer.querySelector('.gr-wgs-homestore-mainBlock-yourStore-name').addEventListener('click', function () {
-        /*
-        var coord = store.geometry.coordinates;
-        
-        var lat = coord[1];
-        var lng = coord[0];
-        var callback = function (store) {
-            self.openStore(store);
-        };
-        
-        self.plugin.manager.reco.sendUserConsultedPOI(lat, lng, store.properties.store_id, function () {
-            callback(store);
-        }, function () {
-            callback(store);
-        });
-        self.toggleSearchPanel();
-        */
-
-    });
-
     this.headerContainer.querySelector('.gr-wgs-homestore-mainBlock-yourStore').addEventListener('click', function () {
         self.toggleSearchPanel();
     });
@@ -164,7 +140,7 @@ UI.prototype.buildHTMLInitialReco = function (store) {
  **/
 UI.prototype.buildHTMLFindMyStore = function () {
 
-    var template =
+    this.headerContainer.innerHTML =
         '<div class="gr-wgs-homestore-mainBlockTitle gr-wgs-homestore-mainBlock-findStore">' +
         '<span class="gr-wgs-homestore-mainBlock-yourStore-icon"></span>' +
         '<span class="gr-wgs-homestore-mainBlock-yourStore-change">' + //onclick="document.getElementById('gr-wgs-homestore-panel').style.display='block'"
@@ -174,9 +150,6 @@ UI.prototype.buildHTMLFindMyStore = function () {
         this.config.L10n.findStore +
         '</span>' +
         '</div>';
-
-    this.headerContainer.innerHTML = template;
-    // .show();
 
     var self = this;
     this.headerContainer.querySelector('.gr-wgs-homestore-mainBlock-findStore').addEventListener('click', function () {
@@ -354,7 +327,7 @@ UI.prototype.generateHoursLiArray = function (store) {
             currentHoursText = defaultHourText;
         }
 
-        if (currentHoursText != previousHoursText) {
+        if (currentHoursText !== previousHoursText) {
             createLiHour(firstDaySerie, dayIndex - 1, previousHoursText);
             firstDaySerie = dayIndex;
             previousHoursText = currentHoursText;
@@ -396,7 +369,7 @@ UI.prototype.buildHTMLOpeningHoursDay = function (store) {
 
 /**
  * build html weekly opening hours
- * @param [Object} store
+ * @param {Object} store
  * @returns {String}
  */
 UI.prototype.buildHTMLOpeningHoursWeek = function (store) {
@@ -449,17 +422,14 @@ UI.prototype.buildHTMLStore = function (store) {
         var coord = store.geometry.coordinates;
         var lat = coord[1];
         var lng = coord[0];
+        this.plugin.ui.resetStoreSearch();
+        this.hideSearchPanel();
+        this.plugin.ui.buildHTMLInitialReco(store);
         woosmapRecommendation.sendUserFavoritedPOI({
             lat: lat, lng: lng, id: store.properties.store_id,
             successCallback: function () {
-                this.plugin.ui.resetStoreSearch();
-                this.hideSearchPanel();
-                //self.plugin.manager.initialRecommendation();
-                this.plugin.ui.buildHTMLInitialReco(store);
             }.bind(this),
             errorCallback: function () {
-                this.plugin.ui.resetStoreSearch();
-                this.hideSearchPanel();
                 console.error('Error recommendation');
             }.bind(this)
         });
