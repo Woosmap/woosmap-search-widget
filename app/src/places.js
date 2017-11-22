@@ -8,8 +8,7 @@ function PlacesLocation(container, plugin, config) {
     this.config = config;
     this.plugin = plugin;
     this.container = container;
-    this.containerPredictionsList;
-
+    this.containerPredictionsList = null;
     this.buildHTML();
 }
 
@@ -37,7 +36,7 @@ PlacesLocation.prototype.buildHTML = function () {
         var selectedItem = self.containerPredictionsList.querySelector('.gr-wgs-pac-item-selected');
         var firstItem = self.containerPredictionsList.querySelector('.gr-wgs-pac-item');
         var lastItem = self.containerPredictionsList.querySelector('.gr-wgs-pac-item:last-child');
-        
+
         // key enter
         if (event.keyCode === 13) {
             var clickEvent = document.createEvent('MouseEvents');
@@ -45,7 +44,7 @@ PlacesLocation.prototype.buildHTML = function () {
             if (selectedItem !== null) {
                 selectedItem.dispatchEvent(clickEvent);
             }
-            else if(firstItem !== null) {
+            else if (firstItem !== null) {
                 firstItem.dispatchEvent(clickEvent);
             }
         }
@@ -59,7 +58,7 @@ PlacesLocation.prototype.buildHTML = function () {
                 else
                     previousSibling.classList.add(selectedItemClass);
             }
-            else if (lastItem !== null){
+            else if (lastItem !== null) {
                 lastItem.classList.add(selectedItemClass);
             }
         }
@@ -73,7 +72,7 @@ PlacesLocation.prototype.buildHTML = function () {
                 else
                     nextSibling.classList.add(selectedItemClass);
             }
-            else if(firstItem !== null){
+            else if (firstItem !== null) {
                 firstItem.classList.add(selectedItemClass);
             }
         }
@@ -164,21 +163,21 @@ PlacesLocation.prototype.getPredictions = function (request) {
         else if (status === google.maps.places.PlacesServiceStatus.UNKNOWN_ERROR || status === google.maps.places.PlacesServiceStatus.OVER_QUERY_LIMIT) {
             window.setTimeout(function () {
                 self.getPredictions(request);
-            }, 1000);
+            }, 100);
         }
-        else if (status === google.maps.places.PlacesServiceStatus.ZERO_RESULTS){
+        else if (status === google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
             self.buildHTMLPredictions([]);
         } else {
             console.error(status);
         }
     });
 };
+
 /**
  * getDetails
  * @param place_id
  */
 PlacesLocation.prototype.getDetails = function (place_id) {
-
     var places = new google.maps.places.PlacesService(document.getElementsByClassName('gr-wgs-homestore-panel-address-btn')[0]);
     var self = this;
     var request = {
@@ -188,12 +187,12 @@ PlacesLocation.prototype.getDetails = function (place_id) {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
             var lat = result.geometry.location.lat();
             var lng = result.geometry.location.lng();
-            self.plugin.manager.SearchedStores(lat, lng);
+            self.plugin.manager.recommendStoresFromSearch(lat, lng);
         }
         else if (status === google.maps.places.PlacesServiceStatus.UNKNOWN_ERROR || status === google.maps.places.PlacesServiceStatus.OVER_QUERY_LIMIT) {
             window.setTimeout(function () {
                 self.getDetails(place_id);
-            }, 1000);
+            }, 100);
         }
         else {
             console.error(status);

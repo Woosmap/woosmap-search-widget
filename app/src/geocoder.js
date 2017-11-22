@@ -92,7 +92,7 @@ GeocodingLocation.prototype.buildHTML = function () {
         var lng = pacItem.getAttribute('data-lng');
         self.container.querySelector('input').value = pacItem.querySelector('.gr-wgs-pac-item-query').innerText;
 
-        self.askForStores(lat, lng);
+        self.askForStoresRecommendation(lat, lng);
         self.containerResultsList.style.display = 'none';
         self.containerResultsList.innerHTML = '';
     }, true);
@@ -113,7 +113,7 @@ GeocodingLocation.prototype.clearPanel = function () {
     this.container.querySelector('input').value = '';
     this.containerResultsList.style.display = 'none';
     this.containerResultsList.innerHTML = '';
-    this.plugin.ui.hideResultsBlock();  
+    this.plugin.ui.hideResultsBlock();
 };
 
 /**
@@ -141,21 +141,14 @@ GeocodingLocation.prototype.buildHTMLResults = function (results) {
     }
 };
 /**
- * askForRecommendation
+ * askForStoresRecommendation
  * @param lat
  * @param lng
  */
-GeocodingLocation.prototype.askForRecommendation = function (lat, lng) {
-    this.plugin.manager.SearchedRecommendation(lat, lng);
+GeocodingLocation.prototype.askForStoresRecommendation = function (lat, lng) {
+    this.plugin.manager.recommendStoresFromSearch(lat, lng);
 };
-/**
- * askForStores
- * @param lat
- * @param lng
- */
-GeocodingLocation.prototype.askForStores = function (lat, lng) {
-    this.plugin.manager.SearchedStores(lat, lng);
-};
+
 /**
  * geocode
  * @param address
@@ -171,13 +164,13 @@ GeocodingLocation.prototype.geocode = function (request) {
             if (results.length === 1) {
                 self.container.querySelector('.gr-wgs-homestore-panel-searchBlock-btn').value = results[0].formatted_address;
                 var coords = results[0].geometry.location;
-                self.askForStores(coords.lat(), coords.lng());
+                self.askForStoresRecommendation(coords.lat(), coords.lng());
                 self.buildHTMLResults([]);
             }
             else {
                 self.buildHTMLResults(results);
             }
-        } 
+        }
         else if (status === google.maps.GeocoderStatus.ZERO_RESULTS) {
             self.buildHTMLResults([]);
         }
