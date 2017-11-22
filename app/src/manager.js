@@ -43,7 +43,11 @@ Manager.prototype.initialRecommendation = function () {
     });
 };
 
-
+/**
+ * searchStores
+ * @param lat
+ * @param lng
+ */
 Manager.prototype.searchStores = function (lat, lng) {
     this.plugin.ui.showLoader();
     var self = this;
@@ -70,7 +74,7 @@ Manager.prototype.searchStores = function (lat, lng) {
     });
 };
 /**
- * HTML5Recommendation
+ * recommendStoresFromHTML5
  * @param lat
  * @param lng
  */
@@ -80,7 +84,7 @@ Manager.prototype.recommendStoresFromHTML5 = function (lat, lng) {
 };
 
 /**
- * recommendStores
+ * recommendStoresFromSearch
  * @param lat
  * @param lng
  */
