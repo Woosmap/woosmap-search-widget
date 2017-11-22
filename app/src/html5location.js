@@ -27,7 +27,7 @@ HTML5Location.prototype.defineEvents = function () {
     var successCallback = function (resp) {
         var lat = resp.coords.latitude;
         var lng = resp.coords.longitude;
-        self.plugin.manager.HTML5Recommendation(lat, lng, self.config);
+        self.plugin.manager.recommendStoresFromHTML5(lat, lng);
     };
 
     var errorCallback = function (resp) {
