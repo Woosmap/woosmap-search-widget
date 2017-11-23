@@ -50,7 +50,7 @@ Manager.prototype.getUserRecommendation = function () {
                 var stores = response.features;
                 self.plugin.ui.buildHTMLInitialReco(stores[0]);
                 if (typeof window.localStorage !== 'undefined') {
-                    window.localStorage.setItem(this.config.options.woosmapKey, JSON.stringify(stores[0]));
+                    window.localStorage.setItem(self.config.options.woosmapKey, JSON.stringify(stores[0]));
                 }
             }
             else {
