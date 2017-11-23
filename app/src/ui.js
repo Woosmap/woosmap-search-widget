@@ -89,7 +89,7 @@ UI.prototype.buildAddress = function (store) {
 /**
  * buildHTMLInitialReco
  * Build the HTML of the store recommendation in the header
- * @param {Store} store max number of stores to retrieve
+ * @param {Object} store max number of stores to retrieve
  **/
 UI.prototype.buildHTMLInitialReco = function (store) {
     var self = this;
@@ -425,6 +425,9 @@ UI.prototype.buildHTMLStore = function (store) {
         this.plugin.ui.resetStoreSearch();
         this.hideSearchPanel();
         this.plugin.ui.buildHTMLInitialReco(store);
+        if (typeof window.localStorage !== 'undefined') {
+            window.localStorage.setItem(this.config.options.woosmapKey, JSON.stringify(store));
+        }
         woosmapRecommendation.sendUserFavoritedPOI({
             lat: lat, lng: lng, id: store.properties.store_id,
             successCallback: function () {

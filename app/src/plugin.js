@@ -43,8 +43,8 @@ function RecommendationPlugin(selector, options) {
     }
 
     this.mapsLoader.load(function () {
-        this.manager = new Manager(this, this.config);
         this.ui = new UI(this.container, usePlaces, this, this.config);
+        this.manager = new Manager(this, this.config);
     }.bind(this));
 
 }

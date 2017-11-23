@@ -7,7 +7,6 @@ var CONSTANT = require('./constants.js');
  * @param config
  */
 function Manager(plugin, config) {
-
     this.plugin = plugin;
     this.config = config;
     this.limit = this.config.options.woosmap.limit;
@@ -22,8 +21,26 @@ function Manager(plugin, config) {
  * initialRecommendation
  */
 Manager.prototype.initialRecommendation = function () {
-    var self = this;
+    if (typeof window.localStorage !== 'undefined') {
+        var savedFavoritedStore = JSON.parse(window.localStorage.getItem(this.config.options.woosmapKey));
+        if (savedFavoritedStore !== null) {
+            this.plugin.ui.buildHTMLInitialReco(savedFavoritedStore);
+        }
+        else {
+            this.getUserRecommendation();
+        }
+    }
+    else {
+        this.getUserRecommendation();
+    }
+};
 
+
+/**
+ * getUserRecommendation
+ */
+Manager.prototype.getUserRecommendation = function () {
+    var self = this;
     woosmapRecommendation.getUserRecommendation({
         successCallback: function (response) {
             if (CONSTANT.debug) {
@@ -32,6 +49,9 @@ Manager.prototype.initialRecommendation = function () {
             if (response && response.features && response.features.length > 0) {
                 var stores = response.features;
                 self.plugin.ui.buildHTMLInitialReco(stores[0]);
+                if (typeof window.localStorage !== 'undefined') {
+                    window.localStorage.setItem(this.config.options.woosmapKey, JSON.stringify(stores[0]));
+                }
             }
             else {
                 self.plugin.ui.buildHTMLFindMyStore();
@@ -73,6 +93,7 @@ Manager.prototype.searchStores = function (lat, lng) {
         maxDistance: this.maxDistance
     });
 };
+
 /**
  * recommendStoresFromHTML5
  * @param lat
