@@ -57,6 +57,17 @@ Manager.prototype.getUserRecommendation = function () {
                 self.plugin.ui.buildHTMLFindMyStore();
             }
         },
+        errorCallback: function (response) {
+            if(response.status === 401 ) {
+                self.plugin.ui.buildHTMLFindMyStore("...error, wrong public key");
+            }
+            else if(response.status === 403 ) {
+                self.plugin.ui.buildHTMLFindMyStore("...error, unauthorized domain");
+            }
+            else {
+                self.plugin.ui.buildHTMLFindMyStore("...error retrieving data");
+            }
+        },
         limit: this.limit,
         query: this.query,
         maxDistance: this.maxDistance

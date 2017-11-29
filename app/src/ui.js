@@ -134,20 +134,21 @@ UI.prototype.buildHTMLInitialReco = function (store) {
     });
 
 };
+
 /**
  * buildHTMLFindMyStore
  * Build the HTML of the "Trouver mon magasin" in the header
  **/
-UI.prototype.buildHTMLFindMyStore = function () {
-
+UI.prototype.buildHTMLFindMyStore = function (errorMessage) {
+    var displayedMsg = (typeof errorMessage !== 'undefined') ? errorMessage : this.config.L10n.findStore;
     this.headerContainer.innerHTML =
         '<div class="gr-wgs-homestore-mainBlockTitle gr-wgs-homestore-mainBlock-findStore">' +
         '<span class="gr-wgs-homestore-mainBlock-yourStore-icon"></span>' +
-        '<span class="gr-wgs-homestore-mainBlock-yourStore-change">' + //onclick="document.getElementById('gr-wgs-homestore-panel').style.display='block'"
+        '<span class="gr-wgs-homestore-mainBlock-yourStore-change">' +
         this.config.L10n.changeStore +
         '</span>' +
         '<span class="gr-wgs-homestore-mainBlock-yourStore-name">' +
-        this.config.L10n.findStore +
+        displayedMsg +
         '</span>' +
         '</div>';
 
