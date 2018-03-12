@@ -38,6 +38,9 @@ function RecommendationPlugin(selector, options) {
     });
     this.container = document.querySelector(selector);
 
+    this.callbackInitialRecommendedStore = this.config.options.callbackInitialRecommendedStore instanceof Function ? this.config.options.callbackInitialRecommendedStore : null;
+    this.callbackUserSelectedStore = this.config.options.callbackUserSelectedStore instanceof Function ? this.config.options.callbackUserSelectedStore : null;
+
     if (this.container === null) {
         throw new Error('querySelector for ' + selector + ' returned null.');
     }
