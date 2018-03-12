@@ -7,7 +7,7 @@ var Manager = require('./manager.js');
  * Construct a new Recommendation Widget instance
  *
  * @param {String} [containerId] parameters to load Google Maps API or clientId as string
- * @param {RecommendationPluginConf} [configObject] YTotozgiorn loirzfgnoprzg
+ * @param {RecommendationPluginConf} [configObject] RecommendationPluginConf Object
  * additional google libraries to load.
  * @constructor
  * @memberOf wgs.searchwidget
