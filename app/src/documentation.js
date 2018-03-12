@@ -7,6 +7,8 @@
  * var myConfig = {
  *    container: "myHTMLContainerId",
  *    woosmapKey: "woos-27e715eb-6454-3019-95c1-e90a418939a1",
+ *    callbackInitialRecommendedStore: functionCallbackInitRecoStore,
+ *    callbackUserSelectedStore: functionCallbackSelectRecoStore,
  *    google: {
  *        clientId: "customer-clientId",
  *        key: "AIzaSyAgaUwsVVXJ6KMxlxI-1234556789"
@@ -25,6 +27,8 @@
  *```
  * @property {String}container the `id` of the HTML container where the widget will display
  * @property {String}woosmapKey the Woosmap Public key used to connect to your datasource
+ * @property {Function}callbackInitialRecommendedStore Callback Function called when an Initial Recommended Store is Found
+ * @property {Function}callbackUserSelectedStore Callback Function called When a User Select a Store after a Geocoding Search
  * @property {GoogleConf}google Google ids parameters
  * @property {UrlsConf}urls To open store(s) website(s)
  * @property {Boolean}usePlaces To enable places autocomplete search

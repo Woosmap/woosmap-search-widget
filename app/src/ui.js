@@ -20,7 +20,7 @@ function UI(container, usePlaces, plugin, config) {
         '<ul class="gr-wgs-homestore-panel-resultBlock-listBlock"></ul>' +
         '</div>' +
         '<div class="gr-wgs-homestore-panel-footerBlock">' +
-        '<div class="gr-wgs-homestore-panel-footerBlock-allStores">' + (this.config.options.urls.stores.href.replace(' ', '') !== '' ? L10n.allStores : '' ) + '</div>' +
+        '<div class="gr-wgs-homestore-panel-footerBlock-allStores">' + (this.config.options.urls.stores.href.replace(' ', '') !== '' ? L10n.allStores : '') + '</div>' +
         '<div class="gr-wgs-homestore-panel-footerBlock-closePanel">' + L10n.closeBtn + '</div>' +
         '</div>' +
         '</div>' +
@@ -352,7 +352,7 @@ UI.prototype.buildHTMLOpeningHoursDay = function (store) {
 
     if (op.open_hours.length > 0) {
         str += '<span class="gr-wgs-openinghours-day">' + this.config.L10n.openingHoursDay + '</span>';
-        str += '<ul class="gr-wgs-openinghours-day-' + op.week_day + ( op.opening_now ? ' gr-wgs-openinghours-opennow' : '' ) + '">';
+        str += '<ul class="gr-wgs-openinghours-day-' + op.week_day + (op.opening_now ? ' gr-wgs-openinghours-opennow' : '') + '">';
         for (var j = 0; j < op.open_hours.length; j++) {
             str += '<li class="gr-wgs-openinghours-day-slice">';
             if (typeof this.config.options.display.h12 !== 'undefined' && this.config.options.display.h12) {
@@ -425,6 +425,9 @@ UI.prototype.buildHTMLStore = function (store) {
         var lng = coord[0];
         this.plugin.ui.resetStoreSearch();
         this.hideSearchPanel();
+        if (this.plugin.callbackUserSelectedStore instanceof Function) {
+            this.plugin.callbackUserSelectedStore(store);
+        }
         this.plugin.ui.buildHTMLInitialReco(store);
         if (typeof window.localStorage !== 'undefined') {
             window.localStorage.setItem(this.config.options.woosmapKey, JSON.stringify(store));

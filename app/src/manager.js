@@ -24,6 +24,9 @@ Manager.prototype.initialRecommendation = function () {
     if (typeof window.localStorage !== 'undefined') {
         var savedFavoritedStore = JSON.parse(window.localStorage.getItem(this.config.options.woosmapKey));
         if (savedFavoritedStore !== null) {
+            if (this.plugin.callbackInitialRecommendedStore instanceof Function) {
+                this.plugin.callbackInitialRecommendedStore(savedFavoritedStore);
+            }
             this.plugin.ui.buildHTMLInitialReco(savedFavoritedStore);
         }
         else {
@@ -48,6 +51,9 @@ Manager.prototype.getUserRecommendation = function () {
             }
             if (response && response.features && response.features.length > 0) {
                 var stores = response.features;
+                if (self.plugin.callbackInitialRecommendedStore instanceof Function) {
+                    self.plugin.callbackInitialRecommendedStore(stores[0]);
+                }
                 self.plugin.ui.buildHTMLInitialReco(stores[0]);
                 if (typeof window.localStorage !== 'undefined') {
                     window.localStorage.setItem(self.config.options.woosmapKey, JSON.stringify(stores[0]));
@@ -58,10 +64,10 @@ Manager.prototype.getUserRecommendation = function () {
             }
         },
         errorCallback: function (response) {
-            if(response.status === 401 ) {
+            if (response.status === 401) {
                 self.plugin.ui.buildHTMLFindMyStore("...error, wrong public key");
             }
-            else if(response.status === 403 ) {
+            else if (response.status === 403) {
                 self.plugin.ui.buildHTMLFindMyStore("...error, unauthorized domain");
             }
             else {
@@ -124,5 +130,6 @@ Manager.prototype.recommendStoresFromSearch = function (lat, lng) {
     this.searchStores(lat, lng);
     woosmapRecommendation.sendUserSearchedPosition({lat: lat, lng: lng});
 };
+
 
 module.exports = Manager;
