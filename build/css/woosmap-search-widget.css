@@ -97,8 +97,8 @@
 }
 
 .gr-wgs-homestore-mainBlock-yourStore-city {
-	  display: block;
-} 
+    display: block;
+}
 
 .gr-wgs-homestore-mainBlock-yourStore-openinghours ul {
     margin-left: 0.5em;
@@ -124,6 +124,13 @@
     transition: opacity .5s ease, top .4s ease;
     -webkit-transition: opacity .5s ease, top .4s ease;
     -o-transition: opacity .5s ease, top .4s ease;
+}
+
+#gr-wgs-homestore-panel.omit-reco-ui {
+    position: relative;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
 }
 
 #gr-wgs-homestore-panel.gr-wgs-homestore-panel-open {
