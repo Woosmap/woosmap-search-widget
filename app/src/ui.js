@@ -10,7 +10,7 @@ function UI(container, usePlaces, plugin, config) {
 
     this.container.innerHTML = '<div class="gr-wgs-homestore-container">' +
         '<div class="gr-wgs-homestore-mainBlock"></div>' +
-        '<div id="gr-wgs-homestore-panel">' +
+        '<div id="gr-wgs-homestore-panel" class="' + (this.config.options.omitUIReco !== 'undefined' && this.config.options.omitUIReco ? ' omit-reco-ui' : '') + '">' +
         '<div class="gr-wgs-homestore-panel-searchBlock">' +
         '<div class="gr-wgs-homestore-panel-searchBlock-warning">' + L10n.geolocationNotice + '</div>' +
         '</div>' +
