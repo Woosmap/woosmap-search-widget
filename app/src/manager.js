@@ -74,10 +74,10 @@ Manager.prototype.getUserRecommendation = function () {
             }
         },
         errorCallback: function (response) {
-            if(response.status === 401 ) {
+            if (response.status === 401) {
                 self.plugin.ui.buildHTMLFindMyStore("...error, wrong public key");
             }
-            else if(response.status === 403 ) {
+            else if (response.status === 403) {
                 self.plugin.ui.buildHTMLFindMyStore("...error, unauthorized domain");
             }
             else {

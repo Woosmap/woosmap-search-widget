@@ -4,10 +4,9 @@ function HTML5Location(container, plugin, config) {
     this.plugin = plugin;
 
     this.ERRORS = {
-        HTTPS: this.config.L10n.geolocationErrHttps,
-        BLOCKED: this.config.L10n.geolocationErrBlocked
+        HTTPS: typeof this.config.L10n.geolocationErrHttps !== "undefined" ? typeof this.config.L10n.geolocationErrHttps : "...Geolocation works only through HTTPS",
+        BLOCKED: typeof this.config.L10n.geolocationErrBlocked !== "undefined" ? typeof this.config.L10n.geolocationErrBlocked : "...Geolocation Blocked By User"
     };
-
     this.initialize();
 }
 
@@ -32,10 +31,10 @@ HTML5Location.prototype.defineEvents = function () {
 
     var errorCallback = function (resp) {
         if (resp && resp.message && resp.message.indexOf("Only secure origins are allowed") === 0) {
-            self.plugin.ui.slideDownWarningHTML5(this.ERRORS.HTTPS);
+            self.plugin.ui.slideDownWarningHTML5(self.ERRORS.HTTPS);
         }
         else {
-            self.plugin.ui.slideDownWarningHTML5(this.ERRORS.BLOCKED);
+            self.plugin.ui.slideDownWarningHTML5(self.ERRORS.BLOCKED);
         }
     };
 

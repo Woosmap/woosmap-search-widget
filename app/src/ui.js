@@ -357,7 +357,7 @@ UI.prototype.buildHTMLOpeningHoursDay = function (store) {
 
     if (op.open_hours.length > 0) {
         str += '<span class="gr-wgs-openinghours-day">' + this.config.L10n.openingHoursDay + '</span>';
-        str += '<ul class="gr-wgs-openinghours-day-' + op.week_day + ( op.opening_now ? ' gr-wgs-openinghours-opennow' : '' ) + '">';
+        str += '<ul class="gr-wgs-openinghours-day-' + op.week_day + (op.opening_now ? ' gr-wgs-openinghours-opennow' : '') + '">';
         for (var j = 0; j < op.open_hours.length; j++) {
             str += '<li class="gr-wgs-openinghours-day-slice">';
             if (typeof this.config.options.display.h12 !== 'undefined' && this.config.options.display.h12) {

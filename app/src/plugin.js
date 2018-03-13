@@ -7,7 +7,7 @@ var Manager = require('./manager.js');
  * Construct a new Recommendation Widget instance
  *
  * @param {String} [containerId] parameters to load Google Maps API or clientId as string
- * @param {RecommendationPluginConf} [configObject] YTotozgiorn loirzfgnoprzg
+ * @param {RecommendationPluginConf} [configObject] RecommendationPluginConf Object
  * additional google libraries to load.
  * @constructor
  * @memberOf wgs.searchwidget
@@ -37,6 +37,9 @@ function RecommendationPlugin(selector, options) {
         language: this.config.options.google.language
     });
     this.container = document.querySelector(selector);
+
+    this.callbackInitialRecommendedStore = this.config.options.callbackInitialRecommendedStore instanceof Function ? this.config.options.callbackInitialRecommendedStore : null;
+    this.callbackUserSelectedStore = this.config.options.callbackUserSelectedStore instanceof Function ? this.config.options.callbackUserSelectedStore : null;
 
     if (this.container === null) {
         throw new Error('querySelector for ' + selector + ' returned null.');
