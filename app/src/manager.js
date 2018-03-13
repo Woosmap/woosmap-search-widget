@@ -24,7 +24,15 @@ Manager.prototype.initialRecommendation = function () {
     if (typeof window.localStorage !== 'undefined') {
         var savedFavoritedStore = JSON.parse(window.localStorage.getItem(this.config.options.woosmapKey));
         if (savedFavoritedStore !== null) {
-            this.plugin.ui.buildHTMLInitialReco(savedFavoritedStore);
+            if (this.plugin.callbackInitialRecommendedStore instanceof Function) {
+                this.plugin.callbackInitialRecommendedStore(savedFavoritedStore);
+            }
+            if (this.config.options.omitUIReco !== 'undefined' && this.config.options.omitUIReco) {
+                this.plugin.ui.showSearchPanel();
+            }
+            else {
+                this.plugin.ui.buildHTMLInitialReco(savedFavoritedStore);
+            }
         }
         else {
             this.getUserRecommendation();
@@ -48,7 +56,15 @@ Manager.prototype.getUserRecommendation = function () {
             }
             if (response && response.features && response.features.length > 0) {
                 var stores = response.features;
-                self.plugin.ui.buildHTMLInitialReco(stores[0]);
+                if (self.plugin.callbackInitialRecommendedStore instanceof Function) {
+                    self.plugin.callbackInitialRecommendedStore(stores[0]);
+                }
+                if (self.config.options.omitUIReco !== 'undefined' && this.config.options.omitUIReco) {
+                    self.plugin.ui.showSearchPanel();
+                }
+                else {
+                    self.plugin.ui.buildHTMLInitialReco(stores[0]);
+                }
                 if (typeof window.localStorage !== 'undefined') {
                     window.localStorage.setItem(self.config.options.woosmapKey, JSON.stringify(stores[0]));
                 }
@@ -124,5 +140,6 @@ Manager.prototype.recommendStoresFromSearch = function (lat, lng) {
     this.searchStores(lat, lng);
     woosmapRecommendation.sendUserSearchedPosition({lat: lat, lng: lng});
 };
+
 
 module.exports = Manager;

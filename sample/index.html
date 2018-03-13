@@ -30,11 +30,22 @@
 </div>
 <script src="woosmapsearchwidget.js"></script>
 <script>
+    var callbackInitialRecommendedStore = function (store) {
+        //called when an Initial Recommended Store is Found
+        console.log(store)
+    };
+    var callbackUserSelectedStore = function (store) {
+        //called When a User Select a Store after a Geocoding Search
+        console.log(store)
+    };
     var widgetOptions = {
         woosmapKey: 'woos-0c78592f-13ea-362b-aa07-ba4ba9ea3dae',
         google: {
             clientId: 'gme-webgeoservicessa'
         },
+        omitUIReco: true,
+        callbackInitialRecommendedStore: callbackInitialRecommendedStore,
+        callbackUserSelectedStore: callbackUserSelectedStore,
         usePlaces: true,
         lang: 'en',
         translations: {
