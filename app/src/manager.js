@@ -59,7 +59,7 @@ Manager.prototype.getUserRecommendation = function () {
                 if (self.plugin.callbackInitialRecommendedStore instanceof Function) {
                     self.plugin.callbackInitialRecommendedStore(stores[0]);
                 }
-                if (self.config.options.omitUIReco !== 'undefined' && this.config.options.omitUIReco) {
+                if (self.config.options.omitUIReco !== 'undefined' && self.config.options.omitUIReco) {
                     self.plugin.ui.showSearchPanel();
                 }
                 else {
@@ -70,7 +70,12 @@ Manager.prototype.getUserRecommendation = function () {
                 }
             }
             else {
-                self.plugin.ui.buildHTMLFindMyStore();
+                if (self.config.options.omitUIReco !== 'undefined' && self.config.options.omitUIReco) {
+                    self.plugin.ui.showSearchPanel();
+                }
+                else {
+                    self.plugin.ui.buildHTMLFindMyStore();
+                }
             }
         },
         errorCallback: function (response) {
