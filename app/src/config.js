@@ -167,7 +167,6 @@ Config.prototype.extend = function (options) {
 };
 
 Config.prototype.checkConfig = function (options) {
-    console.log(options.google);
     /**
      * checkOptions
      * @param {Object} options
