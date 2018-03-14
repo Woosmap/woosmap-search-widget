@@ -39,8 +39,8 @@ function Config(options) {
         woosmapKey: '',
         google: {
             //key: '',
-            clientId: '',
-            channel: ''
+            //clientId: '',
+            //channel: ''
             //language: '',
             //region: ''
         },
@@ -167,6 +167,7 @@ Config.prototype.extend = function (options) {
 };
 
 Config.prototype.checkConfig = function (options) {
+    console.log(options.google);
     /**
      * checkOptions
      * @param {Object} options
