@@ -4,8 +4,8 @@ function HTML5Location(container, plugin, config) {
     this.plugin = plugin;
 
     this.ERRORS = {
-        HTTPS: typeof this.config.L10n.geolocationErrHttps !== "undefined" ? typeof this.config.L10n.geolocationErrHttps : "...Geolocation works only through HTTPS",
-        BLOCKED: typeof this.config.L10n.geolocationErrBlocked !== "undefined" ? typeof this.config.L10n.geolocationErrBlocked : "...Geolocation Blocked By User"
+        HTTPS: typeof this.config.L10n.geolocationErrHttps !== "undefined" ? this.config.L10n.geolocationErrHttps : "...Geolocation works only through HTTPS",
+        BLOCKED: typeof this.config.L10n.geolocationErrBlocked !== "undefined" ? this.config.L10n.geolocationErrBlocked : "...Geolocation Blocked By User"
     };
     this.initialize();
 }
