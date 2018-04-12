@@ -17,7 +17,7 @@ jobs:
       - run: npm run build
       - deploy:
           name: Deploy to S3 if Build OK and branch is Master
-          command: aws s3 sync build/woosmapsearchwidget.js s3://sdk.woosmap.com/searchwidget/ --region eu-central-1 --acl public-read
+          command: aws s3 sync build s3://sdk.woosmap.com/searchwidget/ --region eu-central-1 --acl public-read
 workflows:
   version: 2
   build-deploy:
