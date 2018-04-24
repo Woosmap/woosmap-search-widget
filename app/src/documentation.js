@@ -113,7 +113,7 @@
  *
  *```json
  *{
- *   "autocomplete": {
+ *   "autocompletePlaces": {
  *       "minLength": 3,
  *       "types": ["geocode"],
  *       "bounds": {
