@@ -366,7 +366,7 @@ input.gr-wgs-homestore-panel-address-btn::placeholder {
     background-image: url(//maps.gstatic.com/mapfiles/api-3/images/powered-by-google-on-white3.png);
     background-position: right;
     background-repeat: no-repeat;
-    background-size: 104px 16px
+    background-size: 120px 14px
 }
 
 .gr-wgs-pac-container.gr-wgs-pac-container-not:after {
