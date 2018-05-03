@@ -28,15 +28,41 @@
 <div id="wrapper">
     <div id="woosmap-search-widget-container"></div>
 </div>
-<script src="woosmapsearchwidget.js"></script>
 <script>
     var callbackInitialRecommendedStore = function (store) {
         //called when an Initial Recommended Store is Found
-        console.log(store)
+        console.log(store);
     };
     var callbackUserSelectedStore = function (store) {
         //called When a User Select a Store after a Geocoding Search
         console.log(store)
+    };
+
+    var callbackOnSuccessHTML5Location = function (position) {
+        // for when getting location is a success
+        console.log('latitude', position.coords.latitude,
+            'longitude', position.coords.longitude);
+    };
+
+    var callbackOnErrorHTML5Location = function (error) {
+        // for when getting location results in an error
+        console.error('An error has occured while retrieving location', error);
+        switch (error.code) {
+            case 0:
+                console.log("There was an error while retrieving your location. Additional details: " +
+                    error.message);
+                break;
+            case 1:
+                console.log("The user opted not to share his or her location.");
+                break;
+            case 2:
+                console.log("The browser was unable to determine your location. Additional details: " +
+                    error.message);
+                break;
+            case 3:
+                console.log("The browser timed out before retrieving the location.");
+                break;
+        }
     };
     var widgetOptions = {
         woosmapKey: 'woos-0c78592f-13ea-362b-aa07-ba4ba9ea3dae',
@@ -46,6 +72,8 @@
         omitUIReco: true,
         callbackInitialRecommendedStore: callbackInitialRecommendedStore,
         callbackUserSelectedStore: callbackUserSelectedStore,
+        callbackOnSuccessHTML5Location: callbackOnSuccessHTML5Location,
+        callbackOnErrorHTML5Location: callbackOnErrorHTML5Location,
         usePlaces: true,
         lang: 'en',
         translations: {
@@ -57,7 +85,7 @@
                 allStores: 'All Stores',
                 changeStore: 'Recommended Store',
                 findStore: 'Find my Store',
-                geolocationNotice: 'Geolocation capability is\'nt enable on your browser. Please, change your settings.',
+                geolocationNotice: "Geolocation capability is'nt enable on your browser. Please, change your settings.",
                 closeBtn: 'Close',
                 selectStore: 'Set as Favorite',
                 telephone: 'Tel:',
