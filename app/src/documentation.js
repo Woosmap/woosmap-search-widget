@@ -10,6 +10,8 @@
  *    woosmapKey: "woos-27e715eb-6454-3019-95c1-e90a418939a1",
  *    callbackInitialRecommendedStore: functionCallbackInitRecoStore,
  *    callbackUserSelectedStore: functionCallbackSelectRecoStore,
+ *    callbackOnSuccessHTML5Location: functionCallbackSuccessHTML5Loc,
+ *    callbackOnErrorHTML5Location: functionCallbackErrorHTML5Loc,
  *    omitUIReco: true,
  *    google: {
  *        clientId: "customer-clientId",
@@ -31,6 +33,8 @@
  * @property {String}woosmapKey the Woosmap Public key used to connect to your datasource
  * @property {Function}callbackInitialRecommendedStore Callback Function called with [`store`](/data-api/samples/api-response.html) parameter when an Initial Recommended Store is Found.
  * @property {Function}callbackUserSelectedStore Callback Function called with [`store`](/data-api/samples/api-response.html) parameter When a User Select a Store after a Geocoding Search.
+ * @property {Function}callbackOnSuccessHTML5Location Callback Function called with a [`Position`](https://www.w3.org/TR/geolocation-API/#position_interface) parameter when a Navigator.geolocation has succeeded (triggered on Search Around Me Button).
+ * @property {Function}callbackOnErrorHTML5Location Callback Function called with an [`PositionError`](https://www.w3.org/TR/geolocation-API/#position_error_interface) parameter when a Navigator.geolocation has failed (triggered on Search Around Me Button).
  * @property {Boolean}omitUIReco to disable the display of Store in recommendation block. if set to true, use the callbacks above to manage the reco in your website
  * @property {GoogleConf}google Google ids parameters
  * @property {UrlsConf}urls To open store(s) website(s)

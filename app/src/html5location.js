@@ -27,6 +27,9 @@ HTML5Location.prototype.defineEvents = function () {
         var lat = resp.coords.latitude;
         var lng = resp.coords.longitude;
         self.plugin.manager.recommendStoresFromHTML5(lat, lng);
+        if (self.plugin.callbackOnSuccessHTML5Location instanceof Function) {
+            self.plugin.callbackOnSuccessHTML5Location(resp);
+        }
     };
 
     var errorCallback = function (resp) {
@@ -35,6 +38,9 @@ HTML5Location.prototype.defineEvents = function () {
         }
         else {
             self.plugin.ui.slideDownWarningHTML5(self.ERRORS.BLOCKED);
+        }
+        if (self.plugin.callbackOnErrorHTML5Location instanceof Function) {
+            self.plugin.callbackOnErrorHTML5Location(resp);
         }
     };
 
