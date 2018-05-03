@@ -5,6 +5,8 @@
  *```js
  * var functionCallbackInitRecoStore = function(store){console.log(store)}
  * var functionCallbackSelectRecoStore = function(store){console.log(store)}
+ * var functionCallbackSuccessHTML5Loc = function(position){console.log(position)}
+ * var functionCallbackErrorHTML5Loc = function(error){console.log(error)}
  * var myConfig = {
  *    container: "myHTMLContainerId",
  *    woosmapKey: "woos-27e715eb-6454-3019-95c1-e90a418939a1",
