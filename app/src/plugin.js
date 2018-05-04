@@ -40,10 +40,9 @@ function RecommendationPlugin(selector, options) {
 
     this.callbackInitialRecommendedStore = this.config.options.callbackInitialRecommendedStore instanceof Function ? this.config.options.callbackInitialRecommendedStore : null;
     this.callbackUserSelectedStore = this.config.options.callbackUserSelectedStore instanceof Function ? this.config.options.callbackUserSelectedStore : null;
-
     this.callbackOnSuccessHTML5Location = this.config.options.callbackOnSuccessHTML5Location instanceof Function ? this.config.options.callbackOnSuccessHTML5Location : null;
     this.callbackOnErrorHTML5Location = this.config.options.callbackOnErrorHTML5Location instanceof Function ? this.config.options.callbackOnErrorHTML5Location : null;
-
+    this.callbackDOMWidgetReady = this.config.options.callbackDOMWidgetReady instanceof Function ? this.config.options.callbackDOMWidgetReady : null;
 
     if (this.container === null) {
         throw new Error('querySelector for ' + selector + ' returned null.');
@@ -52,6 +51,9 @@ function RecommendationPlugin(selector, options) {
     this.mapsLoader.load(function () {
         this.ui = new UI(this.container, usePlaces, this, this.config);
         this.manager = new Manager(this, this.config);
+        if (this.callbackDOMWidgetReady instanceof Function) {
+            this.callbackDOMWidgetReady();
+        }
     }.bind(this));
 
 }

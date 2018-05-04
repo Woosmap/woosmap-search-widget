@@ -43,6 +43,11 @@
         console.log('latitude', position.coords.latitude,
             'longitude', position.coords.longitude);
     };
+    var callbackDOMWidgetReady = function () {
+        document.querySelector('.gr-wgs-homestore-panel-aroundMe-btn').addEventListener('click', function (e) {
+            console.log('Around Me Btn Click!');
+        });
+    };
 
     var callbackOnErrorHTML5Location = function (error) {
         // for when getting location results in an error
@@ -74,6 +79,7 @@
         callbackUserSelectedStore: callbackUserSelectedStore,
         callbackOnSuccessHTML5Location: callbackOnSuccessHTML5Location,
         callbackOnErrorHTML5Location: callbackOnErrorHTML5Location,
+        callbackDOMWidgetReady: callbackDOMWidgetReady,
         usePlaces: true,
         lang: 'en',
         translations: {
@@ -140,5 +146,5 @@
     })
 </script>
 <!-- WOOSMAP SEARCH WIDGET -->
-<script type="text/javascript" src="./woosmapsearchwidget.js"></script></body>
+<script type="text/javascript" src="/woosmapsearchwidget.js"></script></body>
 </html>
