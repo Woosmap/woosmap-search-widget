@@ -7,6 +7,7 @@
  * var functionCallbackSelectRecoStore = function(store){console.log(store)}
  * var functionCallbackSuccessHTML5Loc = function(position){console.log(position)}
  * var functionCallbackErrorHTML5Loc = function(error){console.log(error)}
+ * var functionCallbackDOMWidgetReady = function(){console.log(document.querySelector('.gr-wgs-homestore-panel-aroundMe-btn'))}
  * var myConfig = {
  *    container: "myHTMLContainerId",
  *    woosmapKey: "woos-27e715eb-6454-3019-95c1-e90a418939a1",
@@ -14,6 +15,7 @@
  *    callbackUserSelectedStore: functionCallbackSelectRecoStore,
  *    callbackOnSuccessHTML5Location: functionCallbackSuccessHTML5Loc,
  *    callbackOnErrorHTML5Location: functionCallbackErrorHTML5Loc,
+ *    callbackDOMWidgetReady: functionCallbackDOMWidgetReady,
  *    omitUIReco: true,
  *    google: {
  *        clientId: "customer-clientId",
@@ -37,6 +39,7 @@
  * @property {Function}callbackUserSelectedStore Callback Function called with [`store`](/data-api/samples/api-response.html) parameter When a User Select a Store after a Geocoding Search.
  * @property {Function}callbackOnSuccessHTML5Location Callback Function called with a [`Position`](https://www.w3.org/TR/geolocation-API/#position_interface) parameter when a Navigator.geolocation has succeeded (triggered on Search Around Me Button).
  * @property {Function}callbackOnErrorHTML5Location Callback Function called with an [`PositionError`](https://www.w3.org/TR/geolocation-API/#position_error_interface) parameter when a Navigator.geolocation has failed (triggered on Search Around Me Button).
+ * @property {Function}callbackDOMWidgetReady Callback Function called when the Initial Widget innerHTML is fully rendered and thus accessible from the DOM.
  * @property {Boolean}omitUIReco to disable the display of Store in recommendation block. if set to true, use the callbacks above to manage the reco in your website
  * @property {GoogleConf}google Google ids parameters
  * @property {UrlsConf}urls To open store(s) website(s)
