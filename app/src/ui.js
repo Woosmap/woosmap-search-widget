@@ -436,17 +436,19 @@ UI.prototype.buildHTMLStore = function (store) {
         if (this.plugin.callbackUserSelectedStore instanceof Function) {
             this.plugin.callbackUserSelectedStore(store);
         }
-        if (typeof window.localStorage !== 'undefined') {
-            window.localStorage.setItem(this.config.options.woosmapKey, JSON.stringify(store));
+        if (this.config.options.userAllowedReco !== 'undefined' && this.config.options.userAllowedReco) {
+            if (typeof window.localStorage !== 'undefined') {
+                window.localStorage.setItem(this.config.options.woosmapKey, JSON.stringify(store));
+            }
+            woosmapRecommendation.sendUserFavoritedPOI({
+                lat: lat, lng: lng, id: store.properties.store_id,
+                successCallback: function () {
+                }.bind(this),
+                errorCallback: function () {
+                    console.error('Error recommendation');
+                }.bind(this)
+            });
         }
-        woosmapRecommendation.sendUserFavoritedPOI({
-            lat: lat, lng: lng, id: store.properties.store_id,
-            successCallback: function () {
-            }.bind(this),
-            errorCallback: function () {
-                console.error('Error recommendation');
-            }.bind(this)
-        });
     }.bind(this));
 };
 

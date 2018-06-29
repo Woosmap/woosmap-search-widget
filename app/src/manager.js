@@ -12,10 +12,22 @@ function Manager(plugin, config) {
     this.limit = this.config.options.woosmap.limit;
     this.query = this.config.options.woosmap.query;
     this.maxDistance = this.config.options.woosmap.maxDistance || 0;
-    woosmapRecommendation.setProjectKey(this.config.options.woosmapKey);
-
-    this.initialRecommendation();
+    if (this.config.options.userAllowedReco !== 'undefined' && this.config.options.userAllowedReco) {
+        woosmapRecommendation.setProjectKey(this.config.options.woosmapKey);
+        this.initialRecommendation();
+    }
+    else {
+        this.request = new window.XMLHttpRequest();
+        this.searchAPIUrl = this.config.options.woosmap.apiUrl + '?key=' + this.config.options.woosmapKey;
+        if (this.config.options.omitUIReco !== 'undefined' && this.config.options.omitUIReco) {
+            this.plugin.ui.showSearchPanel();
+        }
+        else {
+            this.plugin.ui.buildHTMLFindMyStore();
+        }
+    }
 }
+
 
 /**
  * initialRecommendation
@@ -126,14 +138,53 @@ Manager.prototype.searchStores = function (lat, lng) {
     });
 };
 
+
+Manager.prototype.searchStoresWithoutReco = function (lat, lng) {
+    var self = this;
+    var errorCallback = function () {
+        self.plugin.ui.hideLoader();
+        console.error('Error Search');
+    };
+    this.request.open('GET', this.searchAPIUrl
+        + '&lat=' + lat
+        + '&lng=' + lng
+        + '&max_distance=' + this.config.options.woosmap.maxDistance
+        + '&stores_by_page=' + this.limit
+        + '&query=' + this.config.options.woosmap.query, true);
+    this.request.onload = function () {
+        if (self.request.status >= 200 && self.request.status < 400) {
+            var stores = JSON.parse(self.request.responseText).features;
+            updateStoresWithGoogle(stores, lat, lng,
+                function (sortedStores) {
+                    self.plugin.ui.hideLoader();
+                    self.plugin.ui.buildHTMLRecommendationResults(sortedStores);
+                },
+                errorCallback);
+        } else {
+            document.getElementById('geocoding-placeholder').innerHTML = 'Unable to retrieve Stores near {' + lat + ':' + lng + '}';
+        }
+    };
+    this.request.onerror = function () {
+        document.getElementById('geocoding-placeholder').innerHTML = 'Connection with Woosmap Server Error';
+        errorCallback();
+    };
+    this.request.send();
+};
+
+
 /**
  * recommendStoresFromHTML5
  * @param lat
  * @param lng
  */
 Manager.prototype.recommendStoresFromHTML5 = function (lat, lng) {
-    this.searchStores(lat, lng);
-    woosmapRecommendation.sendUserHtml5Position({lat: lat, lng: lng});
+    if (this.config.options.userAllowedReco !== 'undefined' && this.config.options.userAllowedReco) {
+        this.searchStores(lat, lng);
+        woosmapRecommendation.sendUserHtml5Position({lat: lat, lng: lng});
+    }
+    else {
+        this.searchStoresWithoutReco(lat, lng);
+    }
 };
 
 /**
@@ -142,9 +193,13 @@ Manager.prototype.recommendStoresFromHTML5 = function (lat, lng) {
  * @param lng
  */
 Manager.prototype.recommendStoresFromSearch = function (lat, lng) {
-    this.searchStores(lat, lng);
-    woosmapRecommendation.sendUserSearchedPosition({lat: lat, lng: lng});
+    if (this.config.options.userAllowedReco !== 'undefined' && this.config.options.userAllowedReco) {
+        this.searchStores(lat, lng);
+        woosmapRecommendation.sendUserSearchedPosition({lat: lat, lng: lng});
+    }
+    else {
+        this.searchStoresWithoutReco(lat, lng);
+    }
 };
-
 
 module.exports = Manager;

@@ -1,4 +1,5 @@
 var CONSTANT = require('./constants.js');
+
 /**
  * Simple object check.
  * @param item
@@ -24,7 +25,7 @@ function merge(target, source) {
                     }
                     merge(target[key], source[key]);
                 } else {
-                   target[key]= source[key];
+                    target[key] = source[key];
                 }
             }
         }
@@ -72,6 +73,8 @@ function Config(options) {
             region: 'fr'
         },
         woosmap: {
+            apiUrl: 'https://api.woosmap.com/stores/search',
+            recoScriptUrl: 'https://recommendation-js.woosmap.com/recommendation.js',
             query: '',
             limit: 5,
             maxDistance: 0
@@ -84,7 +87,7 @@ function Config(options) {
                 openingDay: true,
                 openingWeek: true
             }
-            ,search:{
+            , search: {
                 address: true,
                 openingDay: true,
                 openingWeek: true
@@ -129,7 +132,7 @@ function Config(options) {
                     5: {
                         full: "Vendredi",
                         short: "Ven"
-                      },
+                    },
                     6: {
                         full: "Samedi",
                         short: "Sam"
@@ -319,60 +322,60 @@ Config.prototype.checkConfig = function (options) {
             if (!Array.isArray(options.autocompletePlaces.types))
                 throw new Error("autocompletePlaces.types must be an array of string, e.g: ['geocode']");
         }
-        
-        if (typeof options.autocompletePlaces.componentRestrictions !== 'undefined' ) {
-            if (typeof options.autocompletePlaces.componentRestrictions !== 'object' ){
+
+        if (typeof options.autocompletePlaces.componentRestrictions !== 'undefined') {
+            if (typeof options.autocompletePlaces.componentRestrictions !== 'object') {
                 throw new Error("autocompletePlaces.componentRestrictions must be a Google GeocoderComponentRestrictions object");
             }
         }
     }
-    
+
     if (typeof options.display !== 'undefined') {
-    
-        if(typeof options.display.h12 !== 'undefined') {
-            if(typeof options.display.h12 !== 'boolean')
+
+        if (typeof options.display.h12 !== 'undefined') {
+            if (typeof options.display.h12 !== 'boolean')
                 throw new Error('display.h12 option (AM/PM) must be a boolean');
         }
-        
+
         if (typeof options.display.search !== 'undefined') {
-            if(typeof options.display.search !== 'object')
+            if (typeof options.display.search !== 'object')
                 throw new Error('display search option must be an object');
-            if(typeof options.display.search.openingDay !== 'undefined') {
-                if(typeof options.display.search.openingDay !== 'boolean')
+            if (typeof options.display.search.openingDay !== 'undefined') {
+                if (typeof options.display.search.openingDay !== 'boolean')
                     throw new Error('display.search.openingDay option must be a boolean');
-            } 
-            if(typeof options.display.search.openingWeek !== 'undefined') {
-                if(typeof options.display.search.openingWeek !== 'boolean')
+            }
+            if (typeof options.display.search.openingWeek !== 'undefined') {
+                if (typeof options.display.search.openingWeek !== 'boolean')
                     throw new Error('display.search.openingWeek option must be a boolean');
-            } 
-            if(typeof options.display.search.address !== 'undefined') {
-                if(typeof options.display.search.address !== 'boolean')
+            }
+            if (typeof options.display.search.address !== 'undefined') {
+                if (typeof options.display.search.address !== 'boolean')
                     throw new Error('display.search.address option must be a boolean');
             }
         }
-        
+
         if (typeof options.display.recommendation !== 'undefined') {
-            if(typeof options.display.recommendation !== 'object')
+            if (typeof options.display.recommendation !== 'object')
                 throw new Error('display.recommendation.option must be an object');
-            if(typeof options.display.recommendation.openingDay !== 'undefined') {
-                if(typeof options.display.recommendation.openingDay !== 'boolean')
+            if (typeof options.display.recommendation.openingDay !== 'undefined') {
+                if (typeof options.display.recommendation.openingDay !== 'boolean')
                     throw new Error('display.recommendation.openingDay option must be a boolean');
-            } 
-            if(typeof options.display.recommendation.openingWeek !== 'undefined') {
-                if(typeof options.display.recommendation.openingWeek !== 'boolean')
+            }
+            if (typeof options.display.recommendation.openingWeek !== 'undefined') {
+                if (typeof options.display.recommendation.openingWeek !== 'boolean')
                     throw new Error('display.recommendation.openingWeek option must be a boolean');
             }
-            if(typeof options.display.recommendation.address !== 'undefined') {
-                if(typeof options.display.recommendation.address !== 'boolean')
+            if (typeof options.display.recommendation.address !== 'undefined') {
+                if (typeof options.display.recommendation.address !== 'boolean')
                     throw new Error('display.recommendation.address option must be a boolean');
-            } 
-            if(typeof options.display.recommendation.phone !== 'undefined') {
-                if(typeof options.display.recommendation.phone !== 'boolean')
+            }
+            if (typeof options.display.recommendation.phone !== 'undefined') {
+                if (typeof options.display.recommendation.phone !== 'boolean')
                     throw new Error('display.recommendation.phone option must be a boolean');
             }
         }
     }
-    
+
     if (typeof options.lang === 'undefined')
         throw new Error("autocompletePlaces.lang is undefined, e.g: 'fr'");
     if (typeof options.lang !== 'string')
@@ -385,7 +388,7 @@ Config.prototype.checkConfig = function (options) {
     for (var key in options.translations[options.lang]) {
         if (options.translations[options.lang].hasOwnProperty(key)) {
             if (key === 'days') {
-                if(typeof options.translations[options.lang][key] !== 'object')
+                if (typeof options.translations[options.lang][key] !== 'object')
                     throw new Error("translations." + options.lang + "." + key + " must be an object (days list)");
             }
             else if (typeof options.translations[options.lang][key] !== 'string')
