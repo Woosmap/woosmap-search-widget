@@ -50,6 +50,9 @@ function RecommendationPlugin(selector, options) {
     this.mapsLoader.load(function () {
         this.ui = new UI(this.container, usePlaces, this, this.config);
         this.manager = new Manager(this, this.config);
+        if (this.config.options.userAllowedReco !== 'undefined' && this.config.options.userAllowedReco === true) {
+            this.allowUserReco();
+        }
         if (this.callbackDOMWidgetReady instanceof Function) {
             this.callbackDOMWidgetReady();
         }
@@ -57,45 +60,51 @@ function RecommendationPlugin(selector, options) {
 
 }
 
-/**
- * _getRecommendationScript
- * load scriptUrl and callback() once fully loaded
- */
-RecommendationPlugin.prototype._getRecommendationScript = function (scriptUrl, callback) {
-    var scriptElement = document.createElement('script');
-    scriptElement.type = 'text/javascript';
-    scriptElement.async = true;
 
-    scriptElement.src = scriptUrl;
+RecommendationPlugin.prototype._getRecommendationScript = function (callback) {
+    if (typeof woosmapRecommendation === "object") {
+        callback();
+    }
+    else {
+        var scriptUrl = this.config.options.woosmap.recoScriptUrl;
+        var scriptElement = document.createElement('script');
+        scriptElement.type = 'text/javascript';
+        scriptElement.async = true;
 
-    var firstScript = document.getElementsByTagName('head')[0];
-    firstScript.appendChild(scriptElement, firstScript);
+        scriptElement.src = scriptUrl;
 
-    if (scriptElement.readyState) {
-        scriptElement.onreadystatechange = function () {
-            if (this.readyState === 'complete' || this.readyState === 'loaded') {
+        var firstScript = document.getElementsByTagName('head')[0];
+        firstScript.appendChild(scriptElement, firstScript);
+
+        if (scriptElement.readyState) {
+            scriptElement.onreadystatechange = function () {
+                if (this.readyState === 'complete' || this.readyState === 'loaded') {
+                    callback();
+                }
+                else {
+                    console.error('Error when loading script ' + scriptUrl);
+                }
+            };
+        } else {
+            scriptElement.onload = function () {
                 callback();
-            }
-            else {
+            };
+            scriptElement.onerror = function () {
                 console.error('Error when loading script ' + scriptUrl);
-            }
-        };
-    } else {
-        scriptElement.onload = function () {
-            callback();
-        };
-        scriptElement.onerror = function () {
-            console.error('Error when loading script ' + scriptUrl);
-        };
+            };
+        }
     }
 };
 
 /**
- * allowUserReco
+ * To enable the Woosmap Automatic Recommendation.
+ * If called, a cookie of Woosmap userId will be set on the user device and recommended store will be store in LocalStorage.
+ * It loads `recommendation.js` file (or not if already loaded). No need to call it if `userAllowedReco : true` is already defined in the RecommendationPluginConf
  */
 RecommendationPlugin.prototype.allowUserReco = function () {
-    this._getRecommendationScript(this.config.options.woosmap.recoScriptUrl, function () {
-        this.config.options.userAllowedReco = true;
+    this.config.options.userAllowedReco = true;
+    this._getRecommendationScript(function () {
+        woosmapRecommendation.setProjectKey(this.config.options.woosmapKey);
         this.manager.initialRecommendation();
     }.bind(this));
 };
