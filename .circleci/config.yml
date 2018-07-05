@@ -16,13 +16,35 @@ jobs:
       - run: npm install
       - run: npm run build
       - deploy:
-          name: Deploy to S3 if Build OK and branch is Master
+          name: Deploy to S3 if Build OK and branch is Stable
           command: aws s3 sync build s3://sdk.woosmap.com/searchwidget/ --region eu-central-1 --acl public-read
+  build-deploy-stage:
+    working_directory: ~/tmp
+    docker:
+      - image: circleci/node:latest
+    steps:
+      - run:
+          name: Install aws cli
+          working_directory: ~/tmp
+          command: |
+            sudo apt install python-pip python-dev
+            sudo pip install awscli
+            aws --version
+      - checkout
+      - run: npm install
+      - run: npm run build
+      - deploy:
+          name: Deploy to S3 if Build OK and branch is Master
+          command: aws s3 sync build s3://stage-sdk.woosmap.com/searchwidget/ --region eu-west-1 --acl public-read
 workflows:
   version: 2
   build-deploy:
     jobs:
       - build-deploy-prod:
+          filters:
+            branches:
+              only: stable
+      - build-deploy-stage:
           filters:
             branches:
               only: master
