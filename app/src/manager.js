@@ -12,10 +12,9 @@ function Manager(plugin, config) {
     this.limit = this.config.options.woosmap.limit;
     this.query = this.config.options.woosmap.query;
     this.maxDistance = this.config.options.woosmap.maxDistance || 0;
-    if (this.config.options.userAllowedReco === 'undefined' || this.config.options.userAllowedReco === false) {
-        this.request = new window.XMLHttpRequest();
-        this.searchAPIUrl = this.config.options.woosmap.apiUrl + '?key=' + this.config.options.woosmapKey;
-        if (this.config.options.omitUIReco !== 'undefined' && this.config.options.omitUIReco) {
+    this.searchAPIUrl = this.config.options.woosmap.apiUrl + '?key=' + this.config.options.woosmapKey;
+    if (typeof this.config.options.userAllowedReco === 'undefined' || this.config.options.userAllowedReco === false) {
+        if (typeof this.config.options.omitUIReco !== 'undefined' && this.config.options.omitUIReco) {
             this.plugin.ui.showSearchPanel();
         }
         else {
@@ -35,7 +34,7 @@ Manager.prototype.initialRecommendation = function () {
             if (this.plugin.callbackInitialRecommendedStore instanceof Function) {
                 this.plugin.callbackInitialRecommendedStore(savedFavoritedStore);
             }
-            if (this.config.options.omitUIReco !== 'undefined' && this.config.options.omitUIReco) {
+            if (typeof this.config.options.omitUIReco !== 'undefined' && this.config.options.omitUIReco) {
                 this.plugin.ui.showSearchPanel();
             }
             else {
@@ -67,7 +66,7 @@ Manager.prototype.getUserRecommendation = function () {
                 if (self.plugin.callbackInitialRecommendedStore instanceof Function) {
                     self.plugin.callbackInitialRecommendedStore(stores[0]);
                 }
-                if (self.config.options.omitUIReco !== 'undefined' && self.config.options.omitUIReco === true) {
+                if (typeof self.config.options.omitUIReco !== 'undefined' && self.config.options.omitUIReco === true) {
                     self.plugin.ui.showSearchPanel();
                 }
                 else {
@@ -78,7 +77,7 @@ Manager.prototype.getUserRecommendation = function () {
                 }
             }
             else {
-                if (self.config.options.omitUIReco !== 'undefined' && self.config.options.omitUIReco === true) {
+                if (typeof self.config.options.omitUIReco !== 'undefined' && self.config.options.omitUIReco === true) {
                     self.plugin.ui.showSearchPanel();
                 }
                 else {
@@ -141,6 +140,9 @@ Manager.prototype.searchStoresWithoutReco = function (lat, lng) {
         self.plugin.ui.hideLoader();
         console.error('Error Search');
     };
+    if (typeof this.request === 'undefined') {
+        this.request = new window.XMLHttpRequest();
+    }
     this.request.open('GET', this.searchAPIUrl
         + '&lat=' + lat
         + '&lng=' + lng
@@ -174,7 +176,7 @@ Manager.prototype.searchStoresWithoutReco = function (lat, lng) {
  * @param lng
  */
 Manager.prototype.recommendStoresFromHTML5 = function (lat, lng) {
-    if (this.config.options.userAllowedReco !== 'undefined' && this.config.options.userAllowedReco === true) {
+    if (typeof this.config.options.userAllowedReco !== 'undefined' && this.config.options.userAllowedReco === true) {
         this.searchStores(lat, lng);
         woosmapRecommendation.sendUserHtml5Position({lat: lat, lng: lng});
     }
@@ -189,7 +191,7 @@ Manager.prototype.recommendStoresFromHTML5 = function (lat, lng) {
  * @param lng
  */
 Manager.prototype.recommendStoresFromSearch = function (lat, lng) {
-    if (this.config.options.userAllowedReco !== 'undefined' && this.config.options.userAllowedReco === true) {
+    if (typeof this.config.options.userAllowedReco !== 'undefined' && this.config.options.userAllowedReco === true) {
         this.searchStores(lat, lng);
         woosmapRecommendation.sendUserSearchedPosition({lat: lat, lng: lng});
     }

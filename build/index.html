@@ -52,7 +52,6 @@
             console.log('Address Bar Click');
         });
         console.log('ready');
-        recoPlugin.allowUserReco();
     };
 
     var callbackOnErrorHTML5Location = function (error) {
@@ -80,7 +79,7 @@
         google: {
             key: 'AIzaSyCOtRab6Lh2pNn7gYxvAqN5leETC24OXYQ'
         },
-        omitUIReco: false,
+        omitUIReco: true,
         userAllowedReco: false,
         callbackInitialRecommendedStore: callbackInitialRecommendedStore,
         callbackUserSelectedStore: callbackUserSelectedStore,

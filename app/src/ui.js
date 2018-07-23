@@ -10,7 +10,7 @@ function UI(container, usePlaces, plugin, config) {
 
     this.container.innerHTML = '<div class="gr-wgs-homestore-container">' +
         '<div class="gr-wgs-homestore-mainBlock"></div>' +
-        '<div id="gr-wgs-homestore-panel" class="' + (this.config.options.omitUIReco !== 'undefined' && this.config.options.omitUIReco ? ' omit-reco-ui' : '') + '">' +
+        '<div id="gr-wgs-homestore-panel" class="' + (typeof this.config.options.omitUIReco !== 'undefined' && this.config.options.omitUIReco ? ' omit-reco-ui' : '') + '">' +
         '<div class="gr-wgs-homestore-panel-searchBlock">' +
         '<div class="gr-wgs-homestore-panel-searchBlock-warning">' + L10n.geolocationNotice + '</div>' +
         '</div>' +
@@ -21,7 +21,7 @@ function UI(container, usePlaces, plugin, config) {
         '</div>' +
         '<div class="gr-wgs-homestore-panel-footerBlock">' +
         '<div class="gr-wgs-homestore-panel-footerBlock-allStores">' + (this.config.options.urls.stores.href.replace(' ', '') !== '' ? L10n.allStores : '') + '</div>' +
-        (this.config.options.omitUIReco !== 'undefined' && this.config.options.omitUIReco ? '' : '<div class="gr-wgs-homestore-panel-footerBlock-closePanel">' + L10n.closeBtn + '</div>') +
+        (typeof this.config.options.omitUIReco !== 'undefined' && this.config.options.omitUIReco ? '' : '<div class="gr-wgs-homestore-panel-footerBlock-closePanel">' + L10n.closeBtn + '</div>') +
         '</div>' +
         '</div>' +
         '</div>';
@@ -51,7 +51,7 @@ function UI(container, usePlaces, plugin, config) {
     this.panelContainer.querySelector('.gr-wgs-homestore-panel-footerBlock-allStores').addEventListener('click', function () {
         self.openAllStores();
     });
-    if (this.config.options.omitUIReco === 'undefined' || !this.config.options.omitUIReco) {
+    if (typeof this.config.options.omitUIReco === 'undefined' || !this.config.options.omitUIReco) {
         this.panelContainer.querySelector('.gr-wgs-homestore-panel-footerBlock-closePanel').addEventListener('click', function () {
             self.hideSearchPanel();
         });
@@ -130,7 +130,7 @@ UI.prototype.buildHTMLInitialReco = function (store) {
         phone +
         '<span class="gr-wgs-homestore-mainBlock-yourStore-openinghours">' + openingday + openingweek + '</span>' +
         '</div>';
-    if (self.config.options.omitUIReco === 'undefined' || !self.config.options.omitUIReco) {
+    if (typeof self.config.options.omitUIReco === 'undefined' || !self.config.options.omitUIReco) {
         this.headerContainer.querySelector('.gr-wgs-homestore-mainBlock-yourStore').addEventListener('click', function () {
             self.toggleSearchPanel();
         });
@@ -172,7 +172,7 @@ UI.prototype.buildWarningHTML5 = function () {
  */
 UI.prototype.onClickOutsideContainer = function () {
     window.addEventListener('click', function (event) {
-        if (this.config.options.omitUIReco === 'undefined' || !this.config.options.omitUIReco) {
+        if (typeof this.config.options.omitUIReco === 'undefined' || !this.config.options.omitUIReco) {
             if (this.isVisibleSearchPanel() && event.target.getAttribute('id') !== this.config.options.container.replace('#', '')) {
                 this.hideSearchPanel();
             }
@@ -429,14 +429,14 @@ UI.prototype.buildHTMLStore = function (store) {
         var lat = coord[1];
         var lng = coord[0];
         this.plugin.ui.resetStoreSearch();
-        if (this.config.options.omitUIReco === 'undefined' || !this.config.options.omitUIReco) {
+        if (typeof this.config.options.omitUIReco === 'undefined' || !this.config.options.omitUIReco) {
             this.hideSearchPanel();
             this.plugin.ui.buildHTMLInitialReco(store);
         }
         if (this.plugin.callbackUserSelectedStore instanceof Function) {
             this.plugin.callbackUserSelectedStore(store);
         }
-        if (this.config.options.userAllowedReco !== 'undefined' && this.config.options.userAllowedReco) {
+        if (typeof this.config.options.userAllowedReco !== 'undefined' && this.config.options.userAllowedReco) {
             if (typeof window.localStorage !== 'undefined') {
                 window.localStorage.setItem(this.config.options.woosmapKey, JSON.stringify(store));
             }
