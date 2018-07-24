@@ -52,7 +52,7 @@
             console.log('Address Bar Click');
         });
         console.log('ready');
-        recoPlugin.allowUserReco();
+        //recoPlugin.allowUserReco();
     };
 
     var callbackOnErrorHTML5Location = function (error) {
@@ -79,6 +79,10 @@
         woosmapKey: 'woos-0c78592f-13ea-362b-aa07-ba4ba9ea3dae',
         google: {
             key: 'AIzaSyCOtRab6Lh2pNn7gYxvAqN5leETC24OXYQ'
+        },
+        woosmap: {
+            limit: 5,
+            maxDistance: 100000
         },
         omitUIReco: false,
         userAllowedReco: false,
@@ -143,7 +147,7 @@
                 target: "_self"
             },
             stores: {
-                href: "https://blog.woosmap.com/webapp?key=starbucks-developers",
+                href: "https://www.woosmap.com/webapp/?key=woos-0c78592f-13ea-362b-aa07-ba4ba9ea3dae",
                 target: "_self"
             }
         }

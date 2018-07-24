@@ -29,6 +29,7 @@
  *            "searchAroundMeBtn": "Around Me",
  *            "searchAroundMeTitle": "Find Nearby Store",
  *            "selectAroundMeTitle": "Choose Nearby Store:",
+ *            "noResultsWarning": "Can't find nearby stores",
  *            "autocompletePlaceholder": "Address..."
  *        }
  *    }
@@ -249,6 +250,7 @@
  *     "searchAroundMeBtn": "Autour de moi",
  *     "searchAroundMeTitle": "Rechercher le centre à proximité",
  *     "selectAroundMeTitle": "Choisissez le centre à proximité :",
+ *     "noResultsWarning": "Aucun magasin trouvé à proximité",
  *     "autocompletePlaceholder": "Spécifiez une adresse",
  *     "allStores": "Tous nos centres",
  *     "changeStore": "Centre à proximité",

@@ -32,6 +32,7 @@ function UI(container, usePlaces, plugin, config) {
     this.panelContainerSearch = this.container.querySelector('.gr-wgs-homestore-panel-searchBlock');
     this.panelContainerSearchWarning = this.container.querySelector('.gr-wgs-homestore-panel-searchBlock-warning');
     this.panelContainerResultsBlock = this.container.querySelector('.gr-wgs-homestore-panel-resultBlock');
+    this.panelContainerResultsBlockTitle = this.container.querySelector('.gr-wgs-homestore-panel-resultBlock-title');
     this.panelContainerResultsList = this.container.querySelector('.gr-wgs-homestore-panel-resultBlock-listBlock');
     this.panelContainerFooter = this.container.querySelector('.gr-wgs-homestore-panel-footerBlock');
 
@@ -253,9 +254,20 @@ UI.prototype.hideWarningHTML5 = function () {
  **/
 UI.prototype.buildHTMLRecommendationResults = function (stores) {
     this.panelContainerResultsList.innerHTML = '';
+    this.panelContainerResultsBlockTitle.innerHTML = this.config.L10n.selectAroundMeTitle;
     for (var i = 0; i < stores.length; i++) {
         this.buildHTMLStore(stores[i]);
     }
+    this.showResultsBlock();
+};
+
+/**
+ * buildHTMLNoResults
+ * Build the HTML when no stores found nearby a location search
+ **/
+UI.prototype.buildHTMLNoResults = function () {
+    this.panelContainerResultsList.innerHTML = '';
+    this.panelContainerResultsBlockTitle.innerHTML = this.config.L10n.noResultsWarning;
     this.showResultsBlock();
 };
 

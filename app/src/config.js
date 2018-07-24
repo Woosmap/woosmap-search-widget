@@ -99,6 +99,7 @@ function Config(options) {
                 searchAroundMeBtn: 'Autour de moi',
                 searchAroundMeTitle: 'Rechercher le centre à proximité',
                 selectAroundMeTitle: 'Choisissez le centre à proximité :',
+                noResultsWarning: 'Nous ne trouvons aucun résultat à proximité.',
                 autocompletePlaceholder: 'Spécifiez une adresse',
                 allStores: 'Tous nos centres',
                 changeStore: 'Centre à proximité',
@@ -140,6 +141,53 @@ function Config(options) {
                     7: {
                         full: "Dimanche",
                         short: "Dim"
+                    }
+                }
+            },
+            en: {
+                searchAroundMeBtn: 'Around Me',
+                searchAroundMeTitle: 'Search nearest Store',
+                selectAroundMeTitle: 'Choose nearest store from :',
+                noResultsWarning: 'Can\'t find nearby results.',
+                autocompletePlaceholder: 'Address...',
+                allStores: 'All Stores',
+                changeStore: 'Recommended Store',
+                findStore: 'Find my Store',
+                geolocationNotice: "Geolocation capability is'nt enable on your browser. Please, change your settings.",
+                closeBtn: 'Close',
+                selectStore: 'Set as Favorite',
+                telephone: 'Tel:',
+                open24: "All Day",
+                openingHoursDay: "today: ",
+                openingHoursWeek: "opening hours: ",
+                days: {
+                    1: {
+                        full: "Monday",
+                        short: "Mon"
+                    },
+                    2: {
+                        full: "Tuesday",
+                        short: "Tue"
+                    },
+                    3: {
+                        full: "Wednesday",
+                        short: "Wed"
+                    },
+                    4: {
+                        full: "Thursday",
+                        short: "Thu"
+                    },
+                    5: {
+                        full: "Friday",
+                        short: "Fri"
+                    },
+                    6: {
+                        full: "Saturday",
+                        short: "Sat"
+                    },
+                    7: {
+                        full: "Sunday",
+                        short: "Sun"
                     }
                 }
             }
