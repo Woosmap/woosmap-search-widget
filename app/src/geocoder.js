@@ -21,9 +21,10 @@ GeocodingLocation.prototype.buildHTML = function () {
         '<div class="gr-wgs-homestore-panel-address-wrapper">' +
         '<label>' + this.config.L10n.searchAroundMeTitle + '</label>' +
         '<form class="gr-wgs-homestore-panel-searchBlock-form">' +
-        '<input class="gr-wgs-homestore-panel-searchBlock-btn gr-wgs-homestore-panel-address-btn" type="text" placeholder="' + this.config.L10n.autocompletePlaceholder + '"/>' +
+        '<input class="gr-wgs-homestore-panel-address-input" type="text" placeholder="' + this.config.L10n.autocompletePlaceholder + '"/>' +
         '</form>' +
         '<div class="gr-wgs-homestore-panel-address-reset"></div>' +
+        '<div class="gr-wgs-homestore-panel-address-loader"></div>' +
         '</div>' +
         '<div class= "gr-wgs-homestore-panel-address-results gr-wgs-pac-container"></div>';
 
@@ -47,7 +48,7 @@ GeocodingLocation.prototype.buildHTML = function () {
                 selectedItem.dispatchEvent(clickEvent);
             } else {
                 if (event.currentTarget.value.length >= minLength) {
-                    var request = ( this.config.options.geocoder ? this.config.options.geocoder : {} );
+                    var request = (this.config.options.geocoder ? this.config.options.geocoder : {});
                     request.address = event.target.value;
                     self.geocode(request);
                 }
@@ -58,12 +59,12 @@ GeocodingLocation.prototype.buildHTML = function () {
             if (selectedItem) {
                 var previousSibling = selectedItem.previousElementSibling;
                 selectedItem.classList.remove(selectedItemClass);
-                if(previousSibling === null)
+                if (previousSibling === null)
                     lastItem.classList.add(selectedItemClass);
                 else
                     previousSibling.classList.add(selectedItemClass);
             }
-            else if ( lastItem !== null) {
+            else if (lastItem !== null) {
                 lastItem.classList.add(selectedItemClass);
             }
         }
@@ -77,9 +78,14 @@ GeocodingLocation.prototype.buildHTML = function () {
                 else
                     nextSibling.classList.add(selectedItemClass);
             }
-            else if(firstItem !== null){
+            else if (firstItem !== null) {
                 firstItem.classList.add(selectedItemClass);
             }
+        }
+        if (event.currentTarget.value.length === 0) {
+            self.clearPanel();
+        } else {
+            self.plugin.ui.showResetBtn();
         }
     }.bind(this));
 
@@ -114,6 +120,7 @@ GeocodingLocation.prototype.clearPanel = function () {
     this.containerResultsList.style.display = 'none';
     this.containerResultsList.innerHTML = '';
     this.plugin.ui.hideResultsBlock();
+    this.plugin.ui.hideResetBtn();
 };
 
 /**
@@ -162,7 +169,7 @@ GeocodingLocation.prototype.geocode = function (request) {
         }
         else if (status === google.maps.GeocoderStatus.OK) {
             if (results.length === 1) {
-                self.container.querySelector('.gr-wgs-homestore-panel-searchBlock-btn').value = results[0].formatted_address;
+                self.container.querySelector('.gr-wgs-homestore-panel-address-input').value = results[0].formatted_address;
                 var coords = results[0].geometry.location;
                 self.askForStoresRecommendation(coords.lat(), coords.lng());
                 self.buildHTMLResults([]);

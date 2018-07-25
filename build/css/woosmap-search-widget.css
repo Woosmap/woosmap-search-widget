@@ -171,7 +171,7 @@
 }
 
 form.gr-wgs-homestore-panel-searchBlock-form {
-    margin-bottom: 0px;
+    margin: 5px 0 15px;
 }
 
 .gr-wgs-homestore-panel-searchBlock-warning {
@@ -215,32 +215,65 @@ form.gr-wgs-homestore-panel-searchBlock-form {
     color: #002b6f;
 }
 
-input.gr-wgs-homestore-panel-address-btn {
-    padding: 10px 25px 10px 5px;
+.gr-wgs-homestore-panel-address-input {
+    padding: 0 32px 0 5px;
     border: 1px solid #ccc;
     border-radius: 2px;
+    width: 100%;
+    height: 40px;
+    background: #fff;
+    box-sizing: border-box;
+    transition-property: background, box-shadow;
+    transition-duration: 0.3s;
 }
 
-input.gr-wgs-homestore-panel-address-btn::placeholder {
+.gr-wgs-homestore-panel-address-input:focus {
+    outline: none;
+}
+
+.gr-wgs-homestore-panel-address-input::placeholder {
     color: #888
 }
 
 .gr-wgs-homestore-panel-address-predictions, .gr-wgs-homestore-panel-address-results {
     margin-bottom: 20px;
-    margin-top: -13px;
+    margin-top: -17px;
     width: 100%;
 }
 
-.gr-wgs-homestore-panel-address-reset {
-    background-image: url('../img/close.png');
+.gr-wgs-homestore-panel-address-reset, .gr-wgs-homestore-panel-address-loader {
+    position: absolute;
+    display: none;
+    cursor: pointer;
+    padding: 10px;
+    bottom: 0;
+    right: 0;
+}
+
+.gr-wgs-homestore-panel-address-loader {
+    padding: 8px;
+}
+
+.gr-wgs-homestore-panel-address-reset:before {
+    background-image: url('../img/close.svg');
     background-repeat: no-repeat;
     background-size: 12px 12px;
     background-position: center center;
-    position: absolute;
-    bottom: 21px;
-    right: 5px;
     width: 20px;
     height: 20px;
+    content: '';
+    display: block;
+}
+
+.gr-wgs-homestore-panel-address-loader:before {
+    background-image: url('../img/loader.svg');
+    background-repeat: no-repeat;
+    background-size: 25px 25px;
+    background-position: center center;
+    width: 25px;
+    height: 25px;
+    content: '';
+    display: block
 }
 
 .gr-wgs-homestore-panel-aroundMe-btn:hover,
@@ -251,7 +284,7 @@ input.gr-wgs-homestore-panel-address-btn::placeholder {
 }
 
 .gr-wgs-homestore-panel-loaderBlock {
-    background-image: url('../img/loader.gif');
+    background-image: url('../img/loader.svg');
     background-repeat: no-repeat;
     background-position: top center;
     height: 20px;
@@ -335,7 +368,7 @@ input.gr-wgs-homestore-panel-address-btn::placeholder {
 }
 
 .gr-wgs-homestore-panel-footerBlock-closePanel {
-    background-image: url('../img/close.png');
+    background-image: url('../img/close.svg');
     background-repeat: no-repeat;
     background-position: left center;
     background-size: 9px 9px;
@@ -346,7 +379,7 @@ input.gr-wgs-homestore-panel-address-btn::placeholder {
 
 .gr-wgs-pac-container {
     background-color: #fff;
-    border: 1px solid #bbb;
+    border: 1px solid #ccc;
     box-sizing: border-box;
     display: none;
     font-family: Arial, sans-serif;
@@ -371,7 +404,7 @@ input.gr-wgs-homestore-panel-address-btn::placeholder {
 
 .gr-wgs-pac-container.gr-wgs-pac-container-not:after {
     background-image: none;
-    height: 0px;
+    height: 0;
     padding: 0;
 }
 
