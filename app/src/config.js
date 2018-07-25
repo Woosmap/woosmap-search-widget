@@ -38,6 +38,8 @@ function Config(options) {
     this.options = {
         container: '',
         woosmapKey: '',
+        userAllowedReco: false,
+        omitUIReco: false,
         google: {
             //key: '',
             //clientId: '',
