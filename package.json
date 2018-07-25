@@ -1,6 +1,7 @@
 {
   "name": "woosmap-search-widget",
   "version": "0.0.1",
+  "license": "GPL-3.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/woosmap/woosmap-search-widget"
@@ -14,16 +15,16 @@
     "build": "webpack"
   },
   "devDependencies": {
-    "copy-webpack-plugin": "^4.0.1",
-    "cross-env": "^5.0.1",
-    "eslint": "^4.3.0",
+    "copy-webpack-plugin": "^4.5.2",
+    "cross-env": "^5.2.0",
+    "eslint": "^4.19.1",
     "eslint-loader": "^1.9.0",
-    "html-webpack-plugin": "^2.29.0",
-    "webpack": "^3.3.0",
-    "webpack-dev-server": "^2.5.1"
+    "html-webpack-plugin": "^2.30.1",
+    "webpack": "^3.12.0",
+    "webpack-dev-server": "^2.11.2"
   },
   "dependencies": {
     "@nmarks/jsdoc-parse": "^1.2.7",
-    "npm": "^5.7.1"
+    "npm": "^6.2.0"
   }
 }

@@ -17,6 +17,7 @@
  *    callbackOnErrorHTML5Location: functionCallbackErrorHTML5Loc,
  *    callbackDOMWidgetReady: functionCallbackDOMWidgetReady,
  *    omitUIReco: true,
+ *    userAllowedReco: true,
  *    google: {
  *        clientId: "customer-clientId",
  *        key: "AIzaSyAgaUwsVVXJ6KMxlxI-1234556789"
@@ -28,6 +29,7 @@
  *            "searchAroundMeBtn": "Around Me",
  *            "searchAroundMeTitle": "Find Nearby Store",
  *            "selectAroundMeTitle": "Choose Nearby Store:",
+ *            "noResultsWarning": "Can't find nearby stores",
  *            "autocompletePlaceholder": "Address..."
  *        }
  *    }
@@ -41,6 +43,7 @@
  * @property {Function}callbackOnErrorHTML5Location Callback Function called with an [`PositionError`](https://www.w3.org/TR/geolocation-API/#position_error_interface) parameter when a Navigator.geolocation has failed (triggered on Search Around Me Button).
  * @property {Function}callbackDOMWidgetReady Callback Function called when the Initial Widget innerHTML is fully rendered and thus accessible from the DOM.
  * @property {Boolean}omitUIReco to disable the display of Store in recommendation block. if set to true, use the callbacks above to manage the reco in your website
+ * @property {Boolean}userAllowedReco to enable the Woosmap Recommendation. Default/unset equal to false (GDPR compliant). if set to true, a cookie of Woosmap userId will be set on the user device and recommended store will be store in LocalStorage
  * @property {GoogleConf}google Google ids parameters
  * @property {UrlsConf}urls To open store(s) website(s)
  * @property {Boolean}usePlaces To enable places autocomplete search
@@ -247,6 +250,7 @@
  *     "searchAroundMeBtn": "Autour de moi",
  *     "searchAroundMeTitle": "Rechercher le centre à proximité",
  *     "selectAroundMeTitle": "Choisissez le centre à proximité :",
+ *     "noResultsWarning": "Aucun magasin trouvé à proximité",
  *     "autocompletePlaceholder": "Spécifiez une adresse",
  *     "allStores": "Tous nos centres",
  *     "changeStore": "Centre à proximité",

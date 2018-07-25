@@ -1,4 +1,5 @@
 var CONSTANT = require('./constants.js');
+
 /**
  * Simple object check.
  * @param item
@@ -24,7 +25,7 @@ function merge(target, source) {
                     }
                     merge(target[key], source[key]);
                 } else {
-                   target[key]= source[key];
+                    target[key] = source[key];
                 }
             }
         }
@@ -37,6 +38,8 @@ function Config(options) {
     this.options = {
         container: '',
         woosmapKey: '',
+        userAllowedReco: false,
+        omitUIReco: false,
         google: {
             //key: '',
             //clientId: '',
@@ -72,6 +75,8 @@ function Config(options) {
             region: 'fr'
         },
         woosmap: {
+            apiUrl: 'https://api.woosmap.com/stores/search',
+            recoScriptUrl: 'https://recommendation-js.woosmap.com/recommendation.js',
             query: '',
             limit: 5,
             maxDistance: 0
@@ -84,7 +89,7 @@ function Config(options) {
                 openingDay: true,
                 openingWeek: true
             }
-            ,search:{
+            , search: {
                 address: true,
                 openingDay: true,
                 openingWeek: true
@@ -96,6 +101,7 @@ function Config(options) {
                 searchAroundMeBtn: 'Autour de moi',
                 searchAroundMeTitle: 'Rechercher le centre à proximité',
                 selectAroundMeTitle: 'Choisissez le centre à proximité :',
+                noResultsWarning: 'Nous ne trouvons aucun résultat à proximité.',
                 autocompletePlaceholder: 'Spécifiez une adresse',
                 allStores: 'Tous nos centres',
                 changeStore: 'Centre à proximité',
@@ -129,7 +135,7 @@ function Config(options) {
                     5: {
                         full: "Vendredi",
                         short: "Ven"
-                      },
+                    },
                     6: {
                         full: "Samedi",
                         short: "Sam"
@@ -137,6 +143,53 @@ function Config(options) {
                     7: {
                         full: "Dimanche",
                         short: "Dim"
+                    }
+                }
+            },
+            en: {
+                searchAroundMeBtn: 'Around Me',
+                searchAroundMeTitle: 'Search nearest Store',
+                selectAroundMeTitle: 'Choose nearest store from :',
+                noResultsWarning: 'Can\'t find nearby results.',
+                autocompletePlaceholder: 'Address...',
+                allStores: 'All Stores',
+                changeStore: 'Recommended Store',
+                findStore: 'Find my Store',
+                geolocationNotice: "Geolocation capability is'nt enable on your browser. Please, change your settings.",
+                closeBtn: 'Close',
+                selectStore: 'Set as Favorite',
+                telephone: 'Tel:',
+                open24: "All Day",
+                openingHoursDay: "today: ",
+                openingHoursWeek: "opening hours: ",
+                days: {
+                    1: {
+                        full: "Monday",
+                        short: "Mon"
+                    },
+                    2: {
+                        full: "Tuesday",
+                        short: "Tue"
+                    },
+                    3: {
+                        full: "Wednesday",
+                        short: "Wed"
+                    },
+                    4: {
+                        full: "Thursday",
+                        short: "Thu"
+                    },
+                    5: {
+                        full: "Friday",
+                        short: "Fri"
+                    },
+                    6: {
+                        full: "Saturday",
+                        short: "Sat"
+                    },
+                    7: {
+                        full: "Sunday",
+                        short: "Sun"
                     }
                 }
             }
@@ -319,60 +372,60 @@ Config.prototype.checkConfig = function (options) {
             if (!Array.isArray(options.autocompletePlaces.types))
                 throw new Error("autocompletePlaces.types must be an array of string, e.g: ['geocode']");
         }
-        
-        if (typeof options.autocompletePlaces.componentRestrictions !== 'undefined' ) {
-            if (typeof options.autocompletePlaces.componentRestrictions !== 'object' ){
+
+        if (typeof options.autocompletePlaces.componentRestrictions !== 'undefined') {
+            if (typeof options.autocompletePlaces.componentRestrictions !== 'object') {
                 throw new Error("autocompletePlaces.componentRestrictions must be a Google GeocoderComponentRestrictions object");
             }
         }
     }
-    
+
     if (typeof options.display !== 'undefined') {
-    
-        if(typeof options.display.h12 !== 'undefined') {
-            if(typeof options.display.h12 !== 'boolean')
+
+        if (typeof options.display.h12 !== 'undefined') {
+            if (typeof options.display.h12 !== 'boolean')
                 throw new Error('display.h12 option (AM/PM) must be a boolean');
         }
-        
+
         if (typeof options.display.search !== 'undefined') {
-            if(typeof options.display.search !== 'object')
+            if (typeof options.display.search !== 'object')
                 throw new Error('display search option must be an object');
-            if(typeof options.display.search.openingDay !== 'undefined') {
-                if(typeof options.display.search.openingDay !== 'boolean')
+            if (typeof options.display.search.openingDay !== 'undefined') {
+                if (typeof options.display.search.openingDay !== 'boolean')
                     throw new Error('display.search.openingDay option must be a boolean');
-            } 
-            if(typeof options.display.search.openingWeek !== 'undefined') {
-                if(typeof options.display.search.openingWeek !== 'boolean')
+            }
+            if (typeof options.display.search.openingWeek !== 'undefined') {
+                if (typeof options.display.search.openingWeek !== 'boolean')
                     throw new Error('display.search.openingWeek option must be a boolean');
-            } 
-            if(typeof options.display.search.address !== 'undefined') {
-                if(typeof options.display.search.address !== 'boolean')
+            }
+            if (typeof options.display.search.address !== 'undefined') {
+                if (typeof options.display.search.address !== 'boolean')
                     throw new Error('display.search.address option must be a boolean');
             }
         }
-        
+
         if (typeof options.display.recommendation !== 'undefined') {
-            if(typeof options.display.recommendation !== 'object')
+            if (typeof options.display.recommendation !== 'object')
                 throw new Error('display.recommendation.option must be an object');
-            if(typeof options.display.recommendation.openingDay !== 'undefined') {
-                if(typeof options.display.recommendation.openingDay !== 'boolean')
+            if (typeof options.display.recommendation.openingDay !== 'undefined') {
+                if (typeof options.display.recommendation.openingDay !== 'boolean')
                     throw new Error('display.recommendation.openingDay option must be a boolean');
-            } 
-            if(typeof options.display.recommendation.openingWeek !== 'undefined') {
-                if(typeof options.display.recommendation.openingWeek !== 'boolean')
+            }
+            if (typeof options.display.recommendation.openingWeek !== 'undefined') {
+                if (typeof options.display.recommendation.openingWeek !== 'boolean')
                     throw new Error('display.recommendation.openingWeek option must be a boolean');
             }
-            if(typeof options.display.recommendation.address !== 'undefined') {
-                if(typeof options.display.recommendation.address !== 'boolean')
+            if (typeof options.display.recommendation.address !== 'undefined') {
+                if (typeof options.display.recommendation.address !== 'boolean')
                     throw new Error('display.recommendation.address option must be a boolean');
-            } 
-            if(typeof options.display.recommendation.phone !== 'undefined') {
-                if(typeof options.display.recommendation.phone !== 'boolean')
+            }
+            if (typeof options.display.recommendation.phone !== 'undefined') {
+                if (typeof options.display.recommendation.phone !== 'boolean')
                     throw new Error('display.recommendation.phone option must be a boolean');
             }
         }
     }
-    
+
     if (typeof options.lang === 'undefined')
         throw new Error("autocompletePlaces.lang is undefined, e.g: 'fr'");
     if (typeof options.lang !== 'string')
@@ -385,7 +438,7 @@ Config.prototype.checkConfig = function (options) {
     for (var key in options.translations[options.lang]) {
         if (options.translations[options.lang].hasOwnProperty(key)) {
             if (key === 'days') {
-                if(typeof options.translations[options.lang][key] !== 'object')
+                if (typeof options.translations[options.lang][key] !== 'object')
                     throw new Error("translations." + options.lang + "." + key + " must be an object (days list)");
             }
             else if (typeof options.translations[options.lang][key] !== 'string')

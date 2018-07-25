@@ -20,9 +20,10 @@ PlacesLocation.prototype.buildHTML = function () {
         '<div class="gr-wgs-homestore-panel-address-wrapper">' +
         '<label>' + this.config.L10n.searchAroundMeTitle + '</label>' +
         '<form class="gr-wgs-homestore-panel-searchBlock-form">' +
-        '<input class="gr-wgs-homestore-panel-searchBlock-btn gr-wgs-homestore-panel-address-btn" type="text" placeholder="' + this.config.L10n.autocompletePlaceholder + '"/>' +
+        '<input class="gr-wgs-homestore-panel-address-input" type="text" placeholder="' + this.config.L10n.autocompletePlaceholder + '"/>' +
         '</form>' +
         '<div class="gr-wgs-homestore-panel-address-reset"></div>' +
+        '<div class="gr-wgs-homestore-panel-address-loader"></div>' +
         '</div>' +
         '<div class= "gr-wgs-homestore-panel-address-predictions gr-wgs-pac-container"></div>';
 
@@ -96,6 +97,11 @@ PlacesLocation.prototype.buildHTML = function () {
                 });
             }
         }
+        if (event.currentTarget.value.length === 0) {
+            self.clearPanel();
+        } else {
+            self.plugin.ui.showResetBtn();
+        }
     }.bind(this));
 
     self.containerPredictionsList.addEventListener('click', function (event) {
@@ -122,6 +128,7 @@ PlacesLocation.prototype.clearPanel = function () {
     this.containerPredictionsList.innerHTML = '';
     this.containerPredictionsList.style.display = 'none';
     this.plugin.ui.hideResultsBlock();
+    this.plugin.ui.hideResetBtn();
 };
 
 /**
@@ -178,7 +185,7 @@ PlacesLocation.prototype.getPredictions = function (request) {
  * @param place_id
  */
 PlacesLocation.prototype.getDetails = function (place_id) {
-    var places = new google.maps.places.PlacesService(document.getElementsByClassName('gr-wgs-homestore-panel-address-btn')[0]);
+    var places = new google.maps.places.PlacesService(document.getElementsByClassName('gr-wgs-homestore-panel-address-input')[0]);
     var self = this;
     var request = {
         placeId: place_id

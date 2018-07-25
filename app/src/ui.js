@@ -10,7 +10,7 @@ function UI(container, usePlaces, plugin, config) {
 
     this.container.innerHTML = '<div class="gr-wgs-homestore-container">' +
         '<div class="gr-wgs-homestore-mainBlock"></div>' +
-        '<div id="gr-wgs-homestore-panel" class="' + (this.config.options.omitUIReco !== 'undefined' && this.config.options.omitUIReco ? ' omit-reco-ui' : '') + '">' +
+        '<div id="gr-wgs-homestore-panel" class="' + (this.config.options.omitUIReco === true ? ' omit-reco-ui' : '') + '">' +
         '<div class="gr-wgs-homestore-panel-searchBlock">' +
         '<div class="gr-wgs-homestore-panel-searchBlock-warning">' + L10n.geolocationNotice + '</div>' +
         '</div>' +
@@ -21,7 +21,7 @@ function UI(container, usePlaces, plugin, config) {
         '</div>' +
         '<div class="gr-wgs-homestore-panel-footerBlock">' +
         '<div class="gr-wgs-homestore-panel-footerBlock-allStores">' + (this.config.options.urls.stores.href.replace(' ', '') !== '' ? L10n.allStores : '') + '</div>' +
-        (this.config.options.omitUIReco !== 'undefined' && this.config.options.omitUIReco ? '' : '<div class="gr-wgs-homestore-panel-footerBlock-closePanel">' + L10n.closeBtn + '</div>') +
+        (this.config.options.omitUIReco === true ? '' : '<div class="gr-wgs-homestore-panel-footerBlock-closePanel">' + L10n.closeBtn + '</div>') +
         '</div>' +
         '</div>' +
         '</div>';
@@ -32,6 +32,7 @@ function UI(container, usePlaces, plugin, config) {
     this.panelContainerSearch = this.container.querySelector('.gr-wgs-homestore-panel-searchBlock');
     this.panelContainerSearchWarning = this.container.querySelector('.gr-wgs-homestore-panel-searchBlock-warning');
     this.panelContainerResultsBlock = this.container.querySelector('.gr-wgs-homestore-panel-resultBlock');
+    this.panelContainerResultsBlockTitle = this.container.querySelector('.gr-wgs-homestore-panel-resultBlock-title');
     this.panelContainerResultsList = this.container.querySelector('.gr-wgs-homestore-panel-resultBlock-listBlock');
     this.panelContainerFooter = this.container.querySelector('.gr-wgs-homestore-panel-footerBlock');
 
@@ -51,7 +52,7 @@ function UI(container, usePlaces, plugin, config) {
     this.panelContainer.querySelector('.gr-wgs-homestore-panel-footerBlock-allStores').addEventListener('click', function () {
         self.openAllStores();
     });
-    if (this.config.options.omitUIReco === 'undefined' || !this.config.options.omitUIReco) {
+    if (this.config.options.omitUIReco === false) {
         this.panelContainer.querySelector('.gr-wgs-homestore-panel-footerBlock-closePanel').addEventListener('click', function () {
             self.hideSearchPanel();
         });
@@ -130,7 +131,7 @@ UI.prototype.buildHTMLInitialReco = function (store) {
         phone +
         '<span class="gr-wgs-homestore-mainBlock-yourStore-openinghours">' + openingday + openingweek + '</span>' +
         '</div>';
-    if (self.config.options.omitUIReco === 'undefined' || !self.config.options.omitUIReco) {
+    if (self.config.options.omitUIReco === false) {
         this.headerContainer.querySelector('.gr-wgs-homestore-mainBlock-yourStore').addEventListener('click', function () {
             self.toggleSearchPanel();
         });
@@ -172,7 +173,7 @@ UI.prototype.buildWarningHTML5 = function () {
  */
 UI.prototype.onClickOutsideContainer = function () {
     window.addEventListener('click', function (event) {
-        if (this.config.options.omitUIReco === 'undefined' || !this.config.options.omitUIReco) {
+        if (this.config.options.omitUIReco === false) {
             if (this.isVisibleSearchPanel() && event.target.getAttribute('id') !== this.config.options.container.replace('#', '')) {
                 this.hideSearchPanel();
             }
@@ -253,9 +254,20 @@ UI.prototype.hideWarningHTML5 = function () {
  **/
 UI.prototype.buildHTMLRecommendationResults = function (stores) {
     this.panelContainerResultsList.innerHTML = '';
+    this.panelContainerResultsBlockTitle.innerHTML = this.config.L10n.selectAroundMeTitle;
     for (var i = 0; i < stores.length; i++) {
         this.buildHTMLStore(stores[i]);
     }
+    this.showResultsBlock();
+};
+
+/**
+ * buildHTMLNoResults
+ * Build the HTML when no stores found nearby a location search
+ **/
+UI.prototype.buildHTMLNoResults = function () {
+    this.panelContainerResultsList.innerHTML = '';
+    this.panelContainerResultsBlockTitle.innerHTML = this.config.L10n.noResultsWarning;
     this.showResultsBlock();
 };
 
@@ -429,7 +441,7 @@ UI.prototype.buildHTMLStore = function (store) {
         var lat = coord[1];
         var lng = coord[0];
         this.plugin.ui.resetStoreSearch();
-        if (this.config.options.omitUIReco === 'undefined' || !this.config.options.omitUIReco) {
+        if (this.config.options.omitUIReco === false) {
             this.hideSearchPanel();
             this.plugin.ui.buildHTMLInitialReco(store);
         }
@@ -439,14 +451,16 @@ UI.prototype.buildHTMLStore = function (store) {
         if (typeof window.localStorage !== 'undefined') {
             window.localStorage.setItem(this.config.options.woosmapKey, JSON.stringify(store));
         }
-        woosmapRecommendation.sendUserFavoritedPOI({
-            lat: lat, lng: lng, id: store.properties.store_id,
-            successCallback: function () {
-            }.bind(this),
-            errorCallback: function () {
-                console.error('Error recommendation');
-            }.bind(this)
-        });
+        if (this.config.options.userAllowedReco === true) {
+            woosmapRecommendation.sendUserFavoritedPOI({
+                lat: lat, lng: lng, id: store.properties.store_id,
+                successCallback: function () {
+                }.bind(this),
+                errorCallback: function () {
+                    console.warn('Error Sending Favorited POI to Woosmap!', lat, lng, store.properties.store_id);
+                }.bind(this)
+            });
+        }
     }.bind(this));
 };
 
@@ -478,16 +492,30 @@ UI.prototype.openAllStores = function () {
     window.open(this.config.options.urls.stores.href, this.config.options.urls.stores.target || '_self');
 };
 /**
+ * hideResetBtn
+ */
+UI.prototype.hideResetBtn = function () {
+    this.panelContainer.querySelector('.gr-wgs-homestore-panel-address-reset').style.display = 'none';
+};
+/**
+ * showResetBtn
+ */
+UI.prototype.showResetBtn = function () {
+    this.panelContainer.querySelector('.gr-wgs-homestore-panel-address-reset').style.display = 'block';
+};
+/**
  * showLoader
  */
 UI.prototype.showLoader = function () {
-    this.panelContainer.querySelector('.gr-wgs-homestore-panel-loaderBlock').style.display = 'block;';
+    this.panelContainer.querySelector('.gr-wgs-homestore-panel-address-reset').style.display = 'none';
+    this.panelContainer.querySelector('.gr-wgs-homestore-panel-address-loader').style.display = 'block';
 };
 /**
  * hideLoader
  */
 UI.prototype.hideLoader = function () {
-    this.panelContainer.querySelector('.gr-wgs-homestore-panel-loaderBlock').style.display = 'none;';
+    this.panelContainer.querySelector('.gr-wgs-homestore-panel-address-reset').style.display = 'block';
+    this.panelContainer.querySelector('.gr-wgs-homestore-panel-address-loader').style.display = 'none';
 };
 
 module.exports = UI;
