@@ -48,7 +48,7 @@
         document.querySelector('.gr-wgs-homestore-panel-aroundMe-btn').addEventListener('click', function (e) {
             console.log('Around Me Btn Click!');
         });
-        document.querySelector('.gr-wgs-homestore-panel-address-btn').addEventListener('click', function (e) {
+        document.querySelector('.gr-wgs-homestore-panel-address-input').addEventListener('click', function (e) {
             console.log('Address Bar Click');
         });
         console.log('ready');
@@ -84,8 +84,6 @@
             limit: 5,
             maxDistance: 100000
         },
-        omitUIReco: false,
-        userAllowedReco: false,
         callbackInitialRecommendedStore: callbackInitialRecommendedStore,
         callbackUserSelectedStore: callbackUserSelectedStore,
         callbackOnSuccessHTML5Location: callbackOnSuccessHTML5Location,

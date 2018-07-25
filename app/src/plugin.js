@@ -50,8 +50,11 @@ function RecommendationPlugin(selector, options) {
     this.mapsLoader.load(function () {
         this.ui = new UI(this.container, usePlaces, this, this.config);
         this.manager = new Manager(this, this.config);
-        if (typeof this.config.options.userAllowedReco !== 'undefined' && this.config.options.userAllowedReco === true) {
+        if (this.config.options.userAllowedReco === true) {
             this.allowUserReco();
+        }
+        else {
+            this.manager.initialRecommendation();
         }
         if (this.callbackDOMWidgetReady instanceof Function) {
             this.callbackDOMWidgetReady();
