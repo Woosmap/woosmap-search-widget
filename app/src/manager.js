@@ -25,11 +25,26 @@ function Manager(plugin, config) {
 
 
 /**
+ * Reads the store from the localStorage.
+ */
+Manager.prototype.getStoreFromLocalStorage = function () {
+    return JSON.parse(window.localStorage.getItem(this.config.options.woosmapKey));
+};
+
+/**
+ * Writes the store to the localStorage.
+ * @param {*} store 
+ */
+Manager.prototype.saveStoreToLocalStorage = function (store) {
+    window.localStorage.setItem(this.config.options.woosmapKey, JSON.stringify(store));
+};
+
+/**
  * initialRecommendation
  */
 Manager.prototype.initialRecommendation = function () {
     if (typeof window.localStorage !== 'undefined') {
-        var savedFavoritedStore = JSON.parse(window.localStorage.getItem(this.config.options.woosmapKey));
+        var savedFavoritedStore = this.getStoreFromLocalStorage();
         if (savedFavoritedStore !== null) {
             if (this.plugin.callbackInitialRecommendedStore instanceof Function) {
                 this.plugin.callbackInitialRecommendedStore(savedFavoritedStore);
@@ -73,7 +88,7 @@ Manager.prototype.getUserRecommendation = function () {
                     self.plugin.ui.buildHTMLInitialReco(stores[0]);
                 }
                 if (typeof window.localStorage !== 'undefined') {
-                    window.localStorage.setItem(self.config.options.woosmapKey, JSON.stringify(stores[0]));
+                    this.saveStoreToLocalStorage(stores[0]);
                 }
             }
             else {
@@ -194,7 +209,7 @@ Manager.prototype.searchStoresWithoutReco = function (lat, lng) {
 Manager.prototype.recommendStoresFromHTML5 = function (lat, lng) {
     if (this.config.options.userAllowedReco === true) {
         this.searchStores(lat, lng);
-        woosmapRecommendation.sendUserHtml5Position({lat: lat, lng: lng});
+        woosmapRecommendation.sendUserHtml5Position({ lat: lat, lng: lng });
     }
     else {
         this.searchStoresWithoutReco(lat, lng);
@@ -209,7 +224,7 @@ Manager.prototype.recommendStoresFromHTML5 = function (lat, lng) {
 Manager.prototype.recommendStoresFromSearch = function (lat, lng) {
     if (this.config.options.userAllowedReco === true) {
         this.searchStores(lat, lng);
-        woosmapRecommendation.sendUserSearchedPosition({lat: lat, lng: lng});
+        woosmapRecommendation.sendUserSearchedPosition({ lat: lat, lng: lng });
     }
     else {
         this.searchStoresWithoutReco(lat, lng);
