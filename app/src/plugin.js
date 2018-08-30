@@ -116,8 +116,8 @@ RecommendationPlugin.prototype.allowUserReco = function () {
 /**
  * Sets the selected store using its storeId, and refresh interface.
  * @param {String} storeId 
- * @param {Function} success 
- * @param {Function} error 
+ * @param {Function} [success]
+ * @param {Function} [error]
  */
 RecommendationPlugin.prototype.setSelectedStoreId = function (storeId, success, error) {
     network.get(
