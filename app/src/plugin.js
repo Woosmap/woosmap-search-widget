@@ -1,7 +1,8 @@
-var Config = require('./config.js');
-var MapsLoader = require('./mapsloader.js');
+var Config = require('./config');
+var MapsLoader = require('./mapsloader');
 var UI = require('./ui.js');
-var Manager = require('./manager.js');
+var Manager = require('./manager');
+var network = require('./network');
 
 /**
  * Construct a new Recommendation Widget instance
@@ -110,6 +111,37 @@ RecommendationPlugin.prototype.allowUserReco = function () {
         woosmapRecommendation.setProjectKey(this.config.options.woosmapKey);
         this.manager.initialRecommendation();
     }.bind(this));
+};
+
+/**
+ * Sets the selected store using its storeId, and refresh interface.
+ * @param {String} storeId 
+ * @param {Function} [success]
+ * @param {Function} [error]
+ */
+RecommendationPlugin.prototype.setSelectedStoreId = function (storeId, success, error) {
+    network.get(
+        'https://api.woosmap.com/stores/search?key=' + this.config.options.woosmapKey + '&query=idstore:="' + storeId + '"',
+        function (response) {
+            var jsonData = JSON.parse(response);
+            var stores = jsonData.features;
+            if (stores.length > 0) {
+                this.manager.saveStoreToLocalStorage(stores[0]);
+                this.ui.buildHTMLInitialReco(stores[0]);
+
+                if (success !== undefined) {
+                    success();
+                }
+            }
+        }.bind(this),
+        function (statusText) {
+            if (error !== undefined) {
+                error(statusText);
+            }
+            else {
+                console.error('Error while setting Selected store Id (' + statusText + ')');
+            }
+        });
 };
 
 module.exports = RecommendationPlugin;
