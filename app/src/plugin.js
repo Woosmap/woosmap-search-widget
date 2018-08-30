@@ -125,9 +125,9 @@ RecommendationPlugin.prototype.setSelectedStoreId = function (storeId, success, 
         function (response) {
             var jsonData = JSON.parse(response);
             var stores = jsonData.features;
-            if (store.length > 0) {
+            if (stores.length > 0) {
                 this.manager.saveStoreToLocalStorage(stores[0]);
-                this.ui.buildHTMLInitialReco(stores[0])
+                this.ui.buildHTMLInitialReco(stores[0]);
 
                 if (success !== undefined) {
                     success();
