@@ -32,7 +32,7 @@
 
     var callbackInitialRecommendedStore = function (store) {
         //called when an Initial Recommended Store is Found
-        console.log(store);
+        console.log('callbackInitialRecommendedStore', store);
     };
     var callbackUserSelectedStore = function (store) {
         //called When a User Select a Store after a Geocoding Search
@@ -52,6 +52,7 @@
             console.log('Address Bar Click');
         });
         console.log('ready');
+
         //recoPlugin.allowUserReco();
     };
 
@@ -82,7 +83,7 @@
         },
         woosmap: {
             limit: 5,
-            maxDistance: 100000
+            maxDistance: 100
         },
         callbackInitialRecommendedStore: callbackInitialRecommendedStore,
         callbackUserSelectedStore: callbackUserSelectedStore,

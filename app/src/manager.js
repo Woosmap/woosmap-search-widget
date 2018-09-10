@@ -1,5 +1,6 @@
 var updateStoresWithGoogle = require('./stores.js');
 var CONSTANT = require('./constants.js');
+var network = require('./network');
 
 /**
  * Manager
@@ -33,7 +34,7 @@ Manager.prototype.getStoreFromLocalStorage = function () {
 
 /**
  * Writes the store to the localStorage.
- * @param {*} store 
+ * @param {*} store
  */
 Manager.prototype.saveStoreToLocalStorage = function (store) {
     window.localStorage.setItem(this.config.options.woosmapKey, JSON.stringify(store));
@@ -161,21 +162,19 @@ Manager.prototype.searchStoresWithoutReco = function (lat, lng) {
     var self = this;
     var errorCallback = function () {
         self.plugin.ui.hideLoader();
-        console.warn('Error Searching for Stores nearby!', lat, lng);
+        console.warn('Can\'t find Stores nearby:', lat, lng);
         self.plugin.ui.buildHTMLNoResults();
     };
-    if (typeof this.request === 'undefined') {
-        this.request = new window.XMLHttpRequest();
-    }
-    this.request.open('GET', this.searchAPIUrl
+    network.get(
+        this.searchAPIUrl
         + '&lat=' + lat
         + '&lng=' + lng
         + '&max_distance=' + this.config.options.woosmap.maxDistance
         + '&stores_by_page=' + this.limit
-        + '&query=' + this.config.options.woosmap.query, true);
-    this.request.onload = function () {
-        if (self.request.status >= 200 && self.request.status < 400) {
-            var stores = JSON.parse(self.request.responseText).features;
+        + '&query=' + this.config.options.woosmap.query,
+        function (response) {
+            var jsonData = JSON.parse(response);
+            var stores = jsonData.features;
             if (stores.length > 0) {
                 updateStoresWithGoogle(stores, lat, lng,
                     function (sortedStores) {
@@ -188,18 +187,48 @@ Manager.prototype.searchStoresWithoutReco = function (lat, lng) {
                 self.plugin.ui.hideLoader();
                 self.plugin.ui.buildHTMLNoResults();
             }
-        } else {
-            self.plugin.ui.hideLoader();
-            self.plugin.ui.buildHTMLNoResults();
-        }
-    };
-    this.request.onerror = function () {
-        self.plugin.ui.buildHTMLNoResults();
-        errorCallback();
-    };
-    this.request.send();
+        }.bind(this),
+        function (statusText) {
+            console.error('Error while searching stores (' + statusText + ')');
+            errorCallback();
+        });
 };
 
+/**
+ * selectStoreFromStoreId
+ * @param store_id
+ * @param successCallback(store)
+ * @param errorCallback(status)
+ */
+Manager.prototype.selectStoreFromStoreId = function (store_id, successCallback, errorCallback) {
+    network.get(
+        this.searchAPIUrl + '&query=idstore:="' + store_id + '"',
+        function (response) {
+            var jsonData = JSON.parse(response);
+            var stores = jsonData.features;
+            if (stores.length > 0) {
+                this.saveStoreToLocalStorage(stores[0]);
+                this.plugin.ui.buildHTMLInitialReco(stores[0]);
+                if (successCallback !== undefined) {
+                    successCallback(stores[0]);
+                }
+            }
+            else {
+                if (errorCallback !== undefined) {
+                    errorCallback('No Store with ID: ' + store_id);
+                }
+                console.warn('No Store with ID:', store_id);
+            }
+        }.bind(this),
+        function (statusText) {
+            if (errorCallback !== undefined) {
+                errorCallback(statusText);
+            }
+            else {
+                console.error('Error while setting Selected store by Id (' + statusText + ')');
+            }
+        });
+};
 
 /**
  * recommendStoresFromHTML5
@@ -209,7 +238,7 @@ Manager.prototype.searchStoresWithoutReco = function (lat, lng) {
 Manager.prototype.recommendStoresFromHTML5 = function (lat, lng) {
     if (this.config.options.userAllowedReco === true) {
         this.searchStores(lat, lng);
-        woosmapRecommendation.sendUserHtml5Position({ lat: lat, lng: lng });
+        woosmapRecommendation.sendUserHtml5Position({lat: lat, lng: lng});
     }
     else {
         this.searchStoresWithoutReco(lat, lng);
@@ -224,11 +253,12 @@ Manager.prototype.recommendStoresFromHTML5 = function (lat, lng) {
 Manager.prototype.recommendStoresFromSearch = function (lat, lng) {
     if (this.config.options.userAllowedReco === true) {
         this.searchStores(lat, lng);
-        woosmapRecommendation.sendUserSearchedPosition({ lat: lat, lng: lng });
+        woosmapRecommendation.sendUserSearchedPosition({lat: lat, lng: lng});
     }
     else {
         this.searchStoresWithoutReco(lat, lng);
     }
 };
+
 
 module.exports = Manager;

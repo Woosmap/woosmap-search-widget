@@ -2,7 +2,6 @@ var Config = require('./config');
 var MapsLoader = require('./mapsloader');
 var UI = require('./ui.js');
 var Manager = require('./manager');
-var network = require('./network');
 
 /**
  * Construct a new Recommendation Widget instance
@@ -114,34 +113,25 @@ RecommendationPlugin.prototype.allowUserReco = function () {
 };
 
 /**
- * Sets the selected store using its storeId, and refresh interface.
- * @param {String} storeId 
- * @param {Function} [success]
- * @param {Function} [error]
+ * Sets the selected store using its storeId, refresh interface, and call success(store) or error(statusText).
+ * @param {String} storeId
+ * @param {Function} [success(store)]
+ * @param {Function} [error(statusText]
  */
 RecommendationPlugin.prototype.setSelectedStoreId = function (storeId, success, error) {
-    network.get(
-        'https://api.woosmap.com/stores/search?key=' + this.config.options.woosmapKey + '&query=idstore:="' + storeId + '"',
-        function (response) {
-            var jsonData = JSON.parse(response);
-            var stores = jsonData.features;
-            if (stores.length > 0) {
-                this.manager.saveStoreToLocalStorage(stores[0]);
-                this.ui.buildHTMLInitialReco(stores[0]);
-
-                if (success !== undefined) {
-                    success();
-                }
+    var self = this;
+    this.manager.selectStoreFromStoreId(storeId, function (store) {
+        success(store);
+        if (self.config.options.userAllowedReco === true) {
+            if (typeof woosmapRecommendation === "object") {
+                woosmapRecommendation.sendUserConsultedPOI({
+                    lat: store.geometry.coordinates[1],
+                    lng: store.geometry.coordinates[0],
+                    id: store.properties.store_id
+                });
             }
-        }.bind(this),
-        function (statusText) {
-            if (error !== undefined) {
-                error(statusText);
-            }
-            else {
-                console.error('Error while setting Selected store Id (' + statusText + ')');
-            }
-        });
+        }
+    }, error);
 };
 
 module.exports = RecommendationPlugin;
