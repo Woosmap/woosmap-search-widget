@@ -113,7 +113,7 @@ RecommendationPlugin.prototype.allowUserReco = function () {
 };
 
 /**
- * Sets the selected store using its storeId, refresh interface, and call success(store) or error(statusText).
+ * Define the Widget store by its ID and callback `success(store)` - with the returned [store object](/data-api/samples/api-response.html) as argument - or `error(errorText)` depending on the response.
  * @param {String} storeId
  * @param {Function} [success(store)]
  * @param {Function} [error(statusText]
