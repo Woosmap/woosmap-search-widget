@@ -1,5 +1,5 @@
 function makeRequest(obj, resolve, reject) {
-    var xhr = new XMLHttpRequest();
+    var xhr = new window.XMLHttpRequest();
     xhr.open(obj.method || "GET", obj.url);
     if (obj.headers) {
         Object.keys(obj.headers).forEach(function (key) {
