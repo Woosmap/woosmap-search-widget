@@ -89,7 +89,7 @@ Manager.prototype.getUserRecommendation = function () {
                     self.plugin.ui.buildHTMLInitialReco(stores[0]);
                 }
                 if (typeof window.localStorage !== 'undefined') {
-                    this.saveStoreToLocalStorage(stores[0]);
+                    self.saveStoreToLocalStorage(stores[0]);
                 }
             }
             else {
