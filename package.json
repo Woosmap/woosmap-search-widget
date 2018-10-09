@@ -21,10 +21,9 @@
     "eslint-loader": "^1.9.0",
     "html-webpack-plugin": "^2.30.1",
     "webpack": "^3.12.0",
-    "webpack-dev-server": "^2.11.2"
+    "webpack-dev-server": "^2.11.3"
   },
   "dependencies": {
-    "@nmarks/jsdoc-parse": "^1.2.7",
-    "npm": "^6.2.0"
+    "npm": "^6.4.1"
   }
 }
