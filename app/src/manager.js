@@ -47,14 +47,14 @@ Manager.prototype.initialRecommendation = function () {
     if (typeof window.localStorage !== 'undefined') {
         var savedFavoritedStore = this.getStoreFromLocalStorage();
         if (savedFavoritedStore !== null) {
-            if (this.plugin.callbackInitialRecommendedStore instanceof Function) {
-                this.plugin.callbackInitialRecommendedStore(savedFavoritedStore);
-            }
             if (this.config.options.omitUIReco === true) {
                 this.plugin.ui.showSearchPanel();
             }
             else {
                 this.plugin.ui.buildHTMLInitialReco(savedFavoritedStore);
+            }
+            if (this.plugin.callbackInitialRecommendedStore instanceof Function) {
+                this.plugin.callbackInitialRecommendedStore(savedFavoritedStore);
             }
         }
         else if (this.config.options.userAllowedReco === true) {
@@ -79,9 +79,6 @@ Manager.prototype.getUserRecommendation = function () {
             }
             if (response && response.features && response.features.length > 0) {
                 var stores = response.features;
-                if (self.plugin.callbackInitialRecommendedStore instanceof Function) {
-                    self.plugin.callbackInitialRecommendedStore(stores[0]);
-                }
                 if (self.config.options.omitUIReco === true) {
                     self.plugin.ui.showSearchPanel();
                 }
@@ -90,6 +87,9 @@ Manager.prototype.getUserRecommendation = function () {
                 }
                 if (typeof window.localStorage !== 'undefined') {
                     self.saveStoreToLocalStorage(stores[0]);
+                }
+                if (self.plugin.callbackInitialRecommendedStore instanceof Function) {
+                    self.plugin.callbackInitialRecommendedStore(stores[0]);
                 }
             }
             else {
