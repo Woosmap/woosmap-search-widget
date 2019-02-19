@@ -17,8 +17,7 @@ function Manager(plugin, config) {
     if (this.config.options.userAllowedReco === false) {
         if (this.config.options.omitUIReco === true) {
             this.plugin.ui.showSearchPanel();
-        }
-        else {
+        } else {
             this.plugin.ui.buildHTMLFindMyStore();
         }
     }
@@ -49,19 +48,16 @@ Manager.prototype.initialRecommendation = function () {
         if (savedFavoritedStore !== null) {
             if (this.config.options.omitUIReco === true) {
                 this.plugin.ui.showSearchPanel();
-            }
-            else {
+            } else {
                 this.plugin.ui.buildHTMLInitialReco(savedFavoritedStore);
             }
             if (this.plugin.callbackInitialRecommendedStore instanceof Function) {
                 this.plugin.callbackInitialRecommendedStore(savedFavoritedStore);
             }
-        }
-        else if (this.config.options.userAllowedReco === true) {
+        } else if (this.config.options.userAllowedReco === true) {
             this.getUserRecommendation();
         }
-    }
-    else if (this.config.options.userAllowedReco === true) {
+    } else if (this.config.options.userAllowedReco === true) {
         this.getUserRecommendation();
     }
 };
@@ -81,8 +77,7 @@ Manager.prototype.getUserRecommendation = function () {
                 var stores = response.features;
                 if (self.config.options.omitUIReco === true) {
                     self.plugin.ui.showSearchPanel();
-                }
-                else {
+                } else {
                     self.plugin.ui.buildHTMLInitialReco(stores[0]);
                 }
                 if (typeof window.localStorage !== 'undefined') {
@@ -91,12 +86,10 @@ Manager.prototype.getUserRecommendation = function () {
                 if (self.plugin.callbackInitialRecommendedStore instanceof Function) {
                     self.plugin.callbackInitialRecommendedStore(stores[0]);
                 }
-            }
-            else {
+            } else {
                 if (self.config.options.omitUIReco === true) {
                     self.plugin.ui.showSearchPanel();
-                }
-                else {
+                } else {
                     self.plugin.ui.buildHTMLFindMyStore();
                 }
             }
@@ -104,11 +97,9 @@ Manager.prototype.getUserRecommendation = function () {
         errorCallback: function (response) {
             if (response.status === 401) {
                 self.plugin.ui.buildHTMLFindMyStore("...error, wrong public key");
-            }
-            else if (response.status === 403) {
+            } else if (response.status === 403) {
                 self.plugin.ui.buildHTMLFindMyStore("...error, unauthorized domain");
-            }
-            else {
+            } else {
                 self.plugin.ui.buildHTMLFindMyStore("...error retrieving data");
             }
         },
@@ -142,13 +133,12 @@ Manager.prototype.searchStores = function (lat, lng) {
                         self.plugin.ui.hideLoader();
                         self.plugin.ui.buildHTMLRecommendationResults(sortedStores);
                     },
-                    errorCallback);
-            }
-            else {
+                    errorCallback, this.config.options.withDistanceMatrix);
+            } else {
                 self.plugin.ui.hideLoader();
                 self.plugin.ui.buildHTMLNoResults();
             }
-        },
+        }.bind(this),
         errorCallback: errorCallback,
         storesByPage: this.limit,
         query: this.query,
@@ -181,9 +171,8 @@ Manager.prototype.searchStoresWithoutReco = function (lat, lng) {
                         self.plugin.ui.hideLoader();
                         self.plugin.ui.buildHTMLRecommendationResults(sortedStores);
                     },
-                    errorCallback);
-            }
-            else {
+                    errorCallback, this.config.options.withDistanceMatrix);
+            } else {
                 self.plugin.ui.hideLoader();
                 self.plugin.ui.buildHTMLNoResults();
             }
@@ -212,8 +201,7 @@ Manager.prototype.selectStoreFromStoreId = function (store_id, successCallback, 
                 if (successCallback !== undefined) {
                     successCallback(stores[0]);
                 }
-            }
-            else {
+            } else {
                 if (errorCallback !== undefined) {
                     errorCallback('No Store with ID: ' + store_id);
                 }
@@ -223,8 +211,7 @@ Manager.prototype.selectStoreFromStoreId = function (store_id, successCallback, 
         function (statusText) {
             if (errorCallback !== undefined) {
                 errorCallback(statusText);
-            }
-            else {
+            } else {
                 console.error('Error while setting Selected store by Id (' + statusText + ')');
             }
         });
@@ -239,8 +226,7 @@ Manager.prototype.recommendStoresFromHTML5 = function (lat, lng) {
     if (this.config.options.userAllowedReco === true) {
         this.searchStores(lat, lng);
         woosmapRecommendation.sendUserHtml5Position({lat: lat, lng: lng});
-    }
-    else {
+    } else {
         this.searchStoresWithoutReco(lat, lng);
     }
 };
@@ -254,8 +240,7 @@ Manager.prototype.recommendStoresFromSearch = function (lat, lng) {
     if (this.config.options.userAllowedReco === true) {
         this.searchStores(lat, lng);
         woosmapRecommendation.sendUserSearchedPosition({lat: lat, lng: lng});
-    }
-    else {
+    } else {
         this.searchStoresWithoutReco(lat, lng);
     }
 };
