@@ -40,7 +40,7 @@ function Config(options) {
         woosmapKey: '',
         userAllowedReco: false,
         omitUIReco: false,
-        withDistanceMatrix: false,
+        withDistanceMatrix: true,
         google: {
             //key: '',
             //clientId: '',
