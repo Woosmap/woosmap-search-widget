@@ -1,4 +1,4 @@
-var updateStoresWithGoogle = require('./stores.js');
+var updateStores = require('./stores.js');
 var CONSTANT = require('./constants.js');
 var network = require('./network');
 
@@ -128,7 +128,7 @@ Manager.prototype.searchStores = function (lat, lng) {
         successCallback: function (resp) {
             var stores = resp.features;
             if (stores.length > 0) {
-                updateStoresWithGoogle(stores, lat, lng,
+                updateStores(stores, lat, lng,
                     function (sortedStores) {
                         self.plugin.ui.hideLoader();
                         self.plugin.ui.buildHTMLRecommendationResults(sortedStores);
@@ -166,7 +166,7 @@ Manager.prototype.searchStoresWithoutReco = function (lat, lng) {
             var jsonData = JSON.parse(response);
             var stores = jsonData.features;
             if (stores.length > 0) {
-                updateStoresWithGoogle(stores, lat, lng,
+                updateStores(stores, lat, lng,
                     function (sortedStores) {
                         self.plugin.ui.hideLoader();
                         self.plugin.ui.buildHTMLRecommendationResults(sortedStores);

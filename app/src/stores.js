@@ -1,5 +1,5 @@
 /**
- * updateStoresWithGoogle
+ * updateStores
  * @param stores
  * @param latitude
  * @param longitude
@@ -7,24 +7,16 @@
  * @param errorCallback
  * @param withDistanceMatrix
  */
-function updateStoresWithGoogle(stores, latitude, longitude, callback, errorCallback, withDistanceMatrix) {
-    if (typeof withDistanceMatrix === 'undefined' || withDistanceMatrix === null) {
-        withDistanceMatrix = false;
-    }
+function updateStores(stores, latitude, longitude, callback, errorCallback, withDistanceMatrix) {
+    if (typeof withDistanceMatrix !== 'undefined' && withDistanceMatrix !== null && withDistanceMatrix) {
+        var request = {
+            destinations: stores.map(function (store) {
+                return new google.maps.LatLng(store.geometry.coordinates[1], store.geometry.coordinates[0]);
+            }),
+            origins: [new google.maps.LatLng(latitude, longitude)],
+            travelMode: google.maps.TravelMode.DRIVING
+        };
 
-    var destinations = [];
-    for (var i = 0, ln = stores.length; i < ln; i++) {
-        var coordinates = stores[i].geometry.coordinates;
-        destinations.push(new google.maps.LatLng(coordinates[1], coordinates[0]));
-    }
-
-    var request = {
-        destinations: destinations,
-        origins: [new google.maps.LatLng(latitude, longitude)],
-        travelMode: google.maps.TravelMode.DRIVING
-    };
-
-    if (withDistanceMatrix) {
         updateStoresWithDistanceMatrix(request, stores, latitude, longitude, callback, errorCallback);
     } else {
         updateStoresAsTheCrowFlies(stores, callback);
@@ -80,7 +72,7 @@ function updateStoresWithDistanceMatrix(request, stores, latitude, longitude, ca
             callback(stores);
         } else if (status === google.maps.DistanceMatrixStatus.UNKNOWN_ERROR) {
             window.setTimeout(function () {
-                this.updateStoresWithGoogle(request, stores, latitude, longitude, callback, errorCallback);
+                this.updateStores(request, stores, latitude, longitude, callback, errorCallback);
             }.bind(this), 1500);
         } else {
             errorCallback();
@@ -89,4 +81,4 @@ function updateStoresWithDistanceMatrix(request, stores, latitude, longitude, ca
     });
 }
 
-module.exports = updateStoresWithGoogle;
+module.exports = updateStores;
