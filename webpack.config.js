@@ -4,12 +4,9 @@ var CopyWebpackPlugin = require('copy-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 var webpackConfig = {
-    node: {
-        fs: "empty"
-    },
     entry: './app/src/index.js',
 
-    output: {path: __dirname + '/build', filename: "woosmapsearchwidget.js", publicPath: "./"},
+    output: {path: __dirname + '/build', filename: "woosmapsearchwidget.js"},
 
     module: {
         loaders: []
