@@ -25,8 +25,6 @@ function RecommendationPlugin(selector, options) {
     options.container = selector;
     this.config = new Config(options);
 
-    var usePlaces = this.config.options.usePlaces;
-
     this.mapsLoader = new MapsLoader({
         clientId: this.config.options.google.clientId,
         channelId: this.config.options.google.channel,
@@ -48,27 +46,24 @@ function RecommendationPlugin(selector, options) {
     }
 
     this.mapsLoader.load(function () {
-        this.ui = new UI(this.container, usePlaces, this, this.config);
+        this.ui = new UI(this.container, this, this.config);
         this.manager = new Manager(this, this.config);
         if (this.config.options.userAllowedReco === true) {
             this.allowUserReco();
-        }
-        else {
+        } else {
             this.manager.initialRecommendation();
         }
         if (this.callbackDOMWidgetReady instanceof Function) {
             this.callbackDOMWidgetReady();
         }
     }.bind(this));
-
 }
 
 
 RecommendationPlugin.prototype._getRecommendationScript = function (callback) {
     if (typeof woosmapRecommendation === "object") {
         callback();
-    }
-    else {
+    } else {
         var scriptUrl = this.config.options.woosmap.recoScriptUrl;
         var scriptElement = document.createElement('script');
         scriptElement.type = 'text/javascript';
@@ -83,8 +78,7 @@ RecommendationPlugin.prototype._getRecommendationScript = function (callback) {
             scriptElement.onreadystatechange = function () {
                 if (this.readyState === 'complete' || this.readyState === 'loaded') {
                     callback();
-                }
-                else {
+                } else {
                     console.error('Error when loading script ' + scriptUrl);
                 }
             };

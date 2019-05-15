@@ -72,6 +72,15 @@ function Config(options) {
             },
             componentRestrictions: ['fr']*/
         },
+        useLocalities: false,
+        autocompleteLocalities: {
+            url: 'https://sdk.woosmap.com/localities/woosmap-localitites.js',
+            componentRestrictions: {
+                country: []
+            },
+            types: '',
+            language: ''
+        },
         geocoder: {
             region: 'fr'
         },
@@ -203,7 +212,7 @@ function Config(options) {
 
 Config.prototype.initializeL10n = function () {
 
-    var lang = (this.options.lang && typeof(this.options.lang) === 'string') ? this.options.lang : this.options.lang;
+    var lang = (this.options.lang && typeof (this.options.lang) === 'string') ? this.options.lang : this.options.lang;
 
     if (lang) {
         if (this.options.translations.hasOwnProperty(lang)) {
@@ -338,6 +347,14 @@ Config.prototype.checkConfig = function (options) {
     }
 
     /**
+     * check useLocalities
+     */
+    if (typeof options.useLocalities !== 'undefined') {
+        if (typeof options.useLocalities !== 'boolean')
+            throw new Error("useLocalities must be a boolean");
+    }
+
+    /**
      * check autocompletePlaces
      */
     if (typeof options.autocompletePlaces !== 'undefined') {
@@ -441,8 +458,7 @@ Config.prototype.checkConfig = function (options) {
             if (key === 'days') {
                 if (typeof options.translations[options.lang][key] !== 'object')
                     throw new Error("translations." + options.lang + "." + key + " must be an object (days list)");
-            }
-            else if (typeof options.translations[options.lang][key] !== 'string')
+            } else if (typeof options.translations[options.lang][key] !== 'string')
                 throw new Error("translations." + options.lang + "." + key + " must be a string");
         }
     }

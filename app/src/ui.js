@@ -1,8 +1,9 @@
 var HTML5Location = require('./html5location.js');
 var PlacesLocation = require('./places.js');
 var GeocodingLocation = require('./geocoder.js');
+var LocalitiesLocation = require('./localities.js');
 
-function UI(container, usePlaces, plugin, config) {
+function UI(container, plugin, config) {
     this.plugin = plugin;
     this.container = container;
     this.config = config;
@@ -38,10 +39,11 @@ function UI(container, usePlaces, plugin, config) {
 
     new HTML5Location(this.panelContainerSearch, this.plugin, this.config);
 
-    if (usePlaces) {
+    if (this.config.options.useLocalities) {
+        this._searchManager = new LocalitiesLocation(this.panelContainerSearch, this.plugin, this.config);
+    } else if (this.config.options.usePlaces) {
         this._searchManager = new PlacesLocation(this.panelContainerSearch, this.plugin, this.config);
-    }
-    else {
+    } else {
         this._searchManager = new GeocodingLocation(this.panelContainerSearch, this.plugin, this.config);
     }
 
