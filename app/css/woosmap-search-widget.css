@@ -482,8 +482,9 @@
 }
 
 
-
 /*Support old version with the Form element*/
+
+
 .home-localizator-wrapper .home-localizator-form .gr-wgs-homestore-panel-searchBlock-form {
     margin: 5px 0 15px !important
 }
@@ -492,7 +493,7 @@
     margin: 0 !important
 }
 
-.home-localizator-wrapper .home-localizator-form input {
+.home-localizator-wrapper .home-localizator-form .gr-wgs-homestore-panel-address-input {
     width: 100% !important;
     height: 48px;
     margin-top: 10px;
