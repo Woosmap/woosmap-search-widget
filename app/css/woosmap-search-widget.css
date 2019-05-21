@@ -170,7 +170,7 @@
 
 }
 
-form.gr-wgs-homestore-panel-searchBlock-form {
+.gr-wgs-homestore-panel-searchBlock-form {
     margin: 5px 0 15px;
 }
 
@@ -479,4 +479,29 @@ form.gr-wgs-homestore-panel-searchBlock-form {
 
 .gr-wgs-pac-placeholder {
     color: gray
+}
+
+
+/*Support old version with the Form element*/
+
+
+.home-localizator-wrapper .home-localizator-form .gr-wgs-homestore-panel-searchBlock-form {
+    margin: 5px 0 15px !important
+}
+
+.home-localizator-wrapper .home-localizator-form .gr-wgs-homestore-panel-searchBlock-form input {
+    margin: 0 !important
+}
+
+.home-localizator-wrapper .home-localizator-form .gr-wgs-homestore-panel-address-input {
+    width: 100% !important;
+    height: 48px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    background: #fff;
+    border: 1px solid #9b9b9b;
+    border-radius: 5px;
+    text-transform: none;
+    color: #9b9b9b;
+    line-height: 2
 }

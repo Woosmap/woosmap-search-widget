@@ -19,9 +19,9 @@ PlacesLocation.prototype.buildHTML = function () {
     var template =
         '<div class="gr-wgs-homestore-panel-address-wrapper">' +
         '<label>' + this.config.L10n.searchAroundMeTitle + '</label>' +
-        '<form class="gr-wgs-homestore-panel-searchBlock-form">' +
+        '<div class="gr-wgs-homestore-panel-searchBlock-form">' +
         '<input class="gr-wgs-homestore-panel-address-input" type="text" placeholder="' + this.config.L10n.autocompletePlaceholder + '"/>' +
-        '</form>' +
+        '</div>' +
         '<div class="gr-wgs-homestore-panel-address-reset"></div>' +
         '<div class="gr-wgs-homestore-panel-address-loader"></div>' +
         '</div>' +
@@ -114,11 +114,6 @@ PlacesLocation.prototype.buildHTML = function () {
 
     this.container.querySelector('.gr-wgs-homestore-panel-address-reset').addEventListener('click', function () {
         self.clearPanel();
-    });
-
-    this.container.querySelector('form.gr-wgs-homestore-panel-searchBlock-form').addEventListener('submit', function (event) {
-        event.preventDefault();
-        return false;
     });
 
 };

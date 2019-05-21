@@ -17,6 +17,7 @@
  *    callbackOnErrorHTML5Location: functionCallbackErrorHTML5Loc,
  *    callbackDOMWidgetReady: functionCallbackDOMWidgetReady,
  *    omitUIReco: true,
+ *    withDistanceMatrix: false,
  *    userAllowedReco: true,
  *    google: {
  *        clientId: "customer-clientId",
@@ -37,12 +38,13 @@
  *```
  * @property {String}container the `id` of the HTML container where the widget will display
  * @property {String}woosmapKey the Woosmap Public key used to connect to your datasource
- * @property {Function}callbackInitialRecommendedStore Callback Function called with [`store`](/data-api/samples/api-response.html) parameter when an Initial Recommended Store is Found.
- * @property {Function}callbackUserSelectedStore Callback Function called with [`store`](/data-api/samples/api-response.html) parameter When a User Select a Store after a Geocoding Search.
+ * @property {Function}callbackInitialRecommendedStore Callback Function called with [`store`](/products/data-api/samples/api-response/) parameter when an Initial Recommended Store is Found.
+ * @property {Function}callbackUserSelectedStore Callback Function called with [`store`](/products/data-api/samples/api-response/) parameter When a User Select a Store after a Geocoding Search.
  * @property {Function}callbackOnSuccessHTML5Location Callback Function called with a [`Position`](https://www.w3.org/TR/geolocation-API/#position_interface) parameter when a Navigator.geolocation has succeeded (triggered on Search Around Me Button).
  * @property {Function}callbackOnErrorHTML5Location Callback Function called with an [`PositionError`](https://www.w3.org/TR/geolocation-API/#position_error_interface) parameter when a Navigator.geolocation has failed (triggered on Search Around Me Button).
  * @property {Function}callbackDOMWidgetReady Callback Function called when the Initial Widget innerHTML is fully rendered and thus accessible from the DOM.
  * @property {Boolean}omitUIReco to disable the display of Store in recommendation block. if set to true, use the callbacks above to manage the reco in your website
+ * @property {Boolean}withDistanceMatrix to enable sorting stores using DistanceMatrixService. Default is true. If set to false, stores are sorted using distances as the crow flies.
  * @property {Boolean}userAllowedReco to enable the Woosmap Recommendation. Default/unset equal to false (GDPR compliant). if set to true, a cookie of Woosmap userId will be set on the user device and recommended store will be store in LocalStorage
  * @property {GoogleConf}google Google ids parameters
  * @property {UrlsConf}urls To open store(s) website(s)
