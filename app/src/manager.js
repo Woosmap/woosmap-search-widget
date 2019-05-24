@@ -25,10 +25,10 @@ function Manager(plugin, config) {
 
 
 /**
- * Reads the store from the localStorage.
+ * Reads the store from the sessionStorage.
  */
-Manager.prototype.getStoreFromLocalStorage = function () {
-    return JSON.parse(window.localStorage.getItem(this.config.options.woosmapKey));
+Manager.prototype.getStoreFromSessionStorage = function () {
+    return JSON.parse(window.sessionStorage.getItem(this.config.options.woosmapKey));
 };
 
 /**
@@ -36,22 +36,37 @@ Manager.prototype.getStoreFromLocalStorage = function () {
  * @param {*} store
  */
 Manager.prototype.saveStoreToLocalStorage = function (store) {
-    window.localStorage.setItem(this.config.options.woosmapKey, JSON.stringify(store));
+    if (typeof window.localStorage !== 'undefined') {
+        window.localStorage.setItem(this.config.options.woosmapKey, JSON.stringify(store));
+    }
+};
+
+/**
+ * Writes the store to the sessionStorage.
+ * @param {*} store
+ */
+Manager.prototype.saveStoreToSessionStorage = function (store) {
+    if (typeof window.sessionStorage !== 'undefined') {
+        window.sessionStorage.setItem(this.config.options.woosmapKey, JSON.stringify(store));
+    }
 };
 
 /**
  * initialRecommendation
  */
 Manager.prototype.initialRecommendation = function () {
-    if (typeof window.localStorage !== 'undefined') {
-        var savedFavoritedStore = this.getStoreFromLocalStorage();
+    if (typeof window.sessionStorage !== 'undefined') {
+        var savedFavoritedStore = this.getStoreFromSessionStorage();
         if (savedFavoritedStore !== null) {
             if (this.config.options.omitUIReco === true) {
                 this.plugin.ui.showSearchPanel();
+            } else if (Object.keys(savedFavoritedStore).length === 0) {
+                this.plugin.ui.buildHTMLFindMyStore();
             } else {
                 this.plugin.ui.buildHTMLInitialReco(savedFavoritedStore);
+
             }
-            if (this.plugin.callbackInitialRecommendedStore instanceof Function) {
+            if (this.plugin.callbackInitialRecommendedStore instanceof Function && Object.keys(savedFavoritedStore).length !== 0) {
                 this.plugin.callbackInitialRecommendedStore(savedFavoritedStore);
             }
         } else if (this.config.options.userAllowedReco === true) {
@@ -80,13 +95,13 @@ Manager.prototype.getUserRecommendation = function () {
                 } else {
                     self.plugin.ui.buildHTMLInitialReco(stores[0]);
                 }
-                if (typeof window.localStorage !== 'undefined') {
-                    self.saveStoreToLocalStorage(stores[0]);
-                }
+                self.saveStoreToLocalStorage(stores[0]);
+                self.saveStoreToSessionStorage(stores[0]);
                 if (self.plugin.callbackInitialRecommendedStore instanceof Function) {
                     self.plugin.callbackInitialRecommendedStore(stores[0]);
                 }
             } else {
+                self.saveStoreToSessionStorage({});
                 if (self.config.options.omitUIReco === true) {
                     self.plugin.ui.showSearchPanel();
                 } else {
@@ -197,6 +212,7 @@ Manager.prototype.selectStoreFromStoreId = function (store_id, successCallback, 
             var stores = jsonData.features;
             if (stores.length > 0) {
                 this.saveStoreToLocalStorage(stores[0]);
+                this.saveStoreToSessionStorage(stores[0]);
                 this.plugin.ui.buildHTMLInitialReco(stores[0]);
                 if (successCallback !== undefined) {
                     successCallback(stores[0]);
