@@ -25,6 +25,13 @@ function Manager(plugin, config) {
 
 
 /**
+ * Reads the store from the localStorage.
+ */
+Manager.prototype.getStoreFromLocalStorage = function () {
+    return JSON.parse(window.localStorage.getItem(this.config.options.woosmapKey));
+};
+
+/**
  * Reads the store from the sessionStorage.
  */
 Manager.prototype.getStoreFromSessionStorage = function () {
@@ -55,8 +62,9 @@ Manager.prototype.saveStoreToSessionStorage = function (store) {
  * initialRecommendation
  */
 Manager.prototype.initialRecommendation = function () {
-    if (typeof window.sessionStorage !== 'undefined') {
+    if (typeof window.sessionStorage !== 'undefined' && typeof window.localStorage !== 'undefined') {
         var savedFavoritedStore = this.getStoreFromSessionStorage();
+        var savedFavoritedStoreWithoutReco = this.getStoreFromLocalStorage();
         if (savedFavoritedStore !== null) {
             if (this.config.options.omitUIReco === true) {
                 this.plugin.ui.showSearchPanel();
@@ -64,13 +72,21 @@ Manager.prototype.initialRecommendation = function () {
                 this.plugin.ui.buildHTMLFindMyStore();
             } else {
                 this.plugin.ui.buildHTMLInitialReco(savedFavoritedStore);
-
             }
             if (this.plugin.callbackInitialRecommendedStore instanceof Function && Object.keys(savedFavoritedStore).length !== 0) {
                 this.plugin.callbackInitialRecommendedStore(savedFavoritedStore);
             }
         } else if (this.config.options.userAllowedReco === true) {
             this.getUserRecommendation();
+        } else if (savedFavoritedStoreWithoutReco !== null) {
+            if (this.config.options.omitUIReco === true) {
+                this.plugin.ui.showSearchPanel();
+            } else {
+                this.plugin.ui.buildHTMLInitialReco(savedFavoritedStoreWithoutReco);
+            }
+            if (this.plugin.callbackInitialRecommendedStore instanceof Function) {
+                this.plugin.callbackInitialRecommendedStore(savedFavoritedStoreWithoutReco);
+            }
         }
     } else if (this.config.options.userAllowedReco === true) {
         this.getUserRecommendation();
@@ -85,9 +101,6 @@ Manager.prototype.getUserRecommendation = function () {
     var self = this;
     woosmapRecommendation.getUserRecommendation({
         successCallback: function (response) {
-            if (CONSTANT.debug) {
-                console.error(response);
-            }
             if (response && response.features && response.features.length > 0) {
                 var stores = response.features;
                 if (self.config.options.omitUIReco === true) {
