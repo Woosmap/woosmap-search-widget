@@ -1,5 +1,4 @@
 var updateStores = require('./stores.js');
-var CONSTANT = require('./constants.js');
 var network = require('./network');
 
 /**
