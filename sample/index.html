@@ -52,8 +52,6 @@
             console.log('Address Bar Click');
         });
         console.log('ready');
-
-        recoPlugin.allowUserReco();
     };
 
     var callbackOnErrorHTML5Location = function (error) {
@@ -91,6 +89,7 @@
         callbackOnErrorHTML5Location: callbackOnErrorHTML5Location,
         callbackDOMWidgetReady: callbackDOMWidgetReady,
         usePlaces: true,
+        userAllowedReco: true,
         lang: 'en',
         translations: {
             en: {
