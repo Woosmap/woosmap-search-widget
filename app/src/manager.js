@@ -1,5 +1,4 @@
 var updateStores = require('./stores.js');
-var CONSTANT = require('./constants.js');
 var network = require('./network');
 
 /**
@@ -32,26 +31,57 @@ Manager.prototype.getStoreFromLocalStorage = function () {
 };
 
 /**
+ * Reads the store from the sessionStorage.
+ */
+Manager.prototype.getStoreFromSessionStorage = function () {
+    return JSON.parse(window.sessionStorage.getItem(this.config.options.woosmapKey));
+};
+
+/**
  * Writes the store to the localStorage.
  * @param {*} store
  */
 Manager.prototype.saveStoreToLocalStorage = function (store) {
-    window.localStorage.setItem(this.config.options.woosmapKey, JSON.stringify(store));
+    if (typeof window.localStorage !== 'undefined') {
+        window.localStorage.setItem(this.config.options.woosmapKey, JSON.stringify(store));
+    }
+};
+
+/**
+ * Writes the store to the sessionStorage.
+ * @param {*} store
+ */
+Manager.prototype.saveStoreToSessionStorage = function (store) {
+    if (typeof window.sessionStorage !== 'undefined') {
+        window.sessionStorage.setItem(this.config.options.woosmapKey, JSON.stringify(store));
+    }
 };
 
 /**
  * initialRecommendation
  */
 Manager.prototype.initialRecommendation = function () {
-    if (typeof window.localStorage !== 'undefined') {
-        var savedFavoritedStore = this.getStoreFromLocalStorage();
-        if (savedFavoritedStore !== null) {
+    if (typeof window.sessionStorage !== 'undefined' && typeof window.localStorage !== 'undefined') {
+        var savedFavoritedStoreWithoutReco = this.getStoreFromLocalStorage();
+        var savedFavoritedStore = this.getStoreFromSessionStorage();
+        if (savedFavoritedStoreWithoutReco !== null) {
             if (this.config.options.omitUIReco === true) {
                 this.plugin.ui.showSearchPanel();
             } else {
-                this.plugin.ui.buildHTMLInitialReco(savedFavoritedStore);
+                this.plugin.ui.buildHTMLInitialReco(savedFavoritedStoreWithoutReco);
             }
             if (this.plugin.callbackInitialRecommendedStore instanceof Function) {
+                this.plugin.callbackInitialRecommendedStore(savedFavoritedStoreWithoutReco);
+            }
+        } else if (savedFavoritedStore !== null) {
+            if (this.config.options.omitUIReco === true) {
+                this.plugin.ui.showSearchPanel();
+            } else if (Object.keys(savedFavoritedStore).length === 0) {
+                this.plugin.ui.buildHTMLFindMyStore();
+            } else {
+                this.plugin.ui.buildHTMLInitialReco(savedFavoritedStore);
+            }
+            if (this.plugin.callbackInitialRecommendedStore instanceof Function && Object.keys(savedFavoritedStore).length !== 0) {
                 this.plugin.callbackInitialRecommendedStore(savedFavoritedStore);
             }
         } else if (this.config.options.userAllowedReco === true) {
@@ -70,9 +100,6 @@ Manager.prototype.getUserRecommendation = function () {
     var self = this;
     woosmapRecommendation.getUserRecommendation({
         successCallback: function (response) {
-            if (CONSTANT.debug) {
-                console.error(response);
-            }
             if (response && response.features && response.features.length > 0) {
                 var stores = response.features;
                 if (self.config.options.omitUIReco === true) {
@@ -80,13 +107,12 @@ Manager.prototype.getUserRecommendation = function () {
                 } else {
                     self.plugin.ui.buildHTMLInitialReco(stores[0]);
                 }
-                if (typeof window.localStorage !== 'undefined') {
-                    self.saveStoreToLocalStorage(stores[0]);
-                }
+                self.saveStoreToSessionStorage(stores[0]);
                 if (self.plugin.callbackInitialRecommendedStore instanceof Function) {
                     self.plugin.callbackInitialRecommendedStore(stores[0]);
                 }
             } else {
+                self.saveStoreToSessionStorage({});
                 if (self.config.options.omitUIReco === true) {
                     self.plugin.ui.showSearchPanel();
                 } else {

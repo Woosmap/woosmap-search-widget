@@ -101,7 +101,7 @@ RecommendationPlugin.prototype._getRecommendationScript = function (callback) {
 
 /**
  * To enable the Woosmap Automatic Recommendation.
- * If called, a cookie of Woosmap userId will be set on the user device and recommended store will be store in LocalStorage.
+ * If called, a cookie of Woosmap userId will be set on the user device and recommended store will be store in SessionStorage.
  * It loads `recommendation.js` file (or not if already loaded). No need to call it if `userAllowedReco : true` is already defined in the RecommendationPluginConf
  */
 RecommendationPlugin.prototype.allowUserReco = function () {
