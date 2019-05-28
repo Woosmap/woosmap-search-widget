@@ -448,7 +448,6 @@ UI.prototype.buildHTMLStore = function (store) {
             this.plugin.callbackUserSelectedStore(store);
         }
         this.plugin.manager.saveStoreToLocalStorage(store);
-        this.plugin.manager.saveStoreToSessionStorage(store);
         if (this.config.options.userAllowedReco === true) {
             woosmapRecommendation.sendUserFavoritedPOI({
                 lat: lat, lng: lng, id: store.properties.store_id,

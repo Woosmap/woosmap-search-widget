@@ -62,9 +62,18 @@ Manager.prototype.saveStoreToSessionStorage = function (store) {
  */
 Manager.prototype.initialRecommendation = function () {
     if (typeof window.sessionStorage !== 'undefined' && typeof window.localStorage !== 'undefined') {
-        var savedFavoritedStore = this.getStoreFromSessionStorage();
         var savedFavoritedStoreWithoutReco = this.getStoreFromLocalStorage();
-        if (savedFavoritedStore !== null) {
+        var savedFavoritedStore = this.getStoreFromSessionStorage();
+        if (savedFavoritedStoreWithoutReco !== null) {
+            if (this.config.options.omitUIReco === true) {
+                this.plugin.ui.showSearchPanel();
+            } else {
+                this.plugin.ui.buildHTMLInitialReco(savedFavoritedStoreWithoutReco);
+            }
+            if (this.plugin.callbackInitialRecommendedStore instanceof Function) {
+                this.plugin.callbackInitialRecommendedStore(savedFavoritedStoreWithoutReco);
+            }
+        } else if (savedFavoritedStore !== null) {
             if (this.config.options.omitUIReco === true) {
                 this.plugin.ui.showSearchPanel();
             } else if (Object.keys(savedFavoritedStore).length === 0) {
@@ -77,15 +86,6 @@ Manager.prototype.initialRecommendation = function () {
             }
         } else if (this.config.options.userAllowedReco === true) {
             this.getUserRecommendation();
-        } else if (savedFavoritedStoreWithoutReco !== null) {
-            if (this.config.options.omitUIReco === true) {
-                this.plugin.ui.showSearchPanel();
-            } else {
-                this.plugin.ui.buildHTMLInitialReco(savedFavoritedStoreWithoutReco);
-            }
-            if (this.plugin.callbackInitialRecommendedStore instanceof Function) {
-                this.plugin.callbackInitialRecommendedStore(savedFavoritedStoreWithoutReco);
-            }
         }
     } else if (this.config.options.userAllowedReco === true) {
         this.getUserRecommendation();
@@ -107,7 +107,6 @@ Manager.prototype.getUserRecommendation = function () {
                 } else {
                     self.plugin.ui.buildHTMLInitialReco(stores[0]);
                 }
-                self.saveStoreToLocalStorage(stores[0]);
                 self.saveStoreToSessionStorage(stores[0]);
                 if (self.plugin.callbackInitialRecommendedStore instanceof Function) {
                     self.plugin.callbackInitialRecommendedStore(stores[0]);
@@ -224,7 +223,6 @@ Manager.prototype.selectStoreFromStoreId = function (store_id, successCallback, 
             var stores = jsonData.features;
             if (stores.length > 0) {
                 this.saveStoreToLocalStorage(stores[0]);
-                this.saveStoreToSessionStorage(stores[0]);
                 this.plugin.ui.buildHTMLInitialReco(stores[0]);
                 if (successCallback !== undefined) {
                     successCallback(stores[0]);
