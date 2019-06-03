@@ -15,7 +15,7 @@ function LocalitiesLocation(container, plugin, config) {
 
     this.buildHTML();
     var getScriptCallback = function () {
-        this.localitiesService = new AutocompleteService();
+        this.localitiesService = new AutocompleteService(config.woosmapKey);
     };
 
     this.getScript(config.options.autocompleteLocalities.url, getScriptCallback.bind(this));
