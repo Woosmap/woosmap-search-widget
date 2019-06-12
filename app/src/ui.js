@@ -40,8 +40,7 @@ function UI(container, usePlaces, plugin, config) {
 
     if (usePlaces) {
         this._searchManager = new PlacesLocation(this.panelContainerSearch, this.plugin, this.config);
-    }
-    else {
+    } else {
         this._searchManager = new GeocodingLocation(this.panelContainerSearch, this.plugin, this.config);
     }
 
@@ -448,9 +447,7 @@ UI.prototype.buildHTMLStore = function (store) {
         if (this.plugin.callbackUserSelectedStore instanceof Function) {
             this.plugin.callbackUserSelectedStore(store);
         }
-        if (typeof window.localStorage !== 'undefined') {
-            window.localStorage.setItem(this.config.options.woosmapKey, JSON.stringify(store));
-        }
+        this.plugin.manager.saveStoreToLocalStorage(store);
         if (this.config.options.userAllowedReco === true) {
             woosmapRecommendation.sendUserFavoritedPOI({
                 lat: lat, lng: lng, id: store.properties.store_id,
