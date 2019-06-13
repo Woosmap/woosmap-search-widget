@@ -66,68 +66,70 @@ LocalitiesLocation.prototype.buildHTML = function () {
 
     // handle the key events on the input to trigger a search or navigate in the results list
     this.container.querySelector('input').addEventListener('keyup', function (event) {
-        var selectedItemClass = 'gr-wgs-pac-item-selected';
-        var selectedItem = self.containerResultsList.querySelector('.gr-wgs-pac-item-selected');
-        var firstItem = self.containerResultsList.querySelector('.gr-wgs-pac-item');
-        var lastItem = self.containerResultsList.querySelector('.gr-wgs-pac-item:last-child');
-        var minLength = 1;
+        // Exclude keyLeft (37) and keyRight (39)
+        if (event.keyCode !== 37 && event.keyCode !== 39) {
+            var selectedItemClass = 'gr-wgs-pac-item-selected';
+            var selectedItem = self.containerResultsList.querySelector('.gr-wgs-pac-item-selected');
+            var firstItem = self.containerResultsList.querySelector('.gr-wgs-pac-item');
+            var lastItem = self.containerResultsList.querySelector('.gr-wgs-pac-item:last-child');
+            var minLength = 1;
 
-        // key enter
-        if (event.keyCode === 13) {
-            var clickEvent = document.createEvent('MouseEvents');
+            // key enter
+            if (event.keyCode === 13) {
+                var clickEvent = document.createEvent('MouseEvents');
 
-            clickEvent.initEvent("click", true, true);
+                clickEvent.initEvent("click", true, true);
 
-            if (selectedItem !== null) {
-                selectedItem.dispatchEvent(clickEvent);
-            } else {
-                if (event.currentTarget.value.length >= minLength) {
+                if (selectedItem !== null) {
+                    selectedItem.dispatchEvent(clickEvent);
+                } else if (event.currentTarget.value.length >= minLength) {
                     self.getQueryPredictions(event.target.value);
                 }
             }
-        }
 
-        // key up
-        else if (event.keyCode === 38) {
-            if (selectedItem) {
-                var previousSibling = selectedItem.previousElementSibling;
+            // key up
+            else if (event.keyCode === 38) {
+                if (selectedItem) {
+                    var previousSibling = selectedItem.previousElementSibling;
 
-                selectedItem.classList.remove(selectedItemClass);
+                    selectedItem.classList.remove(selectedItemClass);
 
-                if (previousSibling === null) {
+                    if (previousSibling === null) {
+                        lastItem.classList.add(selectedItemClass);
+                    } else {
+                        previousSibling.classList.add(selectedItemClass);
+                    }
+                } else if (lastItem !== null) {
                     lastItem.classList.add(selectedItemClass);
-                } else {
-                    previousSibling.classList.add(selectedItemClass);
                 }
-            } else if (lastItem !== null) {
-                lastItem.classList.add(selectedItemClass);
             }
-        }
 
-        // key down
-        else if (event.keyCode === 40) {
-            if (selectedItem) {
-                var nextSibling = selectedItem.nextElementSibling;
+            // key down
+            else if (event.keyCode === 40) {
+                if (selectedItem) {
+                    var nextSibling = selectedItem.nextElementSibling;
 
-                selectedItem.classList.remove(selectedItemClass);
+                    selectedItem.classList.remove(selectedItemClass);
 
-                if (nextSibling === null) {
+                    if (nextSibling === null) {
+                        firstItem.classList.add(selectedItemClass);
+                    } else {
+                        nextSibling.classList.add(selectedItemClass);
+                    }
+                } else if (firstItem !== null) {
                     firstItem.classList.add(selectedItemClass);
-                } else {
-                    nextSibling.classList.add(selectedItemClass);
                 }
-            } else if (firstItem !== null) {
-                firstItem.classList.add(selectedItemClass);
+
+            } else if (event.currentTarget.value.length >= minLength) {
+                self.getQueryPredictions(event.target.value);
             }
-        } else if (event.currentTarget.value.length >= minLength) {
-            self.getQueryPredictions(event.target.value);
-        }
 
 
-        if (event.currentTarget.value.length === 0) {
-            self.clearPanel();
-        } else {
-            self.plugin.ui.showResetBtn();
+            if (event.currentTarget.value.length === 0) {
+                self.clearPanel();
+            } else {
+                self.plugin.ui.showResetBtn();
+            }
         }
     }.bind(this));
 
