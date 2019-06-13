@@ -57,7 +57,7 @@ LocalitiesLocation.prototype.buildHTML = function () {
         '<div class="gr-wgs-homestore-panel-address-reset"></div>' +
         '<div class="gr-wgs-homestore-panel-address-loader"></div>' +
         '</div>' +
-        '<div class= "gr-wgs-homestore-panel-address-results gr-wgs-pac-container"></div>';
+        '<div class= "gr-wgs-homestore-panel-address-results gr-wgs-pac-container localities"></div>';
 
     this.container.insertAdjacentHTML('beforeend', template);
     this.containerResultsList = this.container.querySelector('.gr-wgs-homestore-panel-address-results');
