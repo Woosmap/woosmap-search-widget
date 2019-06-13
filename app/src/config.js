@@ -341,16 +341,14 @@ Config.prototype.checkConfig = function (options) {
     /**
      * check usePlaces
      */
-    if (typeof options.usePlaces !== 'undefined') {
-        if (typeof options.usePlaces !== 'boolean')
+    if (typeof options.usePlaces !== 'undefined' && typeof options.usePlaces !== 'boolean') {
             throw new Error("usePlaces must be a boolean");
     }
 
     /**
      * check useLocalities
      */
-    if (typeof options.useLocalities !== 'undefined') {
-        if (typeof options.useLocalities !== 'boolean')
+    if (typeof options.useLocalities !== 'undefined' && typeof options.useLocalities !== 'boolean') {
             throw new Error("useLocalities must be a boolean");
     }
 

@@ -212,7 +212,7 @@ LocalitiesLocation.prototype.getQueryPredictions = function (request) {
 
     var localitiesCallback = function (results) {
         if (results.localities.length === 1) {
-            this.container.querySelector('.gr-wgs-homestore-panel-address-input').value = results[0].description;
+            this.container.querySelector('.gr-wgs-homestore-panel-address-input').value = results.localities[0].description;
 
             var coords = results.localities[0].location;
 
