@@ -77,13 +77,11 @@ LocalitiesLocation.prototype.buildHTML = function () {
             // key enter
             if (event.keyCode === 13) {
                 var clickEvent = document.createEvent('MouseEvents');
-
                 clickEvent.initEvent("click", true, true);
-
                 if (selectedItem !== null) {
                     selectedItem.dispatchEvent(clickEvent);
-                } else if (event.currentTarget.value.length >= minLength) {
-                    self.getQueryPredictions(event.target.value);
+                } else if (firstItem !== null) {
+                    firstItem.dispatchEvent(clickEvent);
                 }
             }
 
@@ -215,7 +213,6 @@ LocalitiesLocation.prototype.getQueryPredictions = function (request) {
     var localitiesCallback = function (results) {
         if (results.localities.length === 1) {
             this.container.querySelector('.gr-wgs-homestore-panel-address-input').value = results.localities[0].description;
-
             var coords = results.localities[0].location;
 
             this.askForStoresRecommendation(coords.lat, coords.lng);
