@@ -204,10 +204,10 @@ LocalitiesLocation.prototype.askForStoresRecommendation = function (lat, lng) {
 LocalitiesLocation.prototype.getQueryPredictions = function (request) {
     var params = {
         input: request,
-        // componentRestrictions: this.config.options.autocompleteLocalities.componentRestrictions,
         components: this.config.options.autocompleteLocalities.componentRestrictions,
         types: this.config.options.autocompleteLocalities.types,
-        language: this.config.options.autocompleteLocalities.language
+        language: this.config.options.autocompleteLocalities.language,
+        data: this.config.options.autocompleteLocalities.data
     };
 
     var localitiesCallback = function (results) {
