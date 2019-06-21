@@ -74,7 +74,7 @@ function Config(options) {
         },
         useLocalities: false,
         autocompleteLocalities: {
-            url: 'https://sdk.woosmap.com/localities/woosmap-localitites.js',
+            url: 'https://sdk.woosmap.com/localities/localities.js',
             componentRestrictions: {
                 country: []
             },

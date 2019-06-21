@@ -1,4 +1,3 @@
-/* global AutocompleteService */
 /**
  * LocalitiesLocation
  * @param container
@@ -14,11 +13,10 @@ function LocalitiesLocation(container, plugin, config) {
     this.localitiesService = null;
 
     this.buildHTML();
-    var getScriptCallback = function () {
-        this.localitiesService = new AutocompleteService(config.woosmapKey);
-    };
 
-    this.getScript(config.options.autocompleteLocalities.url, getScriptCallback.bind(this));
+    this.getScript(config.options.autocompleteLocalities.url, function () {
+        this.localitiesService = new window.woosmap.localities.AutocompleteService(config.options.woosmapKey);
+    }.bind(this));
 }
 
 LocalitiesLocation.prototype.getScript = function (scriptUrl, callback) {
