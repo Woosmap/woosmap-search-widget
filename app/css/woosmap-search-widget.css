@@ -412,6 +412,10 @@
     background-image: url(//maps.gstatic.com/mapfiles/api-3/images/powered-by-google-on-white3_hdpi.png)
 }
 
+.localities.gr-wgs-pac-container:after {
+    background-image: none;
+}
+
 .gr-wgs-pac-item {
     cursor: default;
     padding: 0 4px;
