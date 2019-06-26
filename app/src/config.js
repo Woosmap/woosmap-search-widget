@@ -79,7 +79,8 @@ function Config(options) {
                 country: []
             },
             types: '',
-            language: ''
+            language: '',
+            data: 'standard'
         },
         geocoder: {
             region: 'fr'
