@@ -102,6 +102,13 @@ RecommendationPlugin.prototype.allowUserReco = function () {
     this.config.options.userAllowedReco = true;
     this._getRecommendationScript(function () {
         woosmapRecommendation.setProjectKey(this.config.options.woosmapKey);
+        woosmapRecommendation.getConsent(function (consent) {
+            if (consent === false) {
+                woosmapRecommendation.optIn();
+            }
+            this.config.options.userAllowedReco = true;
+            this.manager.initialRecommendation();
+        }.bind(this));
         this.manager.initialRecommendation();
     }.bind(this));
 };
