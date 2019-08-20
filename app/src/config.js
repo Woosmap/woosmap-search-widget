@@ -80,7 +80,8 @@ function Config(options) {
             },
             types: '',
             language: '',
-            data: 'standard'
+            data: 'standard',
+            minLength: 3
         },
         geocoder: {
             region: 'fr'
