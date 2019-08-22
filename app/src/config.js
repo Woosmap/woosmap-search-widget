@@ -88,7 +88,7 @@ function Config(options) {
         },
         woosmap: {
             apiUrl: 'https://api.woosmap.com/stores/search',
-            recoScriptUrl: 'https://recommendation-js.woosmap.com/recommendation.js',
+            recoScriptUrl: 'https://sdk.woosmap.com/recommendation/recommendation.js',
             query: '',
             limit: 5,
             maxDistance: 0
