@@ -59,7 +59,7 @@
  * @property {UrlsConf}urls To open store(s) website(s)
  * @property {Boolean}usePlaces To enable places autocomplete search
  * @property {Boolean}useLocalities To enable autocompleteLocalities autocomplete search
- * @property {autocompleteLocalitiesConf}autocompleteLocalities Localities Specifications
+ * @property {AutocompleteLocalitiesConf}autocompleteLocalities Localities Specifications
  * @property {AutocompletePlacesConf}autocompletePlaces Autocomplete Places Specification.
  * @property {GeocoderConf}geocoder Geocoder Specification
  * @property {WoosmapConf}woosmap Woosmap search specification.
@@ -151,32 +151,33 @@
  *   }
  *}
  *```
- * @property {int}minLength The minimum number of characters a user must type before the search is performed.
- * @property {Array<String>}types types of predictions to be returned. For a list of supported types.
+ * @property {int} minLength The minimum number of characters a user must type before the search is performed (default is 1).
+ * @property {Array<String>} types types of predictions to be returned. For a list of supported types.
  * See: [supported types](https://developers.google.com/places/supported_types#table3)
- * @property {String}channel used for Google API Usage reports
- * @property {String}componentRestrictions Geocoding Component Restriction to restrict the autocomplete search to a particular country.
- * * See: [Autocomplete for Addresses and Search support](https://developers.google.com/maps/documentation/javascript/places-autocomplete)
+ * @property {String} channel used for Google API Usage reports
+ * @property {String} componentRestrictions Geocoding Component Restriction to restrict the autocomplete search to a particular country.
+ * See: [Autocomplete for Addresses and Search support](https://developers.google.com/maps/documentation/javascript/places-autocomplete)
  */
 
 
 /**
- * @tyepdef {Object} autocompleteLocalitiesConf
- * @example autocompleteLocalitiesConf Example
- * @property {Array<LocalitiesTypes>|LocalitiesTypes} [types] The types of predictions to be returned
- * @property {LocalitiesComponentRestrictions} [componentRestrictions] The component restrictions. Component restrictions are used to restrict predictions to only those within the parent component. For example, the country.
- * @property {String} language The language code, indicating in which language the results should be returned, if possible. Searches are also biased to the selected language; results in the selected language may be given a higher ranking. If language is not supplied, the Localities service will use the default language of each country. No language necessary for postal_code request.
- * @example LocalitiesConf Example
+ * @typedef {Object} AutocompleteLocalitiesConf
+ * @example AutocompleteLocalitiesConf Example
  *
  * ```js
  * {
+ *     minLength: 3
+ *     types: ["locality"],
  *     language: "fr",
  *     componentRestrictions: {
  *         country: ["be", "fr"]
  *     },
- *     types: ["locality"]
  * }
  * ```
+ * @property {int} [minLength] The minimum number of characters a user must type before the search is performed (default is 3).
+ * @property {Array<LocalitiesTypes>|LocalitiesTypes} [types] The types of predictions to be returned
+ * @property {String} language The language code, indicating in which language the results should be returned, if possible. Searches are also biased to the selected language; results in the selected language may be given a higher ranking. If language is not supplied, the Localities service will use the default language of each country. No language necessary for postal_code request.
+ * @property {LocalitiesComponentRestrictions} [componentRestrictions] The component restrictions. Component restrictions are used to restrict predictions to only those within the parent component. For example, the country.
  */
 
 
