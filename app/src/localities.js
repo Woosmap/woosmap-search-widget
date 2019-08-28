@@ -208,21 +208,19 @@ LocalitiesLocation.prototype.getQueryPredictions = function (request) {
         data: this.config.options.autocompleteLocalities.data
     };
 
-    if (request.length >= this.config.options.autocompleteLocalities.minLength) {
-        var localitiesCallback = function (results) {
-            if (results.localities.length === 1) {
-                this.container.querySelector('.gr-wgs-homestore-panel-address-input').value = results.localities[0].description;
-                var coords = results.localities[0].location;
+    var localitiesCallback = function (results) {
+        if (results.localities.length === 1) {
+            this.container.querySelector('.gr-wgs-homestore-panel-address-input').value = results.localities[0].description;
+            var coords = results.localities[0].location;
 
-                this.askForStoresRecommendation(coords.lat, coords.lng);
-                this.buildHTMLResults([]);
-            } else {
-                this.buildHTMLResults(results.localities);
-            }
-        };
+            this.askForStoresRecommendation(coords.lat, coords.lng);
+            this.buildHTMLResults([]);
+        } else {
+            this.buildHTMLResults(results.localities);
+        }
+    };
 
-        this.localitiesService.getQueryPredictions(params, localitiesCallback.bind(this));
-    }
+    this.localitiesService.getQueryPredictions(params, localitiesCallback.bind(this));
 };
 
 module.exports = LocalitiesLocation;
