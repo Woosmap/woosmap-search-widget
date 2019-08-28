@@ -80,15 +80,14 @@ function Config(options) {
             },
             types: '',
             language: '',
-            data: 'standard',
-            minLength: 3
+            data: 'standard'
         },
         geocoder: {
             region: 'fr'
         },
         woosmap: {
             apiUrl: 'https://api.woosmap.com/stores/search',
-            recoScriptUrl: 'https://sdk.woosmap.com/recommendation/recommendation.js',
+            recoScriptUrl: 'https://recommendation-js.woosmap.com/recommendation.js',
             query: '',
             limit: 5,
             maxDistance: 0
