@@ -166,7 +166,7 @@
  *
  * ```js
  * {
- *     minLength: 3
+ *     minLength: 3,
  *     types: ["locality"],
  *     language: "fr",
  *     componentRestrictions: {
