@@ -24,16 +24,23 @@
 </head>
 <body>
 <!-- WOOSMAP SEARCH WIDGET -->
+    <button onclick="allowReco()">Allow Reco</button>
+
 <div id="wrapper">
     <div id="woosmap-search-widget-container"></div>
 </div>
+
 <script>
     var recoPlugin = null;
 
+    var allowReco = function () {
+        recoPlugin.allowUserReco();
+    };
     var callbackInitialRecommendedStore = function (store) {
         //called when an Initial Recommended Store is Found
         console.log('callbackInitialRecommendedStore', store);
     };
+
     var callbackUserSelectedStore = function (store) {
         //called When a User Select a Store after a Geocoding Search
         console.log(store)
@@ -89,7 +96,17 @@
         callbackOnErrorHTML5Location: callbackOnErrorHTML5Location,
         callbackDOMWidgetReady: callbackDOMWidgetReady,
         usePlaces: true,
-        userAllowedReco: true,
+        useLocalities: true,
+        autocompleteLocalities: {
+            componentRestrictions: {
+                country: ['FR']
+            },
+            types: 'locality',
+            language: 'FR',
+            data: 'advanced'
+        },
+        userAllowedReco: false,
+        useDistanceMatrix: false,
         lang: 'en',
         translations: {
             en: {
