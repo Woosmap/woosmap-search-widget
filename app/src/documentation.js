@@ -166,7 +166,7 @@
  *
  * ```js
  * {
- *     minLength: 3
+ *     minLength: 3,
  *     types: ["locality"],
  *     language: "fr",
  *     componentRestrictions: {
@@ -231,7 +231,7 @@
  *   }
  *}
  *```
- * @property {string}query Woosmap search query.
+ * @property {string}query Woosmap search querygi.
  * @property {int}limit Maximum stores to return. Max : 3.
  * @property {int}maxDistance represent a radius in meters to search within
  */
