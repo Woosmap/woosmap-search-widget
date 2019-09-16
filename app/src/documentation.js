@@ -231,7 +231,7 @@
  *   }
  *}
  *```
- * @property {string}query Woosmap search querygi.
+ * @property {string}query Woosmap search query.
  * @property {int}limit Maximum stores to return. Max : 3.
  * @property {int}maxDistance represent a radius in meters to search within
  */
