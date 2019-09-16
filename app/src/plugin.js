@@ -99,10 +99,15 @@ RecommendationPlugin.prototype._getRecommendationScript = function (callback) {
  * It loads `recommendation.js` file (or not if already loaded). No need to call it if `userAllowedReco : true` is already defined in the RecommendationPluginConf
  */
 RecommendationPlugin.prototype.allowUserReco = function () {
-    this.config.options.userAllowedReco = true;
     this._getRecommendationScript(function () {
         woosmapRecommendation.setProjectKey(this.config.options.woosmapKey);
-        this.manager.initialRecommendation();
+        woosmapRecommendation.getConsent(function (consent) {
+            if (consent === false) {
+                woosmapRecommendation.optIn();
+            }
+            this.config.options.userAllowedReco = true;
+            this.manager.initialRecommendation();
+        }.bind(this));
     }.bind(this));
 };
 
