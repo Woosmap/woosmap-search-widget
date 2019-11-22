@@ -112,7 +112,7 @@ RecommendationPlugin.prototype.allowUserReco = function () {
 };
 
 /**
- * Define the Widget store by its ID and callback `success(store)` - with the returned [store object](/products/data-api/samples/api-response/) as argument - or `error(errorText)` depending on the response.
+ * Define the Widget store by its ID and callback `success(store)` - with the returned [store object](https://developers.woosmap.com/products/data-api/samples/api-response/) as argument - or `error(errorText)` depending on the response.
  * @param {String} storeId
  * @param {Function} [success(store)]
  * @param {Function} [error(statusText]
