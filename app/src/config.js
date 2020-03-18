@@ -126,6 +126,7 @@ function Config(options) {
                 geolocationErrBlocked: 'La géolocalisation n\'est pas activée sur votre navigateur. Veuillez saisir une adresse pour rechercher les magasins à proximité.',
                 telephone: 'Tél :',
                 closeBtn: 'Fermer',
+                closedHours: "Fermé",
                 open24: "24h/24",
                 days: {
                     1: {
@@ -174,6 +175,7 @@ function Config(options) {
                 open24: "All Day",
                 openingHoursDay: "today: ",
                 openingHoursWeek: "opening hours: ",
+                closedHours: "Closed",
                 days: {
                     1: {
                         full: "Monday",
@@ -204,6 +206,12 @@ function Config(options) {
                         short: "Sun"
                     }
                 }
+            },
+            es: {
+                closedHours: "Cerrada"
+            },
+            ca: {
+                closedHours: "Tancada"
             }
         }
     };
