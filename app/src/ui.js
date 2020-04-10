@@ -300,9 +300,9 @@ UI.prototype.concatenateStoreHours = function (openHours) {
                 end = openHours[idx].end;
 
                 if (typeof this.config.options.display.h12 !== 'undefined' && this.config.options.display.h12) {
-                    hoursText += this.convertTo12Hrs(openHours[idx].start) + " - " + this.convertTo12Hrs(end);
+                    hoursText += this.convertTo12Hrs(openHours[idx].start) + "–" + this.convertTo12Hrs(end);
                 } else {
-                    hoursText += openHours[idx].start + " - " + end;
+                    hoursText += openHours[idx].start + "–" + end;
                 }
 
                 if (idx < openHours.length - 1) {
@@ -312,49 +312,72 @@ UI.prototype.concatenateStoreHours = function (openHours) {
         }
 
     }
-
     return hoursText;
 };
 
-UI.prototype.generateHoursLiArray = function (store) {
-    var self = this;
-    var usualHours = store.properties.opening_hours.usual;
-    var defaultHourText = this.concatenateStoreHours(usualHours["default"]);
 
-    var openingHoursArray = [];
+UI.prototype.getNextSixDays = function (store) {
+    var day = new Date();
+    var idDay = day.getDay();
+    var weeklyOpening = store.properties.weekly_opening;
+    var openingHours = store.properties.opening_hours;
+    var openingNextSixDays = {};
+    var specialDay = false;
 
-    var createLiHour = function (firstDay, lastDay, hourText) {
-        var daysText = self.config.L10n.days;
-
-        if (hourText === "") {
-            // nothing
-        } else if (firstDay === lastDay) {
-            openingHoursArray.push("<li>" + daysText[firstDay].full + ": " + hourText + "</li>");
+    while (Object.keys(openingNextSixDays).length < 6) {
+        if (day.getDay() === 0) {
+            while (Object.keys(openingNextSixDays).length < 6) {
+                day.setDate(day.getDate() + 1);
+                specialDay = false;
+                if (openingHours.special) {
+                    var utcmonth = day.getUTCMonth() + 1; //months from 1-12
+                    var utcday = day.getUTCDate();
+                    var utcyear = day.getUTCFullYear();
+                    var compareDate = utcyear + "-" + utcmonth + "-" + utcday;
+                    if (compareDate in openingHours.special) {
+                        specialDay = true;
+                        openingNextSixDays[this.config.L10n.days[day.getDay()].full] = openingHours.special[compareDate];
+                    }
+                }
+                if (specialDay === false) {
+                    if (day.getDay() in openingHours.usual) {
+                        openingNextSixDays[this.config.L10n.days[day.getDay()].full] = openingHours.usual[day.getDay()];
+                    } else if (openingHours.default) {
+                        openingNextSixDays[this.config.L10n.days[day.getDay()].full] = openingHours.default;
+                    } else {
+                        break;
+                    }
+                }
+            }
         } else {
-            openingHoursArray.push("<li>" + daysText[firstDay].short + "-" + daysText[lastDay].short + ": " + hourText + "</li>");
-        }
-    };
-
-    var firstDaySerie = 0;
-    var currentHoursText = "";
-    var previousHoursText = "";
-
-    for (var dayIndex = 1; dayIndex < 8; dayIndex++) {
-        currentHoursText = "";
-        if (dayIndex in usualHours) {
-            currentHoursText = this.concatenateStoreHours(usualHours[dayIndex]);
-        } else {
-            currentHoursText = defaultHourText;
-        }
-
-        if (currentHoursText !== previousHoursText) {
-            createLiHour(firstDaySerie, dayIndex - 1, previousHoursText);
-            firstDaySerie = dayIndex;
-            previousHoursText = currentHoursText;
+            day.setDate(day.getDate() + 1);
+            if (day.getDay() === 0) { //days from 0-6
+                idDay = 7;
+            } else {
+                idDay = day.getDay();
+            }
+            if (weeklyOpening) {
+                openingNextSixDays[this.config.L10n.days[idDay].full] = weeklyOpening[idDay].hours;
+            } else {
+                break;
+            }
         }
     }
+    return openingNextSixDays;
+};
 
-    createLiHour(firstDaySerie, 7, currentHoursText);
+
+UI.prototype.generateHoursLiArray = function (store) {
+    var openingHoursArray = [];
+    var nextSixDays = this.getNextSixDays(store);
+
+    for (var day in nextSixDays) {
+        if (nextSixDays[day].length === 0) {
+            openingHoursArray.push("<li>" + day + " : " + this.config.L10n.closedHours + "</li>");
+        } else {
+            openingHoursArray.push("<li>" + day + " : " + this.concatenateStoreHours(nextSixDays[day]) + "</li>");
+        }
+    }
 
     return openingHoursArray;
 };

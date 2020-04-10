@@ -24,7 +24,7 @@
 </head>
 <body>
 <!-- WOOSMAP SEARCH WIDGET -->
-    <button onclick="allowReco()">Allow Reco</button>
+<button onclick="allowReco()">Allow Reco</button>
 
 <div id="wrapper">
     <div id="woosmap-search-widget-container"></div>
@@ -82,7 +82,7 @@
         }
     };
     var widgetOptions = {
-        woosmapKey: 'woos-0c78592f-13ea-362b-aa07-ba4ba9ea3dae',
+        woosmapKey: 'woos-8a99af76-4b44-3105-8fe6-a8148eb40350',
         google: {
             key: 'AIzaSyCOtRab6Lh2pNn7gYxvAqN5leETC24OXYQ'
         },
@@ -99,15 +99,15 @@
         useLocalities: true,
         autocompleteLocalities: {
             componentRestrictions: {
-                country: ['FR']
+                country: ['ES']
             },
             types: 'locality',
-            language: 'FR',
+            language: 'ES',
             data: 'advanced'
         },
         userAllowedReco: false,
         useDistanceMatrix: false,
-        lang: 'en',
+        lang: 'es',
         translations: {
             en: {
                 searchAroundMeBtn: 'Around Me',
@@ -124,6 +124,7 @@
                 open24: "All Day",
                 openingHoursDay: "today: ",
                 openingHoursWeek: "opening hours: ",
+                closedHours: "sdfsf",
                 days: {
                     1: {
                         full: "Monday",
@@ -152,6 +153,54 @@
                     7: {
                         full: "Sunday",
                         short: "Sun"
+                    }
+                }
+            },
+            es: {
+                "searchAroundMeBtn": "Cerca de ti",
+                "searchAroundMeTitle": "Clínica Dental Adeslas más cercana",
+                "selectAroundMeTitle": "Selecciona tu Clínica:",
+                "autocompletePlaceholder": "Introduce CP, Dirección...",
+                "allStores": "Todas las Clínicas",
+                "changeStore": "Clínica Dental Adeslas más cercana",
+                "findStore": "Selecciona tu Clínica",
+                "geolocationNotice": "Geolocalización no autorizada.",
+                "geolocationErrHttps": "Geolocalización funciona mediante HTTPS",
+                "geolocationErrBlocked": "Geolocalización bloqueada desde el navegador",
+                "closeBtn": "Cerrar",
+                "selectStore": "Añadir favoritos",
+                "telephone": "Tel:",
+                "open24": "todo el día",
+                "openingHoursDay": "Hoy",
+                "openingHoursWeek": "Demás días",
+                "days": {
+                    "1": {
+                        "full": "Lunes",
+                        "short": "Lu."
+                    },
+                    "2": {
+                        "full": "Martes",
+                        "short": "Ma."
+                    },
+                    "3": {
+                        "full": "Miércoles",
+                        "short": "Mi."
+                    },
+                    "4": {
+                        "full": "Jueves",
+                        "short": "Ju."
+                    },
+                    "5": {
+                        "full": "Viernes",
+                        "short": "Vi."
+                    },
+                    "6": {
+                        "full": "Sábado",
+                        "short": "Sá."
+                    },
+                    "7": {
+                        "full": "Domingo",
+                        "short": "Do."
                     }
                 }
             }

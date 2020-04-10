@@ -12,8 +12,7 @@ function _getScript(scriptUrl, callback) {
         scriptElement.onreadystatechange = function () {
             if (this.readyState === 'complete' || this.readyState === 'loaded') {
                 callback();
-            }
-            else {
+            } else {
                 console.error('Error when loading script ' + scriptUrl);
             }
         };
@@ -39,36 +38,33 @@ function MapsLoader(options) {
 
 
 MapsLoader.prototype.load = function (callback) {
-    var librariesParams = '';
-    if (this.librariesToLoad.length > 0) {
-        librariesParams = '&libraries=' + this.librariesToLoad.join(',');
+    var params = '';
+    var urlPlacesApi = 'https://maps.googleapis.com/maps/api/js?';
+
+    if (this.language) {
+        params += '&language=' + this.language;
     }
-
-    _getScript('https://www.google.com/jsapi', function () {
-        var params = 'language=' + this.language;
-        if (this.region) {
-            params += '&region=' + this.region;
+    if (this.region) {
+        params += '&region=' + this.region;
+    }
+    if (this.clientId) {
+        params += '&client=' + this.clientId;
+    }
+    if (this.apiKey) {
+        params += '&key=' + this.apiKey;
+    }
+    if (this.channel) {
+        params += '&channel=' + this.channel;
+    }
+    if (this.librariesToLoad.length > 0) {
+        params += '&libraries=' + this.librariesToLoad.join(',');
+    }
+    urlPlacesApi += params;
+    _getScript(urlPlacesApi, function () {
+        if (callback) {
+            callback();
         }
-        if (this.clientId) {
-            params += '&client=' + this.clientId;
-        }
-        if (this.apiKey) {
-            params += '&key=' + this.apiKey;
-        }
-        if (this.channel) {
-            params += '&channel=' + this.channel;
-        }
-
-        google.load('maps', this.version, {
-            other_params: params + librariesParams,
-            callback: function () {
-                if (callback) {
-                    callback();
-                }
-            }
-        });
-    }.bind(this));
-
+    });
 };
 
 module.exports = MapsLoader;
