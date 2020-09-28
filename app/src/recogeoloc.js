@@ -15,27 +15,16 @@ Recommendation.prototype.optIn = function () {
 Recommendation.prototype.optOut = function () {
 };
 
-Recommendation.prototype.sendUserHtml5Position = function (postPositionOptions) {
-    console.error(postPositionOptions);
+Recommendation.prototype.sendUserHtml5Position = function () {
 };
 
-Recommendation.prototype.sendUserBeaconPosition = function (postPositionOptions) {
-    console.error(postPositionOptions);
+Recommendation.prototype.sendUserSearchedPosition = function () {
 };
 
-Recommendation.prototype.sendUserSearchedPosition = function (postPositionOptions) {
-    console.error(postPositionOptions);
+Recommendation.prototype.sendUserConsultedPOI = function () {
 };
 
-Recommendation.prototype.sendUserConsultedPOI = function (postPositionOptions) {
-    console.error(postPositionOptions);
-};
-
-Recommendation.prototype.sendUserFavoritedPOI = function (postPositionOptions) {
-    console.error(postPositionOptions);
-};
-
-Recommendation.prototype.sendCtaEvent = function () {
+Recommendation.prototype.sendUserFavoritedPOI = function () {
 };
 
 Recommendation.prototype.getUserRecommendation = function (getRecommendationOptions) {
@@ -43,7 +32,6 @@ Recommendation.prototype.getUserRecommendation = function (getRecommendationOpti
         this.geolocApiUrl
         + 'stores/'
         + '?key=' + this.projectKey
-        + '?radius=' + getRecommendationOptions.maxDistance
         + '&query=' + getRecommendationOptions.query,
         function (response) {
             getRecommendationOptions.successCallback(JSON.parse(response));
@@ -57,14 +45,14 @@ Recommendation.prototype.getUserRecommendation = function (getRecommendationOpti
 
 Recommendation.prototype.searchStores = function (getStoresOptions) {
     network.get(
-        this.searchApiUrl
+        this.searchApiUrl + '?key=' + this.projectKey
         + '&lat=' + getStoresOptions.lat
         + '&lng=' + getStoresOptions.lng
         + '&max_distance=' + getStoresOptions.maxDistance
-        + '&stores_by_page=' + getStoresOptions.limit
+        + '&stores_by_page=' + getStoresOptions.storesByPage
         + '&query=' + getStoresOptions.query,
         function (response) {
-            getStoresOptions.successCallback(response);
+            getStoresOptions.successCallback(JSON.parse(response));
         },
         function (statusText) {
             console.error('Error while searching stores (' + statusText + ')');
@@ -72,9 +60,6 @@ Recommendation.prototype.searchStores = function (getStoresOptions) {
         });
 };
 
-
-Recommendation.prototype.getUserPosition = function () {
-};
 
 Recommendation.prototype.getConsent = function (consentCallback) {
     consentCallback(true);
