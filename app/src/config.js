@@ -89,6 +89,7 @@ function Config(options) {
         woosmap: {
             apiUrl: 'https://api.woosmap.com/stores/search',
             recoScriptUrl: 'https://sdk.woosmap.com/recommendation/recommendation.js',
+            geolocApiUrl: 'https://api.woosmap.com/geolocation/',
             query: '',
             limit: 5,
             maxDistance: 0
