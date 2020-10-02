@@ -34,7 +34,11 @@ Recommendation.prototype.getUserRecommendation = function (getRecommendationOpti
         + '?key=' + this.projectKey
         + '&query=' + getRecommendationOptions.query,
         function (response) {
-            getRecommendationOptions.successCallback(JSON.parse(response));
+            var recommendedStores = {};
+            if ('stores' in JSON.parse(response)) {
+                recommendedStores = JSON.parse(response).stores;
+            }
+            getRecommendationOptions.successCallback(recommendedStores);
         },
         function (statusText) {
             console.error('Error while getting user recommended stores (' + statusText + ')');
