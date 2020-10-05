@@ -2,6 +2,7 @@ var Config = require('./config');
 var MapsLoader = require('./mapsloader');
 var UI = require('./ui.js');
 var Manager = require('./manager');
+var recogeoloc = require('./recogeoloc');
 
 /**
  * Construct a new Recommendation Widget instance
@@ -24,6 +25,7 @@ function RecommendationPlugin(selector, options) {
     this.ui = null;
     options.container = selector;
     this.config = new Config(options);
+    window.woosmapRecommendation = new recogeoloc(this.config.options.woosmap);
 
     this.mapsLoader = new MapsLoader({
         clientId: this.config.options.google.clientId,
@@ -60,61 +62,24 @@ function RecommendationPlugin(selector, options) {
 }
 
 
-RecommendationPlugin.prototype._getRecommendationScript = function (callback) {
-    if (typeof woosmapRecommendation === "object") {
-        callback();
-    } else {
-        var scriptUrl = this.config.options.woosmap.recoScriptUrl;
-        var scriptElement = document.createElement('script');
-        scriptElement.type = 'text/javascript';
-        scriptElement.async = true;
-
-        scriptElement.src = scriptUrl;
-
-        var firstScript = document.getElementsByTagName('head')[0];
-        firstScript.appendChild(scriptElement, firstScript);
-
-        if (scriptElement.readyState) {
-            scriptElement.onreadystatechange = function () {
-                if (this.readyState === 'complete' || this.readyState === 'loaded') {
-                    callback();
-                } else {
-                    console.error('Error when loading script ' + scriptUrl);
-                }
-            };
-        } else {
-            scriptElement.onload = function () {
-                callback();
-            };
-            scriptElement.onerror = function () {
-                console.error('Error when loading script ' + scriptUrl);
-            };
-        }
-    }
-};
-
 /**
  * To enable the Woosmap Automatic Recommendation.
  * If called, a cookie of Woosmap userId will be set on the user device and recommended store will be store in SessionStorage.
  * It loads `recommendation.js` file (or not if already loaded). No need to call it if `userAllowedReco : true` is already defined in the RecommendationPluginConf
  */
 RecommendationPlugin.prototype.allowUserReco = function () {
-    this.config.options.userAllowedReco = true;
-    this._getRecommendationScript(function () {
-        woosmapRecommendation.setProjectKey(this.config.options.woosmapKey);
-        woosmapRecommendation.getConsent(function (consent) {
-            if (consent === false) {
-                woosmapRecommendation.optIn();
-            }
-            this.config.options.userAllowedReco = true;
-            this.manager.initialRecommendation();
-        }.bind(this));
+    woosmapRecommendation.setProjectKey(this.config.options.woosmapKey);
+    woosmapRecommendation.getConsent(function (consent) {
+        if (consent === false) {
+            woosmapRecommendation.optIn();
+        }
+        this.config.options.userAllowedReco = true;
         this.manager.initialRecommendation();
     }.bind(this));
 };
 
 /**
- * Define the Widget store by its ID and callback `success(store)` - with the returned [store object](/products/data-api/samples/api-response/) as argument - or `error(errorText)` depending on the response.
+ * Define the Widget store by its ID and callback `success(store)` - with the returned [store object](https://developers.woosmap.com/products/data-api/samples/api-response/) as argument - or `error(errorText)` depending on the response.
  * @param {String} storeId
  * @param {Function} [success(store)]
  * @param {Function} [error(statusText]
